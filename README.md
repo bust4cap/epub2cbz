@@ -12,7 +12,5 @@ Python program to extract .epub Manga and Comic ebooks into "cbz-ready" folders,
 - type "python ", drag and drop the epub2cbz.py file onto the command line window and press return
 - (TEST WITH ONE OR A FEW FILES FIRST)
 
-- after the conversion (and if you have 7zip installed) you can use the following command in the same folders command line to turn all folders into .zip files (adjust the path to your 7z.exe):
-  FOR /F "usebackq delims=?" %i IN (\`DIR /B /A:D\`) DO C:\PATH\TO\7-Zip\7z.exe a "%i.zip" "%i"
-- then type the following to rename those .zip files to .cbz:
-  ren *.zip *.cbz
+- after the conversion (and if you have 7zip installed) you can use the following command in the same folders command line to turn all folders into .cbz files (adjust the path to your 7z.exe):
+  FOR /F "usebackq delims=?" %i IN (\`DIR /B /A:D\`) DO C:\PATH\TO\7-Zip\7z.exe a -tzip "%i.cbz" "%i"
