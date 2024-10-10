@@ -1,3 +1,10 @@
+## v2024.10.10-1
+- Adjusted duplicate cover detection
+- Added Image Resolution to ComicInfo
+- Fixed rare case where Double Page info would be missing from ComicInfo
+- Added Producers/Editors and Translators to ComicInfo
+- Added option to keep higher resolution Cover if two should be present
+
 ## v2024.10.09-1
 - Added basic update check to settings window
 
