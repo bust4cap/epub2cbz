@@ -1,3 +1,6 @@
+## v2024.10.11-1
+- Fixed rare case where Image Resolution info would be missing from ComicInfo
+
 ## v2024.10.10-1
 - Adjusted duplicate cover detection
 - Added Image Resolution to ComicInfo
