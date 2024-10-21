@@ -1,3 +1,7 @@
+## v2024.10.21-1
+- Fixed bug related to chapters and removing duplicate covers that prevented conversion from completing
+- Rearranged settings window
+
 ## v2024.10.11-1
 - Fixed rare case where Image Resolution info would be missing from ComicInfo
 
