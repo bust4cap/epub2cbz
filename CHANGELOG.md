@@ -1,3 +1,7 @@
+## v2024.11.02-1
+- Added option to add an additional blank image if the Page Spread alignment info is assumed to be set incorrectly in the original Ebook (this option is disabled by default)
+- Fixed duplicate cover removal for certain Japanese language books
+
 ## v2024.10.21-1
 - Fixed bug related to chapters and removing duplicate covers that prevented conversion from completing
 - Rearranged settings window
