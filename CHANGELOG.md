@@ -1,3 +1,6 @@
+## v2024.12.17-1
+- Fixed date detection in certain cases where the date didn't follow the standard formatting
+
 ## v2024.11.02-2
 - Fixed blank image handling in certain cases
 - Increased tolerance for blank image detection
