@@ -1,3 +1,6 @@
+## v2024.12.27-1
+- Fixed image path detection in certain cases
+
 ## v2024.12.17-1
 - Fixed date detection in certain cases where the date didn't follow the standard formatting
 
