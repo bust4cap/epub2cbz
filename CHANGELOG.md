@@ -1,3 +1,6 @@
+## v2024.12.27-2
+- Fixed duplicate cover detection in more cases
+
 ## v2024.12.27-1
 - Fixed image path detection in certain cases
 
