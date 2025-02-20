@@ -1,3 +1,10 @@
+## v2025.02.20-1
+- Fixed adding the same author multiple times in certain cases
+- Fixed ComicInfo compatibility with certain Programs in more cases related to publishers
+- Fixed incorrect image extraction for manga of a certain publisher
+- Adjusted how certain blocked symbols like ":" and "?" in file names are handled in the ComicInfo for the "Series" field
+- Added tooltip for long folder paths
+
 ## v2024.12.27-2
 - Fixed duplicate cover detection in more cases
 
