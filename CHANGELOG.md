@@ -1,3 +1,8 @@
+## v2025.04.09-1
+- Added Japanese language support (Translation by: PickledCakes)
+- Adjusted English translation slightly to be more clear
+- Fixed Blank Page behavior in certain cases
+
 ## v2025.02.20-1
 - Fixed adding the same author multiple times in certain cases
 - Fixed ComicInfo compatibility with certain Programs in more cases related to publishers
