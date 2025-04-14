@@ -1,3 +1,7 @@
+## v2025.04.14-1
+- Settings are now saved between sessions
+- Added "Reset Settings" button to reset settings to their default recommended values
+
 ## v2025.04.09-1
 - Added Japanese language support (Translation by: PickledCakes)
 - Adjusted English translation slightly to be more clear
