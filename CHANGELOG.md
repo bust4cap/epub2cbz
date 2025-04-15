@@ -1,3 +1,6 @@
+## v2025.04.15-2
+- Fixed bug where certain settings were not properly saved
+
 ## v2025.04.15-1
 - Fixed small bug related to the "Reset Settings" function
 - Added 3 second timeout to the update check
