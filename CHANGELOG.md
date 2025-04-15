@@ -1,3 +1,7 @@
+## v2025.04.15-1
+- Fixed small bug related to the "Reset Settings" function
+- Added 3 second timeout to the update check
+
 ## v2025.04.14-1
 - Settings are now saved between sessions
 - Added "Reset Settings" button to reset settings to their default recommended values
