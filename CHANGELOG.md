@@ -1,3 +1,6 @@
+## v2025.04.16-1
+- Window Location is now also saved between sessions
+
 ## v2025.04.15-2
 - Fixed bug where certain settings were not properly saved
 
