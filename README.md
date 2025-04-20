@@ -23,3 +23,12 @@ Please don't hesitate to open an Issue or contact me directly.<br/>
 Twitter/X: [@af_Seb](https://x.com/af_Seb)<br/>
 Bluesky: [@afseb.bsky.social](https://bsky.app/profile/afseb.bsky.social)<br/>
 Mastodon: [@af_Seb@social.cologne](https://social.cologne/@af_Seb)<br/>
+
+## Licenses
+epub2cbz-gui uses the following third party software libraries:
+
+| Library | Usage | License |
+| --- | --- | --- |
+| [ExCSS](https://www.nuget.org/packages/ExCSS/) | Parsing info from CSS files | [MIT](https://licenses.nuget.org/MIT) |
+| [SkiaSharp](https://www.nuget.org/packages/SkiaSharp/) | Creating blank images | [MIT](https://licenses.nuget.org/MIT) |
+| [Topten.RichTextKit](https://www.nuget.org/packages/Topten.RichTextKit/) | Adding text to blank images (DEBUG Version only) | [Apache-2.0](https://licenses.nuget.org/Apache-2.0) |
