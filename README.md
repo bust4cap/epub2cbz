@@ -4,7 +4,7 @@ C# program to extract .epub Manga and Comic ebooks into .cbz files, including a 
 ![Main view](img/epub2cbz-gui_1.png)
 
 ## Prerequisites
-- Epubs should ideally be in the format of "[Series] v[Volume].epub", for example "Two Pieces v69.epub" (both are optional, but are derived from the filename, if enabled)
+- Epubs must be DRM-free and should ideally be in the format of "[Series] v[Volume].epub", for example "Two Pieces v69.epub" (both are optional, but are derived from the filename, if enabled)
 
 ## How to
 - Move all to be converted .epub files into one folder (preferably an empty one)
