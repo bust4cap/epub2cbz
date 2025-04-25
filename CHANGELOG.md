@@ -1,3 +1,11 @@
+## v2025.04.25-1
+- Added WebP image support
+- Fixed files not processing when "Create ComicInfo.xml" is unchecked
+- Updated Framework from .NET 6 to .NET 9, resulting in reduced program size as well (Settings will be reset to default due to this change)
+- Added optional basic DRM Check
+- Slightly adjusted wide image detection. Images now need to be at least 10% wider than tall to be considered "wide"
+- Error Popups now center on the main window
+
 ## v2025.04.16-1
 - Window Location is now also saved between sessions
 
