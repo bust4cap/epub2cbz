@@ -31,4 +31,4 @@ epub2cbz-gui uses the following third party software libraries:
 | --- | --- | --- |
 | [ExCSS](https://www.nuget.org/packages/ExCSS/) | Parsing info from CSS files | [MIT](https://licenses.nuget.org/MIT) |
 | [SkiaSharp](https://www.nuget.org/packages/SkiaSharp/) | Creating blank images | [MIT](https://licenses.nuget.org/MIT) |
-| [Topten.RichTextKit](https://www.nuget.org/packages/Topten.RichTextKit/) | Adding text to blank images (DEBUG Version only) | [Apache-2.0](https://licenses.nuget.org/Apache-2.0) |
+| [SixLabors.ImageSharp](https://github.com/SixLabors/ImageSharp) | Decoding WebP images | [Apache-2.0](https://licenses.nuget.org/Apache-2.0) |
