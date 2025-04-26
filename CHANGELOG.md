@@ -1,3 +1,7 @@
+## v2025.04.26-1
+- Sped up conversion significantly in certain scenarios
+- Improved duplicate cover detection
+
 ## v2025.04.25-1
 - Added WebP image support
 - Fixed files not processing when "Create ComicInfo.xml" is unchecked
