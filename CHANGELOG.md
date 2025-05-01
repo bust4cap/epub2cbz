@@ -1,3 +1,6 @@
+## v2025.05.01-1
+- Fixed a small bug related to metadata parsing that could prevent conversion from completing when "Create ComicInfo.xml" was enabled
+
 ## v2025.04.26-1
 - Sped up conversion significantly in certain scenarios
 - Improved duplicate cover detection
