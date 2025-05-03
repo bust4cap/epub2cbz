@@ -1,3 +1,6 @@
+## v2025.05.03-1
+- Switched from the native to a custom config file, so settings won't get reset between releases anymore
+
 ## v2025.05.01-1
 - Fixed a small bug related to metadata parsing that could prevent conversion from completing when "Create ComicInfo.xml" was enabled
 
