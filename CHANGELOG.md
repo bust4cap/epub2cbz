@@ -1,3 +1,7 @@
+## v2025.05.03-2
+- Fixed chapter detection in certain cases
+- Sped up duplicate cover detection in certain cases
+
 ## v2025.05.03-1
 - Switched from the native to a custom config file, so settings won't get reset between releases anymore
 
