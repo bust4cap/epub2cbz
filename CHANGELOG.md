@@ -1,3 +1,10 @@
+## v2025.05.14-1
+- Sped up conversion by around 10-25%
+- Sped up initial EPUB file detection significantly
+- Sped up abort process
+- Fixed a small bug related to metadata parsing of book samples
+- More ComicInfo compatibility fixes
+
 ## v2025.05.03-2
 - Fixed chapter detection in certain cases
 - Sped up duplicate cover detection in certain cases
