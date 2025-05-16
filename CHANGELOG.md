@@ -1,3 +1,6 @@
+## v2025.05.16-1
+- Several small bug fixes
+
 ## v2025.05.14-1
 - Sped up conversion by around 10-25%
 - Sped up initial EPUB file detection significantly
