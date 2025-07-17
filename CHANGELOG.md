@@ -1,3 +1,6 @@
+## v2025.07.17-1
+- Added option to save CBZ files using title found in EPUB metadata
+
 ## v2025.05.16-1
 - Several small bug fixes
 
