@@ -1,3 +1,7 @@
+## v2025.07.21-1
+- Added option to create a subfolder for each chapter (adding chapter support for KOReader)
+- Small Bugfixes
+
 ## v2025.07.17-1
 - Added option to save CBZ files using title found in EPUB metadata
 
