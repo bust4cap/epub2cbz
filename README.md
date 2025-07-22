@@ -12,7 +12,10 @@ C# program to extract .epub Manga and Comic ebooks into .cbz files, including a 
 - Click on the "Folder" button and select the folder containing the epub files
 - (If you only want to convert specific epub files, you can create a "mangalist.txt" file containing the names of the epub files you want to convert. One name per line. Put the mangalist.txt file into the same folder where your epubs files are and that you selected in the last step, then activate the "Use mangalist.txt" checkbox)
 - Enable or disable certain options, like creating a ComicInfo.xml file or extracting images. The cogwheel contains more options (everything is enabled by default)
-- Click the "Start" button and wait<br/><br/>
+- Click the "Start" button and wait<br/>
+
+## Command Line Arguments
+"-simple" / "-s": Enable "Simple Mode". Only extracts images. No further processing is done. All images keep their original name. Very Fast!<br/><br/>
 
 ![Settings view](img/epub2cbz-gui_2.png)
 
