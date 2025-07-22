@@ -1,3 +1,6 @@
+## v2025.07.22-1
+- Added "-simple" / "-s" command line argument. Check Readme for more details
+
 ## v2025.07.21-1
 - Added option to create a subfolder for each chapter (adding chapter support for KOReader)
 - Small Bugfixes
