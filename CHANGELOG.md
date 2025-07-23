@@ -1,3 +1,6 @@
+## v2025.07.23-1
+- Added option to output as ZIP instead of CBZ
+
 ## v2025.07.22-1
 - Added "-simple" / "-s" command line argument. Check Readme for more details
 
