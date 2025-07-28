@@ -1,3 +1,7 @@
+## v2025.07.28-1
+- Added resizing options. Images can now be resized to a desired maximum width and height. Certain presets are also available
+- Added "-file" / "-f" command line argument. Check Readme for more details
+
 ## v2025.07.23-1
 - Added option to output as ZIP instead of CBZ
 
