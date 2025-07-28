@@ -15,7 +15,9 @@ C# program to extract .epub Manga and Comic ebooks into .cbz files, including a 
 - Click the "Start" button and wait<br/>
 
 ## Command Line Arguments
-"-simple" / "-s": Enable "Simple Mode". Only extracts images. No further processing is done. All images keep their original name. Very Fast!<br/><br/>
+- "-simple" / "-s": Enable "Simple Mode". Only extracts images. No further processing is done. All images keep their original name. Very Fast!
+- "-file" / "-f": Enable "File Mode". Allows you to add files instead of having to select a folder. Drag an drop EPUB files onto the main text window.
+<br/><br/>
 
 ![Settings view](img/epub2cbz-gui_2.png)
 
