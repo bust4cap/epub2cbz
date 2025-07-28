@@ -1,3 +1,6 @@
+## v2025.07.28-3
+- Fixed small display issue specific to the Japanese UI
+
 ## v2025.07.28-2
 - Fixed small display issue
 
