@@ -1,3 +1,6 @@
+## v2025.07.28-2
+- Fixed small display issue
+
 ## v2025.07.28-1
 - Added resizing options. Images can now be resized to a desired maximum width and height. Certain presets are also available
 - Added "-file" / "-f" command line argument. Check Readme for more details
