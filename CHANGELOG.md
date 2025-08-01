@@ -1,3 +1,6 @@
+## v2025.08.01-1
+- Added cropping options. Image margins can now be cropped. Padding and tolerance values can also be adjusted
+
 ## v2025.07.28-3
 - Fixed small display issue specific to the Japanese UI
 
