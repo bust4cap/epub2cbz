@@ -1,7 +1,7 @@
 # epub2cbz-gui
 C# program to extract .epub Manga and Comic ebooks into .cbz files, including a ComicInfo.xml file with chapter info, reading direction and more.<br/><br/>
 
-![Main view](img/epub2cbz-gui_1.png)
+![Main view](img/epub2cbz-gui_1.png?)
 
 ## Prerequisites
 - Epubs must be DRM-free and should ideally be in the format of "[Series] v[Volume].epub", for example "Two Pieces v69.epub" (both are optional, but are derived from the filename, if enabled)
@@ -19,7 +19,7 @@ C# program to extract .epub Manga and Comic ebooks into .cbz files, including a 
 - "-file" / "-f": Enable "File Mode". Allows you to add files instead of having to select a folder. Drag an drop EPUB files onto the main text window.
 <br/><br/>
 
-![Settings view](img/epub2cbz-gui_2.png)
+![Settings view](img/epub2cbz-gui_2.png?)
 
 ## Need Help?
 Getting error messages or something isn't working as expected?<br/>
