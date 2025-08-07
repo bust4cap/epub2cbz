@@ -1,3 +1,7 @@
+## v2025.08.07-1
+- Added program icon
+- Slightly adjusted cropping algorithm
+
 ## v2025.08.01-1
 - Added cropping options. Image margins can now be cropped. Padding and tolerance values can also be adjusted
 
