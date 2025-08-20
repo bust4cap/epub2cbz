@@ -1,5 +1,5 @@
 ## v2025.08.20-1
-- Added the ability to read Series and Volume (series_index) information directly from Calibre metadata
+- Added the ability to read Series and Volume (series_index) information directly from Calibre metadata tags
 
 ## v2025.08.07-1
 - Added program icon
