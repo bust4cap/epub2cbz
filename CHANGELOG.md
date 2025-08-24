@@ -1,3 +1,14 @@
+## v2025.08.24-1
+- Added a mode switch button (🔄) to directly switch between the standard folder mode and file mode
+- Added mode indicator in status bar at the bottom of the main window
+- Added a file list in file mode. Individual files can be removed from the list and the entire list can be cleared
+- Added optional output folder in file mode
+- Added a button (⮿) to clear the input or output path
+- Added the ability to enter a custom series name that will be applied to all converted files
+- Fixed page alignment in certain rare cases
+- Removed mangalist.txt checkbox as the same basic functionality is available through file mode
+- Removed "--file" / "-f" command line argument
+
 ## v2025.08.20-1
 - Added the ability to read Series and Volume (series_index) information directly from Calibre metadata tags
 
@@ -16,13 +27,13 @@
 
 ## v2025.07.28-1
 - Added resizing options. Images can now be resized to a desired maximum width and height. Certain presets are also available
-- Added "-file" / "-f" command line argument. Check Readme for more details
+- Added "--file" / "-f" command line argument. Check Readme for more details
 
 ## v2025.07.23-1
 - Added option to output as ZIP instead of CBZ
 
 ## v2025.07.22-1
-- Added "-simple" / "-s" command line argument. Check Readme for more details
+- Added "--simple" / "-s" command line argument. Check Readme for more details
 
 ## v2025.07.21-1
 - Added option to create a subfolder for each chapter (adding chapter support for KOReader)
