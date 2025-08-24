@@ -8,10 +8,10 @@ C# program to extract .epub Manga and Comic ebooks into .cbz files, including a 
 
 ## How to
 - Start the epub2cbz-gui.exe
-- If in Folder Mode, click on the " Input Folder" button and select the folder containing the epub files
-- If in File Mode, drag and drop the epub files onto the main text window
+- If in Folder Mode, click on the "Input Folder" button (📁) and select the folder containing the epub files
+- If in File Mode, drag and drop the epub files onto the main text window and optionally select an "Output Folder" (📁)
 - (Click on the mode switch button (🔄) to switch between these two modes)
-- Enable or disable certain options, like creating a ComicInfo.xml file or extracting images. The cogwheel contains more options (recommended settings are enabled by default)
+- Enable or disable certain options, like creating a ComicInfo.xml file or extracting images. The settings menu (⚙) contains more options (recommended settings are enabled by default)
 - Click the "Start" button and wait<br/>
 
 ## Command Line Arguments
