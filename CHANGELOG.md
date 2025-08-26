@@ -1,3 +1,7 @@
+## v2025.08.26-1
+- Added smaller package (Requires .NET Desktop Runtime 9)
+- Small cosmetic changes
+
 ## v2025.08.24-1
 - Added a mode switch button (🔄) to directly switch between the standard folder mode and file mode
 - Added mode indicator in status bar at the bottom of the main window
