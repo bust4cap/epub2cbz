@@ -1,3 +1,6 @@
+## v2025.08.27-1
+- Added Traditional Chinese and Simplified Chinese language support (Translation by: Yatounoneko)
+
 ## v2025.08.26-1
 - Added smaller package (Requires .NET Desktop Runtime 9)
 - Small cosmetic changes
