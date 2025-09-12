@@ -1,3 +1,8 @@
+## v2025.09.12-1
+- Renamed program from epub2cbz-gui to just epub2cbz
+- Added the ability to drag and drop folders in file mode. Only the root folder is checked for EPUB files
+- Slightly adjusted wide image detection. Images now need to be at least 12.5% (up from 10%) wider than tall to be considered "wide"
+
 ## v2025.08.27-1
 - Added Traditional Chinese and Simplified Chinese language support (Translation by: Yatounoneko)
 
