@@ -1,4 +1,4 @@
-# epub2cbz-gui
+# epub2cbz
 C# program to extract .epub Manga and Comic ebooks into .cbz files, including a ComicInfo.xml file with chapter info, reading direction and more.<br/><br/>
 
 ![Main view](img/epub2cbz-gui_1.png)
@@ -8,7 +8,7 @@ C# program to extract .epub Manga and Comic ebooks into .cbz files, including a 
 - If you download the smaller package (without "_full" in the filename), you need to install .NET Desktop Runtime 9. The program should guide you to the correct website, if it isn't installed yet.
 
 ## How to
-- Start the epub2cbz-gui.exe
+- Start the epub2cbz.exe
 - If in Folder Mode, click on the "Input Folder" button (📁) and select the folder containing the epub files
 - If in File Mode, drag and drop the epub files onto the main text window and optionally select an "Output Folder" (📁)
 - (Click on the mode switch button (🔄) to switch between these two modes)
@@ -30,7 +30,7 @@ Bluesky: [@afseb.bsky.social](https://bsky.app/profile/afseb.bsky.social)<br/>
 Mastodon: [@af_Seb@social.cologne](https://social.cologne/@af_Seb)<br/>
 
 ## Licenses
-epub2cbz-gui uses the following third party software libraries:
+epub2cbz uses the following third party software libraries:
 
 | Library | Usage | License |
 | --- | --- | --- |
