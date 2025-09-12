@@ -1,3 +1,6 @@
+## v2025.09.12-2
+- Corrected link to new repository in update window
+
 ## v2025.09.12-1
 - Renamed program from epub2cbz-gui to just epub2cbz
 - Added the ability to drag and drop folders in file mode. Only the root folder is checked for EPUB files
