@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows7.0</TargetFramework>
+    <RootNamespace>epub2cbz_gui</RootNamespace>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+	<ForceDesignerDpiUnaware>true</ForceDesignerDpiUnaware>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<ApplicationIcon>epub2cbz_logo.ico</ApplicationIcon>
+	<AssemblyName>epub2cbz</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="publish_full.bat" />
+	<None Remove="publish_small.bat" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="epub2cbz_logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CoenM.ImageSharp.ImageHash" Version="1.3.6" />
+    <PackageReference Include="ExCSS" Version="4.3.1" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.11" />
+    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="2.1.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

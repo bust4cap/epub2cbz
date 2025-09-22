@@ -1,0 +1,447 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AbortButtonText" xml:space="preserve">
+    <value>中止</value>
+  </data>
+  <data name="AbortedMessage" xml:space="preserve">
+    <value>程序已被中止。</value>
+  </data>
+  <data name="AbortingMessage" xml:space="preserve">
+    <value>程序正在中止，請稍等片刻...</value>
+  </data>
+  <data name="BlankImageError" xml:space="preserve">
+    <value>建立空白圖像錯誤。</value>
+  </data>
+  <data name="ButtonSwitchFileFolderMode" xml:space="preserve">
+    <value>切換模式</value>
+  </data>
+  <data name="CancelButtonText" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="CbzAlreadyExists" xml:space="preserve">
+    <value>已存在同名檔案。請刪除 「{0}」</value>
+  </data>
+  <data name="ComicInfoCheckboxText" xml:space="preserve">
+    <value>建立 ComicInfo.xml</value>
+  </data>
+  <data name="ConfirmationMessageBox" xml:space="preserve">
+    <value>確認</value>
+  </data>
+  <data name="ContainerXMLNotFound" xml:space="preserve">
+    <value>「{0}」 container.xml 未找到。</value>
+  </data>
+  <data name="ErrorMessageBox" xml:space="preserve">
+    <value>錯誤</value>
+  </data>
+  <data name="FileCouldNotBeOpened" xml:space="preserve">
+    <value>無法開啟檔案「{0}」。</value>
+  </data>
+  <data name="FileList" xml:space="preserve">
+    <value>檔案列表</value>
+  </data>
+  <data name="FileModeAddedFilename" xml:space="preserve">
+    <value>已添加：</value>
+  </data>
+  <data name="FileModeClearButton" xml:space="preserve">
+    <value>清除</value>
+  </data>
+  <data name="FileModeClearListMessage" xml:space="preserve">
+    <value>確定要清空列表嗎？</value>
+  </data>
+  <data name="FileModeFileListCleared" xml:space="preserve">
+    <value>檔案列表已被清除。</value>
+  </data>
+  <data name="FileModeFilesAdded" xml:space="preserve">
+    <value>添加檔案：{0}</value>
+  </data>
+  <data name="FileModeNoEpubs" xml:space="preserve">
+    <value>請將 EPUB 檔案拖放到該處。</value>
+  </data>
+  <data name="FileModeNoFilesAdded" xml:space="preserve">
+    <value>未添加新檔案。</value>
+  </data>
+  <data name="FileModeTotalFiles" xml:space="preserve">
+    <value>總檔案數：{0}</value>
+  </data>
+  <data name="FileName" xml:space="preserve">
+    <value>檔案名稱</value>
+  </data>
+  <data name="FilePath" xml:space="preserve">
+    <value>檔案路徑</value>
+  </data>
+  <data name="ImagesCheckboxText" xml:space="preserve">
+    <value>提取圖像</value>
+  </data>
+  <data name="IsDRMProtected" xml:space="preserve">
+    <value>「{0}」 似乎受 DRM 保護。</value>
+  </data>
+  <data name="MangalistCheckboxText" xml:space="preserve">
+    <value>使用 mangalist.txt</value>
+  </data>
+  <data name="MangalistCheckboxTooltip" xml:space="preserve">
+    <value>只會處理所選文件夾中 mangalist.txt 檔案所列的 EPUB。</value>
+  </data>
+  <data name="NcxOrNavNotInOpf" xml:space="preserve">
+    <value>在 {0} 的 .opf 中找不到 .ncx 或 .nav 檔案</value>
+  </data>
+  <data name="NoCheckBoxChecked" xml:space="preserve">
+    <value>啟用「建立 ComicInfo.xml」或「提取圖像」。</value>
+  </data>
+  <data name="NoEpubsFoundMessageBox" xml:space="preserve">
+    <value>未找到 EPUB。</value>
+  </data>
+  <data name="NoMangalistMessageBox" xml:space="preserve">
+    <value>未找到 mangalist.txt。</value>
+  </data>
+  <data name="NoPathMessageBox" xml:space="preserve">
+    <value>未選取路徑。</value>
+  </data>
+  <data name="NotAManga" xml:space="preserve">
+    <value>「{0}」 似乎不是Manga或Comic。</value>
+  </data>
+  <data name="NotAnEPUB" xml:space="preserve">
+    <value>「{0}」 似乎不是 EPUB。</value>
+  </data>
+  <data name="OPFFileNotFound" xml:space="preserve">
+    <value>「{0}」 OPF 檔案未找到。</value>
+  </data>
+  <data name="PathButtonTextInput" xml:space="preserve">
+    <value>輸入文件夾</value>
+  </data>
+  <data name="PathButtonTextOutput" xml:space="preserve">
+    <value>輸出文件夾</value>
+  </data>
+  <data name="PathClearButtonText" xml:space="preserve">
+    <value>清除</value>
+  </data>
+  <data name="PathLabelText" xml:space="preserve">
+    <value>路徑</value>
+  </data>
+  <data name="Processed" xml:space="preserve">
+    <value>已處理：「{0}」</value>
+  </data>
+  <data name="ProcessingInProgress" xml:space="preserve">
+    <value>處理中...請稍等片刻。</value>
+  </data>
+  <data name="RemovedDuplicateCover" xml:space="preserve">
+    <value>資訊：已移除 「{0}」 的重複封面</value>
+  </data>
+  <data name="ReplaceSeries" xml:space="preserve">
+    <value>替換系列名稱(書名)</value>
+  </data>
+  <data name="ReplaceSeriesPlaceholder" xml:space="preserve">
+    <value>在此輸入新系列名稱(書名)。</value>
+  </data>
+  <data name="ResetSettings" xml:space="preserve">
+    <value>重置設定</value>
+  </data>
+  <data name="SettingsAuthor" xml:space="preserve">
+    <value>作者</value>
+  </data>
+  <data name="SettingsChapters" xml:space="preserve">
+    <value>章節(.Chap)</value>
+  </data>
+  <data name="SettingsCompressionLevelFastest" xml:space="preserve">
+    <value>最快</value>
+  </data>
+  <data name="SettingsCompressionLevelNoCompression" xml:space="preserve">
+    <value>無壓縮</value>
+  </data>
+  <data name="SettingsCompressionLevelOptimal" xml:space="preserve">
+    <value>最佳</value>
+  </data>
+  <data name="SettingsCompressionLevelSmallestSize" xml:space="preserve">
+    <value>極限壓縮</value>
+  </data>
+  <data name="SettingsCompressionLevelTooltip" xml:space="preserve">
+    <value>「無壓縮」是最快的並且推薦，因為圖像已經是壓縮格式。</value>
+  </data>
+  <data name="SettingsCroppingColorTolerance" xml:space="preserve">
+    <value>顏色容差：</value>
+  </data>
+  <data name="SettingsCroppingColorToleranceTooltip" xml:space="preserve">
+    <value>邊緣顏色必須有多均勻。值越高，越寬容。(0 - 255)</value>
+  </data>
+  <data name="SettingsCroppingCropImages" xml:space="preserve">
+    <value>裁剪圖像</value>
+  </data>
+  <data name="SettingsCroppingDeviationTolerance" xml:space="preserve">
+    <value>誤差邊緣：</value>
+  </data>
+  <data name="SettingsCroppingDeviationToleranceTooltip" xml:space="preserve">
+    <value>每行允許多少偏差像素仍視為背景的一部分，以百分比計(%)。(0 - 100)</value>
+  </data>
+  <data name="SettingsCroppingPadding" xml:space="preserve">
+    <value>填充：</value>
+  </data>
+  <data name="SettingsCroppingPaddingTooltip" xml:space="preserve">
+    <value>保留部分邊緣區域，以像素計(px)。(0 - XXX)</value>
+  </data>
+  <data name="SettingsDate" xml:space="preserve">
+    <value>日期</value>
+  </data>
+  <data name="SettingsDescription" xml:space="preserve">
+    <value>摘要</value>
+  </data>
+  <data name="SettingsExperimentalAddBlankPage" xml:space="preserve">
+    <value>添加空白頁</value>
+  </data>
+  <data name="SettingsExperimentalAddBlankPageTooltip" xml:space="preserve">
+    <value>如果電子書的頁面展開對齊(雙頁)似乎不正確，請啟用。</value>
+  </data>
+  <data name="SettingsExperimentalChapterFolders" xml:space="preserve">
+    <value>為每個章節(.Chap)建立文件夾</value>
+  </data>
+  <data name="SettingsExperimentalDRMProtection" xml:space="preserve">
+    <value>檢查檔案是否受 DRM 保護</value>
+  </data>
+  <data name="SettingsExperimentalEveryPageIsChapter" xml:space="preserve">
+    <value>修復每頁為一個章節(.Chap)</value>
+  </data>
+  <data name="SettingsExperimentalEveryPageIsChapterTooltip" xml:space="preserve">
+    <value>有些 EPUB 將每頁列為單獨章節(.Chap)。此選項移除所有。</value>
+  </data>
+  <data name="SettingsExperimentalHigherResolutionCover" xml:space="preserve">
+    <value>保留更高解析度封面</value>
+  </data>
+  <data name="SettingsExperimentalMetadataTitle" xml:space="preserve">
+    <value>使用元數據標題</value>
+  </data>
+  <data name="SettingsExperimentalPageSpread" xml:space="preserve">
+    <value>保留頁面展開對齊(雙頁)</value>
+  </data>
+  <data name="SettingsExperimentalPageSpreadTooltip" xml:space="preserve">
+    <value>嘗試保留正確頁面展開對齊(雙頁)，使右頁保持在右側，左頁保持在左側。假設 EPUB 已正確設定此資訊。</value>
+  </data>
+  <data name="SettingsExperimentalRemoveDuplicateCovers" xml:space="preserve">
+    <value>移除重複封面</value>
+  </data>
+  <data name="SettingsExperimentalRemoveDuplicateCoversTooltip" xml:space="preserve">
+    <value>如果封面再次顯示為第一頁，則移除重複封面。</value>
+  </data>
+  <data name="SettingsExperimentalSplitPageSpread" xml:space="preserve">
+    <value>分割寬圖像(雙頁圖)</value>
+  </data>
+  <data name="SettingsExperimentalSplitPageSpreadTooltip" xml:space="preserve">
+    <value>將寬圖像(原雙頁圖)分割為兩個單頁圖像。</value>
+  </data>
+  <data name="SettingsExperimentalSpreadInsertBlank" xml:space="preserve">
+    <value>空白頁行為</value>
+  </data>
+  <data name="SettingsExperimentalSpreadInsertBlankTooltip" xml:space="preserve">
+    <value>保留頁面展開對齊(雙頁)時，若需插入空白圖像，檢查後續是否有空白圖像，若有，則刪除該圖像，而非連續兩個空白圖像。</value>
+  </data>
+  <data name="SettingsGroupComicInfo" xml:space="preserve">
+    <value>包含在 ComicInfo.xml 中的資訊：</value>
+  </data>
+  <data name="SettingsGroupCropping" xml:space="preserve">
+    <value>裁剪：</value>
+  </data>
+  <data name="SettingsGroupExperimental" xml:space="preserve">
+    <value>實驗性功能：</value>
+  </data>
+  <data name="SettingsGroupResizing" xml:space="preserve">
+    <value>調整大小：</value>
+  </data>
+  <data name="SettingsImageSize" xml:space="preserve">
+    <value>圖像大小</value>
+  </data>
+  <data name="SettingsLabelCompressionLevel" xml:space="preserve">
+    <value>CBZ/ZIP 壓縮級別：</value>
+  </data>
+  <data name="SettingsLabelThreads" xml:space="preserve">
+    <value>CPU 執行緒：</value>
+  </data>
+  <data name="SettingsLanguage" xml:space="preserve">
+    <value>語言</value>
+  </data>
+  <data name="SettingsPageCount" xml:space="preserve">
+    <value>頁數</value>
+  </data>
+  <data name="SettingsProducers" xml:space="preserve">
+    <value>製作者</value>
+  </data>
+  <data name="SettingsPublisher" xml:space="preserve">
+    <value>出版商</value>
+  </data>
+  <data name="SettingsReadingDirection" xml:space="preserve">
+    <value>閱讀方向</value>
+  </data>
+  <data name="SettingsResizingHeight" xml:space="preserve">
+    <value>高度：</value>
+  </data>
+  <data name="SettingsResizingKindle" xml:space="preserve">
+    <value>Kindle：</value>
+  </data>
+  <data name="SettingsResizingKobo" xml:space="preserve">
+    <value>Kobo：</value>
+  </data>
+  <data name="SettingsResizingResizeImages" xml:space="preserve">
+    <value>調整圖像大小</value>
+  </data>
+  <data name="SettingsResizingWidth" xml:space="preserve">
+    <value>寬度：</value>
+  </data>
+  <data name="SettingsSeries" xml:space="preserve">
+    <value>系列(書名)</value>
+  </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>標題</value>
+  </data>
+  <data name="SettingsTranslators" xml:space="preserve">
+    <value>譯者</value>
+  </data>
+  <data name="SettingsUpdateAlreadyOnNewest" xml:space="preserve">
+    <value>您已在使用最新版本。</value>
+  </data>
+  <data name="SettingsUpdateCurrentVersion" xml:space="preserve">
+    <value>當前版本：</value>
+  </data>
+  <data name="SettingsUpdateErrorBottom" xml:space="preserve">
+    <value>請檢查您的網路連線或稍後再試。</value>
+  </data>
+  <data name="SettingsUpdateErrorTop" xml:space="preserve">
+    <value>無法接收最新發行版本。</value>
+  </data>
+  <data name="SettingsUpdateNewerVersionAvailable" xml:space="preserve">
+    <value>有更新版本可用。</value>
+  </data>
+  <data name="SettingsUpdateNewestVersion" xml:space="preserve">
+    <value>最新版本：</value>
+  </data>
+  <data name="SettingsUpdateWindowTitle" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="SettingsVolume" xml:space="preserve">
+    <value>卷(.Vol)</value>
+  </data>
+  <data name="SettingsWindowTitle" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="SplitImageError" xml:space="preserve">
+    <value>分割寬圖像(雙頁圖)錯誤。</value>
+  </data>
+  <data name="StartButtonText" xml:space="preserve">
+    <value>開始</value>
+  </data>
+  <data name="Timer" xml:space="preserve">
+    <value>耗時：{0}分 {1}秒 {2}毫秒</value>
+  </data>
+</root>

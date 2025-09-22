@@ -1,0 +1,475 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AbortButtonText" xml:space="preserve">
+    <value>Abort</value>
+  </data>
+  <data name="AbortedMessage" xml:space="preserve">
+    <value>Process was aborted.</value>
+  </data>
+  <data name="AbortingMessage" xml:space="preserve">
+    <value>Process is being aborted. Please wait a moment...</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="arrows" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrows.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="arrows_light" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrows_light.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BlankImageError" xml:space="preserve">
+    <value>Error creating blank image. </value>
+  </data>
+  <data name="ButtonSwitchFileFolderMode" xml:space="preserve">
+    <value>Switch Mode</value>
+  </data>
+  <data name="CancelButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CbzAlreadyExists" xml:space="preserve">
+    <value>A file with that name already exists. Please delete '{0}'</value>
+  </data>
+  <data name="cogwheel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cogwheel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cogwheel_light" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cogwheel_light.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ComicInfoCheckboxText" xml:space="preserve">
+    <value>Create ComicInfo.xml</value>
+  </data>
+  <data name="ConfirmationMessageBox" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="ContainerXMLNotFound" xml:space="preserve">
+    <value>'{0}' container.xml not found.</value>
+  </data>
+  <data name="empty" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\empty.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ErrorMessageBox" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="error_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\error_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FileCouldNotBeOpened" xml:space="preserve">
+    <value>Couldn't open file '{0}'.</value>
+  </data>
+  <data name="FileList" xml:space="preserve">
+    <value>File List</value>
+  </data>
+  <data name="FileModeAddedFilename" xml:space="preserve">
+    <value>Added:</value>
+  </data>
+  <data name="FileModeClearButton" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="FileModeClearListMessage" xml:space="preserve">
+    <value>Do you really want to empty the list?</value>
+  </data>
+  <data name="FileModeFileListCleared" xml:space="preserve">
+    <value>File list has been cleared.</value>
+  </data>
+  <data name="FileModeFilesAdded" xml:space="preserve">
+    <value>Files added: {0}</value>
+  </data>
+  <data name="FileModeNoEpubs" xml:space="preserve">
+    <value>Please drag and drop EPUB files into this text window.</value>
+  </data>
+  <data name="FileModeNoFilesAdded" xml:space="preserve">
+    <value>No new files were added.</value>
+  </data>
+  <data name="FileModeTotalFiles" xml:space="preserve">
+    <value>Total files: {0}</value>
+  </data>
+  <data name="FileName" xml:space="preserve">
+    <value>File Name</value>
+  </data>
+  <data name="FilePath" xml:space="preserve">
+    <value>File Path</value>
+  </data>
+  <data name="ImagesCheckboxText" xml:space="preserve">
+    <value>Extract Images</value>
+  </data>
+  <data name="info_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\info_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="input_folder" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\input_folder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IsDRMProtected" xml:space="preserve">
+    <value>'{0}' seems to be DRM protected.</value>
+  </data>
+  <data name="MangalistCheckboxText" xml:space="preserve">
+    <value>Use mangalist.txt</value>
+  </data>
+  <data name="MangalistCheckboxTooltip" xml:space="preserve">
+    <value>Will only process EPUBs listed in a mangalist.txt file located in the selected folder.</value>
+  </data>
+  <data name="NcxOrNavNotInOpf" xml:space="preserve">
+    <value>Couldn't find a .ncx or .nav file in the .opf of {0}</value>
+  </data>
+  <data name="NoCheckBoxChecked" xml:space="preserve">
+    <value>Enable either 'Create ComicInfo.xml' or 'Extract Images'.</value>
+  </data>
+  <data name="NoEpubsFoundMessageBox" xml:space="preserve">
+    <value>No EPUBs found.</value>
+  </data>
+  <data name="NoMangalistMessageBox" xml:space="preserve">
+    <value>mangalist.txt not found.</value>
+  </data>
+  <data name="NoPathMessageBox" xml:space="preserve">
+    <value>No Path selected.</value>
+  </data>
+  <data name="NotAManga" xml:space="preserve">
+    <value>'{0}' doesn't seem to be a Manga/Comic.</value>
+  </data>
+  <data name="NotAnEPUB" xml:space="preserve">
+    <value>'{0}' doesn't seem to be an EPUB.</value>
+  </data>
+  <data name="OPFFileNotFound" xml:space="preserve">
+    <value>'{0}' OPF file not found.</value>
+  </data>
+  <data name="output_folder" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\output_folder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PathButtonTextInput" xml:space="preserve">
+    <value>Input Folder</value>
+  </data>
+  <data name="PathButtonTextOutput" xml:space="preserve">
+    <value>Output Folder</value>
+  </data>
+  <data name="PathClearButtonText" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="PathLabelText" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="Processed" xml:space="preserve">
+    <value>Processed: '{0}'</value>
+  </data>
+  <data name="ProcessingInProgress" xml:space="preserve">
+    <value>Processing. Please wait.</value>
+  </data>
+  <data name="RemovedDuplicateCover" xml:space="preserve">
+    <value>Info: Removed duplicate cover for '{0}'</value>
+  </data>
+  <data name="ReplaceSeries" xml:space="preserve">
+    <value>Replace Series Name</value>
+  </data>
+  <data name="ReplaceSeriesPlaceholder" xml:space="preserve">
+    <value>Enter new series name here.</value>
+  </data>
+  <data name="ResetSettings" xml:space="preserve">
+    <value>Reset Settings</value>
+  </data>
+  <data name="SettingsAuthor" xml:space="preserve">
+    <value>Authors</value>
+  </data>
+  <data name="SettingsChapters" xml:space="preserve">
+    <value>Chapters</value>
+  </data>
+  <data name="SettingsCompressionLevelFastest" xml:space="preserve">
+    <value>Fastest</value>
+  </data>
+  <data name="SettingsCompressionLevelNoCompression" xml:space="preserve">
+    <value>No Compression</value>
+  </data>
+  <data name="SettingsCompressionLevelOptimal" xml:space="preserve">
+    <value>Optimal</value>
+  </data>
+  <data name="SettingsCompressionLevelSmallestSize" xml:space="preserve">
+    <value>Smallest Size</value>
+  </data>
+  <data name="SettingsCompressionLevelTooltip" xml:space="preserve">
+    <value>'No Compression' is fastest and recommended, as the images are already in a compressed format.</value>
+  </data>
+  <data name="SettingsCroppingColorTolerance" xml:space="preserve">
+    <value>Color tolerance:</value>
+  </data>
+  <data name="SettingsCroppingColorToleranceTooltip" xml:space="preserve">
+    <value>How uniform the color of the margin has to be. The higher the value, the more forgiving it is. (0 - 255)</value>
+  </data>
+  <data name="SettingsCroppingCropImages" xml:space="preserve">
+    <value>Crop images</value>
+  </data>
+  <data name="SettingsCroppingDeviationTolerance" xml:space="preserve">
+    <value>Margin of error:</value>
+  </data>
+  <data name="SettingsCroppingDeviationToleranceTooltip" xml:space="preserve">
+    <value>How many deviating Pixels are allowed per row to still be considered part of the background. In percent. (0 - 100)</value>
+  </data>
+  <data name="SettingsCroppingPadding" xml:space="preserve">
+    <value>Padding:</value>
+  </data>
+  <data name="SettingsCroppingPaddingTooltip" xml:space="preserve">
+    <value>Preserves some of the margin area. In Pixels. (0 - XXX)</value>
+  </data>
+  <data name="SettingsDate" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="SettingsDescription" xml:space="preserve">
+    <value>Summary</value>
+  </data>
+  <data name="SettingsExperimentalAddBlankPage" xml:space="preserve">
+    <value>Add blank page</value>
+  </data>
+  <data name="SettingsExperimentalAddBlankPageTooltip" xml:space="preserve">
+    <value>Enable if the Page Spread alignment of the Ebook appears to be incorrect.</value>
+  </data>
+  <data name="SettingsExperimentalChapterFolders" xml:space="preserve">
+    <value>Create folders for each chapter</value>
+  </data>
+  <data name="SettingsExperimentalDRMProtection" xml:space="preserve">
+    <value>Check if files are DRM protected</value>
+  </data>
+  <data name="SettingsExperimentalEveryPageIsChapter" xml:space="preserve">
+    <value>Fix every page being a chapter</value>
+  </data>
+  <data name="SettingsExperimentalEveryPageIsChapterTooltip" xml:space="preserve">
+    <value>Some EPUBs list each page as an individual chapter. This option removes all of them.</value>
+  </data>
+  <data name="SettingsExperimentalHigherResolutionCover" xml:space="preserve">
+    <value>Keep higher resolution cover</value>
+  </data>
+  <data name="SettingsExperimentalMetadataTitle" xml:space="preserve">
+    <value>Use metadata title</value>
+  </data>
+  <data name="SettingsExperimentalPageSpread" xml:space="preserve">
+    <value>Preserve page spread alignment</value>
+  </data>
+  <data name="SettingsExperimentalPageSpreadTooltip" xml:space="preserve">
+    <value>Tries to preserve correct Page Spread alignment, so a right page will stay on the right and a left page will stay on the left. Assumes EPUB has set this info correctly.</value>
+  </data>
+  <data name="SettingsExperimentalRemoveDuplicateCovers" xml:space="preserve">
+    <value>Remove duplicate covers</value>
+  </data>
+  <data name="SettingsExperimentalRemoveDuplicateCoversTooltip" xml:space="preserve">
+    <value>Removes duplicate Cover if it is displayed as the first page again.</value>
+  </data>
+  <data name="SettingsExperimentalSplitPageSpread" xml:space="preserve">
+    <value>Split wide images</value>
+  </data>
+  <data name="SettingsExperimentalSplitPageSpreadTooltip" xml:space="preserve">
+    <value>Split wide images into two single page images.</value>
+  </data>
+  <data name="SettingsExperimentalSpreadInsertBlank" xml:space="preserve">
+    <value>Blank page behavior</value>
+  </data>
+  <data name="SettingsExperimentalSpreadInsertBlankTooltip" xml:space="preserve">
+    <value>When preserving Page Spread alignment and a blank image would have to be inserted to do so, check if a blank image is following and if it is, delete that one instead of having two blank images back to back.</value>
+  </data>
+  <data name="SettingsGroupComicInfo" xml:space="preserve">
+    <value>Info to include in ComicInfo.xml:</value>
+  </data>
+  <data name="SettingsGroupCropping" xml:space="preserve">
+    <value>Cropping:</value>
+  </data>
+  <data name="SettingsGroupExperimental" xml:space="preserve">
+    <value>Experimental Features:</value>
+  </data>
+  <data name="SettingsGroupResizing" xml:space="preserve">
+    <value>Resizing:</value>
+  </data>
+  <data name="SettingsImageSize" xml:space="preserve">
+    <value>Image size</value>
+  </data>
+  <data name="SettingsLabelCompressionLevel" xml:space="preserve">
+    <value>CBZ/ZIP Compression Level:</value>
+  </data>
+  <data name="SettingsLabelThreads" xml:space="preserve">
+    <value>CPU Threads:</value>
+  </data>
+  <data name="SettingsLanguage" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="SettingsPageCount" xml:space="preserve">
+    <value>Page count</value>
+  </data>
+  <data name="SettingsProducers" xml:space="preserve">
+    <value>Producers</value>
+  </data>
+  <data name="SettingsPublisher" xml:space="preserve">
+    <value>Publisher</value>
+  </data>
+  <data name="SettingsReadingDirection" xml:space="preserve">
+    <value>Reading direction</value>
+  </data>
+  <data name="SettingsResizingHeight" xml:space="preserve">
+    <value>Height:</value>
+  </data>
+  <data name="SettingsResizingKindle" xml:space="preserve">
+    <value>Kindle:</value>
+  </data>
+  <data name="SettingsResizingKobo" xml:space="preserve">
+    <value>Kobo:</value>
+  </data>
+  <data name="SettingsResizingResizeImages" xml:space="preserve">
+    <value>Resize images</value>
+  </data>
+  <data name="SettingsResizingWidth" xml:space="preserve">
+    <value>Width:</value>
+  </data>
+  <data name="SettingsSeries" xml:space="preserve">
+    <value>Series</value>
+  </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="SettingsTranslators" xml:space="preserve">
+    <value>Translators</value>
+  </data>
+  <data name="SettingsUpdateAlreadyOnNewest" xml:space="preserve">
+    <value>You are already using the newest version.</value>
+  </data>
+  <data name="SettingsUpdateCurrentVersion" xml:space="preserve">
+    <value>Current Version:</value>
+  </data>
+  <data name="SettingsUpdateErrorBottom" xml:space="preserve">
+    <value>Please check your internet connection or try again later.</value>
+  </data>
+  <data name="SettingsUpdateErrorTop" xml:space="preserve">
+    <value>Couldn't receive the newest release version.</value>
+  </data>
+  <data name="SettingsUpdateNewerVersionAvailable" xml:space="preserve">
+    <value>There is a newer version available.</value>
+  </data>
+  <data name="SettingsUpdateNewestVersion" xml:space="preserve">
+    <value>Newest Version:</value>
+  </data>
+  <data name="SettingsUpdateWindowTitle" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="SettingsVolume" xml:space="preserve">
+    <value>Volume</value>
+  </data>
+  <data name="SettingsWindowTitle" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SplitImageError" xml:space="preserve">
+    <value>Error splitting wide image.</value>
+  </data>
+  <data name="StartButtonText" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="Timer" xml:space="preserve">
+    <value>Timer: {0}m {1}s {2}ms</value>
+  </data>
+</root>

@@ -1,0 +1,447 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AbortButtonText" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="AbortedMessage" xml:space="preserve">
+    <value>Verarbeitung wurde abgebrochen.</value>
+  </data>
+  <data name="AbortingMessage" xml:space="preserve">
+    <value>Verarbeitung wird abgebrochen. Bitte warte einen Moment...</value>
+  </data>
+  <data name="BlankImageError" xml:space="preserve">
+    <value>Fehler beim Erstellen leerer Seite. </value>
+  </data>
+  <data name="ButtonSwitchFileFolderMode" xml:space="preserve">
+    <value>Modus wechseln</value>
+  </data>
+  <data name="CancelButtonText" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="CbzAlreadyExists" xml:space="preserve">
+    <value>Eine Datei mit diesem Namen existiert bereits. Bitte lösche '{0}'</value>
+  </data>
+  <data name="ComicInfoCheckboxText" xml:space="preserve">
+    <value>Erstelle ComicInfo.xml</value>
+  </data>
+  <data name="ConfirmationMessageBox" xml:space="preserve">
+    <value>Bestätigung</value>
+  </data>
+  <data name="ContainerXMLNotFound" xml:space="preserve">
+    <value>'{0}' container.xml nicht gefunden.</value>
+  </data>
+  <data name="ErrorMessageBox" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="FileCouldNotBeOpened" xml:space="preserve">
+    <value>Konnte Datei '{0}' nicht öffnen.</value>
+  </data>
+  <data name="FileList" xml:space="preserve">
+    <value>Dateiliste</value>
+  </data>
+  <data name="FileModeAddedFilename" xml:space="preserve">
+    <value>Hinzugefügt:</value>
+  </data>
+  <data name="FileModeClearButton" xml:space="preserve">
+    <value>Leeren</value>
+  </data>
+  <data name="FileModeClearListMessage" xml:space="preserve">
+    <value>Soll die Liste wirklich geleert werden?</value>
+  </data>
+  <data name="FileModeFileListCleared" xml:space="preserve">
+    <value>Die Liste von Dateien wurde geleert.</value>
+  </data>
+  <data name="FileModeFilesAdded" xml:space="preserve">
+    <value>Dateien hinzugefügt: {0}</value>
+  </data>
+  <data name="FileModeNoEpubs" xml:space="preserve">
+    <value>Bitte ziehe Epub-Dateien auf dieses Textfenster.</value>
+  </data>
+  <data name="FileModeNoFilesAdded" xml:space="preserve">
+    <value>Es wurden keine neuen Dateien hinzugefügt.</value>
+  </data>
+  <data name="FileModeTotalFiles" xml:space="preserve">
+    <value>Dateien insgesamt: {0}</value>
+  </data>
+  <data name="FileName" xml:space="preserve">
+    <value>Dateiname</value>
+  </data>
+  <data name="FilePath" xml:space="preserve">
+    <value>Dateipfad</value>
+  </data>
+  <data name="ImagesCheckboxText" xml:space="preserve">
+    <value>Entpacke Bilder</value>
+  </data>
+  <data name="IsDRMProtected" xml:space="preserve">
+    <value>'{0}' scheint DRM geschützt zu sein.</value>
+  </data>
+  <data name="MangalistCheckboxText" xml:space="preserve">
+    <value>Nutze mangalist.txt</value>
+  </data>
+  <data name="MangalistCheckboxTooltip" xml:space="preserve">
+    <value>Nur nach Epubs, die in einer mangalist.txt Datei im gewählten Ordner gelistet sind, suchen.</value>
+  </data>
+  <data name="NcxOrNavNotInOpf" xml:space="preserve">
+    <value>Konnte keine .ncx oder .nav Datei in der .opf finden: {0}</value>
+  </data>
+  <data name="NoCheckBoxChecked" xml:space="preserve">
+    <value>Aktiviere mindestens eine der beiden Optionen 'Erstelle ComicInfo.xml' oder 'Entpacke Bilder'.</value>
+  </data>
+  <data name="NoEpubsFoundMessageBox" xml:space="preserve">
+    <value>Keine Epubs gefunden.</value>
+  </data>
+  <data name="NoMangalistMessageBox" xml:space="preserve">
+    <value>mangalist.txt nicht gefunden.</value>
+  </data>
+  <data name="NoPathMessageBox" xml:space="preserve">
+    <value>Kein Pfad gewählt.</value>
+  </data>
+  <data name="NotAManga" xml:space="preserve">
+    <value>'{0}' scheint kein Manga/Comic zu sein.</value>
+  </data>
+  <data name="NotAnEPUB" xml:space="preserve">
+    <value>'{0}' scheint kein Epub zu sein.</value>
+  </data>
+  <data name="OPFFileNotFound" xml:space="preserve">
+    <value>'{0}' OPF Datei nicht gefunden.</value>
+  </data>
+  <data name="PathButtonTextInput" xml:space="preserve">
+    <value>Quellordner</value>
+  </data>
+  <data name="PathButtonTextOutput" xml:space="preserve">
+    <value>Zielordner</value>
+  </data>
+  <data name="PathClearButtonText" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="PathLabelText" xml:space="preserve">
+    <value>Pfad</value>
+  </data>
+  <data name="Processed" xml:space="preserve">
+    <value>Verarbeitet: '{0}'</value>
+  </data>
+  <data name="ProcessingInProgress" xml:space="preserve">
+    <value>Verarbeitung läuft. Bitte warten.</value>
+  </data>
+  <data name="RemovedDuplicateCover" xml:space="preserve">
+    <value>Info: Doppeltes Cover entfernt: '{0}'</value>
+  </data>
+  <data name="ReplaceSeries" xml:space="preserve">
+    <value>Ersetze Seriennamen</value>
+  </data>
+  <data name="ReplaceSeriesPlaceholder" xml:space="preserve">
+    <value>Neuen Seriennamen hier eingeben.</value>
+  </data>
+  <data name="ResetSettings" xml:space="preserve">
+    <value>Zurücksetzen</value>
+  </data>
+  <data name="SettingsAuthor" xml:space="preserve">
+    <value>Autoren</value>
+  </data>
+  <data name="SettingsChapters" xml:space="preserve">
+    <value>Kapitel</value>
+  </data>
+  <data name="SettingsCompressionLevelFastest" xml:space="preserve">
+    <value>Am schnellsten</value>
+  </data>
+  <data name="SettingsCompressionLevelNoCompression" xml:space="preserve">
+    <value>Keine Komprimierung</value>
+  </data>
+  <data name="SettingsCompressionLevelOptimal" xml:space="preserve">
+    <value>Optimal</value>
+  </data>
+  <data name="SettingsCompressionLevelSmallestSize" xml:space="preserve">
+    <value>Kleinste Größe</value>
+  </data>
+  <data name="SettingsCompressionLevelTooltip" xml:space="preserve">
+    <value>'Keine Komprimierung' ist am schnellsten und empfohlen, weil die Bilder bereits in einem komprimierten Format sind.</value>
+  </data>
+  <data name="SettingsCroppingColorTolerance" xml:space="preserve">
+    <value>Farbtoleranz:</value>
+  </data>
+  <data name="SettingsCroppingColorToleranceTooltip" xml:space="preserve">
+    <value>Wie gleichmäßig die Farbe des Randes sein muss. Je höher der Wert, desto toleranter. (0 - 255)</value>
+  </data>
+  <data name="SettingsCroppingCropImages" xml:space="preserve">
+    <value>Bilder zuschneiden</value>
+  </data>
+  <data name="SettingsCroppingDeviationTolerance" xml:space="preserve">
+    <value>Fehlertoleranz:</value>
+  </data>
+  <data name="SettingsCroppingDeviationToleranceTooltip" xml:space="preserve">
+    <value>Wie viele abweichende Pixel pro Reihe erlaubt sind, um noch als Teil des Hintergrunds zu gelten. In Prozent. (0 - 100)</value>
+  </data>
+  <data name="SettingsCroppingPadding" xml:space="preserve">
+    <value>Abstand:</value>
+  </data>
+  <data name="SettingsCroppingPaddingTooltip" xml:space="preserve">
+    <value>Bewahrt einen Teil des Randbereichs. In Pixeln. (0 - XXX)</value>
+  </data>
+  <data name="SettingsDate" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="SettingsDescription" xml:space="preserve">
+    <value>Beschreibung</value>
+  </data>
+  <data name="SettingsExperimentalAddBlankPage" xml:space="preserve">
+    <value>Füge leere Seite hinzu</value>
+  </data>
+  <data name="SettingsExperimentalAddBlankPageTooltip" xml:space="preserve">
+    <value>Aktiviere, wenn der Verdacht besteht, dass die Info zur Seitenausrichtung im Ebook falsch gesetzt wurde.</value>
+  </data>
+  <data name="SettingsExperimentalChapterFolders" xml:space="preserve">
+    <value>Erstelle Ordner für jedes Kapitel</value>
+  </data>
+  <data name="SettingsExperimentalDRMProtection" xml:space="preserve">
+    <value>Prüfe ob Dateien DRM geschützt sind</value>
+  </data>
+  <data name="SettingsExperimentalEveryPageIsChapter" xml:space="preserve">
+    <value>Behebe ein Kapitel für jede Seite</value>
+  </data>
+  <data name="SettingsExperimentalEveryPageIsChapterTooltip" xml:space="preserve">
+    <value>Manche Bücher können für jede Seite ein separates Kapitel angelegt haben. Wenn aktiviert, werden alle Kapitel entfernt.</value>
+  </data>
+  <data name="SettingsExperimentalHigherResolutionCover" xml:space="preserve">
+    <value>Behalte Cover mit höherer Auflösung</value>
+  </data>
+  <data name="SettingsExperimentalMetadataTitle" xml:space="preserve">
+    <value>Nutze Metadata Titel</value>
+  </data>
+  <data name="SettingsExperimentalPageSpread" xml:space="preserve">
+    <value>Seitenausrichtung erhalten</value>
+  </data>
+  <data name="SettingsExperimentalPageSpreadTooltip" xml:space="preserve">
+    <value>Versucht Seitenausrichtung korrekt zu erhalten, sodass eine rechte Seite eine rechte Seite bleibt und eine linke Seite eine linke Seite bleibt. Nimmt an, dass Epubs diese Info korrekt gesetzt haben.</value>
+  </data>
+  <data name="SettingsExperimentalRemoveDuplicateCovers" xml:space="preserve">
+    <value>Entferne doppelte Cover</value>
+  </data>
+  <data name="SettingsExperimentalRemoveDuplicateCoversTooltip" xml:space="preserve">
+    <value>Entfernt doppeltes Cover, wenn es als erste Seite erneut angezeigt wird.</value>
+  </data>
+  <data name="SettingsExperimentalSplitPageSpread" xml:space="preserve">
+    <value>Teile breite Bilder</value>
+  </data>
+  <data name="SettingsExperimentalSplitPageSpreadTooltip" xml:space="preserve">
+    <value>Teile breite Bilder in zwei einzelne Bilder.</value>
+  </data>
+  <data name="SettingsExperimentalSpreadInsertBlank" xml:space="preserve">
+    <value>Verhalten bei leeren Seiten</value>
+  </data>
+  <data name="SettingsExperimentalSpreadInsertBlankTooltip" xml:space="preserve">
+    <value>Wenn Seitenausrichtung erhalten bleibt und eine leere Seite eingefügt werden würde, um dies zu erreichen, prüfe ob eine leere Seite folgt und falls ja, entferne diese, anstatt zwei leere Seiten hintereinander zu haben.</value>
+  </data>
+  <data name="SettingsGroupComicInfo" xml:space="preserve">
+    <value>Info zu ComicInfo.xml hinzufügen:</value>
+  </data>
+  <data name="SettingsGroupCropping" xml:space="preserve">
+    <value>Zuschneiden:</value>
+  </data>
+  <data name="SettingsGroupExperimental" xml:space="preserve">
+    <value>Experimentelle Features:</value>
+  </data>
+  <data name="SettingsGroupResizing" xml:space="preserve">
+    <value>Größenanpassung:</value>
+  </data>
+  <data name="SettingsImageSize" xml:space="preserve">
+    <value>Bildauflösung</value>
+  </data>
+  <data name="SettingsLabelCompressionLevel" xml:space="preserve">
+    <value>CBZ/ZIP Komprimierungsgrad:</value>
+  </data>
+  <data name="SettingsLabelThreads" xml:space="preserve">
+    <value>CPU Threads:</value>
+  </data>
+  <data name="SettingsLanguage" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="SettingsPageCount" xml:space="preserve">
+    <value>Seitenanzahl</value>
+  </data>
+  <data name="SettingsProducers" xml:space="preserve">
+    <value>Produzenten</value>
+  </data>
+  <data name="SettingsPublisher" xml:space="preserve">
+    <value>Verlag</value>
+  </data>
+  <data name="SettingsReadingDirection" xml:space="preserve">
+    <value>Leserichtung</value>
+  </data>
+  <data name="SettingsResizingHeight" xml:space="preserve">
+    <value>Höhe:</value>
+  </data>
+  <data name="SettingsResizingKindle" xml:space="preserve">
+    <value>Kindle:</value>
+  </data>
+  <data name="SettingsResizingKobo" xml:space="preserve">
+    <value>Kobo:</value>
+  </data>
+  <data name="SettingsResizingResizeImages" xml:space="preserve">
+    <value>Bildergröße anpassen</value>
+  </data>
+  <data name="SettingsResizingWidth" xml:space="preserve">
+    <value>Breite:</value>
+  </data>
+  <data name="SettingsSeries" xml:space="preserve">
+    <value>Serie</value>
+  </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>Titel</value>
+  </data>
+  <data name="SettingsTranslators" xml:space="preserve">
+    <value>Übersetzer</value>
+  </data>
+  <data name="SettingsUpdateAlreadyOnNewest" xml:space="preserve">
+    <value>Dies ist bereits die neueste Version.</value>
+  </data>
+  <data name="SettingsUpdateCurrentVersion" xml:space="preserve">
+    <value>Aktuelle Version:</value>
+  </data>
+  <data name="SettingsUpdateErrorBottom" xml:space="preserve">
+    <value>Bitte überprüfe die Internetverbindung oder versuche es später noch einmal.</value>
+  </data>
+  <data name="SettingsUpdateErrorTop" xml:space="preserve">
+    <value>Konnte neueste Releaseversion nicht empfangen.</value>
+  </data>
+  <data name="SettingsUpdateNewerVersionAvailable" xml:space="preserve">
+    <value>Eine neuere Version is verfügbar.</value>
+  </data>
+  <data name="SettingsUpdateNewestVersion" xml:space="preserve">
+    <value>Neueste Version:</value>
+  </data>
+  <data name="SettingsUpdateWindowTitle" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="SettingsVolume" xml:space="preserve">
+    <value>Band</value>
+  </data>
+  <data name="SettingsWindowTitle" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="SplitImageError" xml:space="preserve">
+    <value>Fehler beim teilen eines breiten Bildes.</value>
+  </data>
+  <data name="StartButtonText" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="Timer" xml:space="preserve">
+    <value>Timer: {0}m {1}s {2}ms</value>
+  </data>
+</root>
