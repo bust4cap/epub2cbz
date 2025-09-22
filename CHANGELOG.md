@@ -1,3 +1,8 @@
+## v2025.09.22-1
+- Added "--dark" / "-d" command line argument. Enables dark mode
+- Added chapter number detection for filenames
+- Small UI fixes
+
 ## v2025.09.12-2
 - Corrected link to new repository in update window
 
