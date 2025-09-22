@@ -22,6 +22,9 @@ C# program to extract .epub Manga and Comic ebooks into .cbz files, including a 
 
 ![Settings view](img/epub2cbz-gui_2.png)
 
+## Build from Source
+Download and install the [.NET SDK 9.0](https://dotnet.microsoft.com/en-us/download) then either run the "publish_full.bat" or "publish_small.bat" in the source folder
+
 ## Need Help?
 Getting error messages or something isn't working as expected?<br/>
 Please don't hesitate to open an Issue or contact me directly.<br/>
