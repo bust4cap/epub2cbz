@@ -24,6 +24,7 @@ namespace epub2cbz_gui
             public static bool CheckboxDateState { get; set; } = true;
             public static bool CheckboxDescriptionState { get; set; } = true;
             public static bool CheckboxReadingDirectionState { get; set; } = true;
+            public static bool CheckboxIsbnAsinState { get; set; } = true;
             public static bool CheckboxChaptersState { get; set; } = true;
             public static bool CheckboxImageSizeState { get; set; } = true;
 
@@ -87,6 +88,7 @@ namespace epub2cbz_gui
             CheckboxStates.CheckboxDateState = checkBoxSettingsComicInfoDate.Checked;
             CheckboxStates.CheckboxDescriptionState = checkBoxSettingsComicInfoDescription.Checked;
             CheckboxStates.CheckboxReadingDirectionState = checkBoxSettingsComicInfoReadingDirection.Checked;
+            CheckboxStates.CheckboxIsbnAsinState = checkBoxSettingsComicInfoIsbnAsin.Checked;
             CheckboxStates.CheckboxChaptersState = checkBoxSettingsComicInfoChapters.Checked;
             CheckboxStates.CheckboxImageSizeState = checkBoxSettingsComicInfoImageSize.Checked;
 
@@ -211,6 +213,7 @@ namespace epub2cbz_gui
             checkBoxSettingsComicInfoDate.Checked = true;
             checkBoxSettingsComicInfoDescription.Checked = true;
             checkBoxSettingsComicInfoReadingDirection.Checked = true;
+            checkBoxSettingsComicInfoIsbnAsin.Checked = true;
             checkBoxSettingsComicInfoChapters.Checked = true;
             checkBoxSettingsComicInfoImageSize.Checked = true;
 
@@ -406,6 +409,7 @@ namespace epub2cbz_gui
             checkBoxSettingsComicInfoDate.Checked = CheckboxStates.CheckboxDateState;
             checkBoxSettingsComicInfoDescription.Checked = CheckboxStates.CheckboxDescriptionState;
             checkBoxSettingsComicInfoReadingDirection.Checked = CheckboxStates.CheckboxReadingDirectionState;
+            checkBoxSettingsComicInfoIsbnAsin.Checked = CheckboxStates.CheckboxIsbnAsinState;
             checkBoxSettingsComicInfoChapters.Checked = CheckboxStates.CheckboxChaptersState;
             checkBoxSettingsComicInfoImageSize.Checked = CheckboxStates.CheckboxImageSizeState;
 

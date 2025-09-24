@@ -27,7 +27,7 @@ namespace epub2cbz_gui
     {
         public static string GetVersionDateYear { get; } = "2025";
         public static string GetVersionDateMonth { get; } = "09";
-        public static string GetVersionDateDay { get; } = "22";
+        public static string GetVersionDateDay { get; } = "24";
         public static int GetVersionNumber { get; } = 1;
     }
 
@@ -1086,7 +1086,7 @@ namespace epub2cbz_gui
                 if (PopupSettings.CheckboxStates.CheckboxTranslatorState) metadata["Translators"] = ReturnMetadataContributors("trl", xmlMetadata, opf, dc);
                 if (PopupSettings.CheckboxStates.CheckboxProducerState) metadata["Producers"] = ReturnMetadataContributors("pro", xmlMetadata, opf, dc);
 
-                metadata["ISBN"] = ReturnMetadataISBN(xmlMetadata, opf, dc);
+                if (PopupSettings.CheckboxStates.CheckboxIsbnAsinState) metadata["ISBN"] = ReturnMetadataISBN(xmlMetadata, opf, dc);
 #if DEBUG
                 metadata["Booktype"] = xmlMetadata.Descendants(opf + "meta").FirstOrDefault(i => (string?)i.Attribute("name") == "book-type")?.Attribute("content")?.Value;
                 metadata["Rights"] = xmlMetadata.Descendants(dc + "rights").FirstOrDefault()?.Value;
@@ -2295,7 +2295,8 @@ namespace epub2cbz_gui
                 xmlWriter.WriteElementString("Manga", readingDirection);
             }
 
-            if (metadata.TryGetValue("ISBN", out string? isbnValue)
+            if (PopupSettings.CheckboxStates.CheckboxIsbnAsinState
+                && metadata.TryGetValue("ISBN", out string? isbnValue)
                 && !string.IsNullOrEmpty(isbnValue))
             {
                 xmlWriter.WriteElementString("GTIN", metadata["ISBN"]);

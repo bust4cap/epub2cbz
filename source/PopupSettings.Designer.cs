@@ -86,6 +86,7 @@
             labelSettingsCropPadding = new Label();
             textBoxSettingsCropColorTolerance = new TextBox();
             textBoxSettingsCropPadding = new TextBox();
+            checkBoxSettingsComicInfoIsbnAsin = new CheckBox();
             groupBoxComicInfo.SuspendLayout();
             groupBoxExperimental.SuspendLayout();
             groupBoxCompressionLevel.SuspendLayout();
@@ -97,11 +98,11 @@
             // buttonSettingsOK
             // 
             buttonSettingsOK.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            buttonSettingsOK.Location = new Point(463, 484);
+            buttonSettingsOK.Location = new Point(463, 505);
             buttonSettingsOK.Margin = new Padding(2, 1, 2, 1);
             buttonSettingsOK.Name = "buttonSettingsOK";
             buttonSettingsOK.Size = new Size(81, 25);
-            buttonSettingsOK.TabIndex = 200;
+            buttonSettingsOK.TabIndex = 202;
             buttonSettingsOK.Text = "OK";
             buttonSettingsOK.UseVisualStyleBackColor = true;
             buttonSettingsOK.Click += BtnSettingsOK_Click;
@@ -109,11 +110,11 @@
             // buttonSettingsCancel
             // 
             buttonSettingsCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            buttonSettingsCancel.Location = new Point(378, 484);
+            buttonSettingsCancel.Location = new Point(378, 505);
             buttonSettingsCancel.Margin = new Padding(2, 1, 2, 1);
             buttonSettingsCancel.Name = "buttonSettingsCancel";
             buttonSettingsCancel.Size = new Size(81, 25);
-            buttonSettingsCancel.TabIndex = 100;
+            buttonSettingsCancel.TabIndex = 201;
             buttonSettingsCancel.Text = "Cancel";
             buttonSettingsCancel.UseVisualStyleBackColor = true;
             buttonSettingsCancel.Click += BtnSettingsCancel_Click;
@@ -121,7 +122,7 @@
             // checkBoxSettingsComicInfoSeries
             // 
             checkBoxSettingsComicInfoSeries.AutoSize = true;
-            checkBoxSettingsComicInfoSeries.Location = new Point(95, 18);
+            checkBoxSettingsComicInfoSeries.Location = new Point(138, 18);
             checkBoxSettingsComicInfoSeries.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsComicInfoSeries.Name = "checkBoxSettingsComicInfoSeries";
             checkBoxSettingsComicInfoSeries.Size = new Size(56, 19);
@@ -143,7 +144,7 @@
             // checkBoxSettingsComicInfoVolume
             // 
             checkBoxSettingsComicInfoVolume.AutoSize = true;
-            checkBoxSettingsComicInfoVolume.Location = new Point(196, 18);
+            checkBoxSettingsComicInfoVolume.Location = new Point(263, 18);
             checkBoxSettingsComicInfoVolume.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsComicInfoVolume.Name = "checkBoxSettingsComicInfoVolume";
             checkBoxSettingsComicInfoVolume.Size = new Size(66, 19);
@@ -154,7 +155,7 @@
             // checkBoxSettingsComicInfoAuthors
             // 
             checkBoxSettingsComicInfoAuthors.AutoSize = true;
-            checkBoxSettingsComicInfoAuthors.Location = new Point(13, 39);
+            checkBoxSettingsComicInfoAuthors.Location = new Point(138, 39);
             checkBoxSettingsComicInfoAuthors.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsComicInfoAuthors.Name = "checkBoxSettingsComicInfoAuthors";
             checkBoxSettingsComicInfoAuthors.Size = new Size(68, 19);
@@ -165,7 +166,7 @@
             // checkBoxSettingsComicInfoLanguage
             // 
             checkBoxSettingsComicInfoLanguage.AutoSize = true;
-            checkBoxSettingsComicInfoLanguage.Location = new Point(13, 60);
+            checkBoxSettingsComicInfoLanguage.Location = new Point(263, 60);
             checkBoxSettingsComicInfoLanguage.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsComicInfoLanguage.Name = "checkBoxSettingsComicInfoLanguage";
             checkBoxSettingsComicInfoLanguage.Size = new Size(78, 19);
@@ -176,7 +177,7 @@
             // checkBoxSettingsComicInfoPublisher
             // 
             checkBoxSettingsComicInfoPublisher.AutoSize = true;
-            checkBoxSettingsComicInfoPublisher.Location = new Point(292, 39);
+            checkBoxSettingsComicInfoPublisher.Location = new Point(13, 60);
             checkBoxSettingsComicInfoPublisher.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsComicInfoPublisher.Name = "checkBoxSettingsComicInfoPublisher";
             checkBoxSettingsComicInfoPublisher.Size = new Size(75, 19);
@@ -187,7 +188,7 @@
             // checkBoxSettingsComicInfoDate
             // 
             checkBoxSettingsComicInfoDate.AutoSize = true;
-            checkBoxSettingsComicInfoDate.Location = new Point(400, 18);
+            checkBoxSettingsComicInfoDate.Location = new Point(13, 39);
             checkBoxSettingsComicInfoDate.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsComicInfoDate.Name = "checkBoxSettingsComicInfoDate";
             checkBoxSettingsComicInfoDate.Size = new Size(50, 19);
@@ -198,7 +199,7 @@
             // checkBoxSettingsComicInfoDescription
             // 
             checkBoxSettingsComicInfoDescription.AutoSize = true;
-            checkBoxSettingsComicInfoDescription.Location = new Point(292, 18);
+            checkBoxSettingsComicInfoDescription.Location = new Point(388, 18);
             checkBoxSettingsComicInfoDescription.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsComicInfoDescription.Name = "checkBoxSettingsComicInfoDescription";
             checkBoxSettingsComicInfoDescription.Size = new Size(86, 19);
@@ -209,6 +210,7 @@
             // groupBoxComicInfo
             // 
             groupBoxComicInfo.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBoxComicInfo.Controls.Add(checkBoxSettingsComicInfoIsbnAsin);
             groupBoxComicInfo.Controls.Add(checkBoxSettingsComicInfoImageSize);
             groupBoxComicInfo.Controls.Add(checkBoxSettingsComicInfoTranslators);
             groupBoxComicInfo.Controls.Add(checkBoxSettingsComicInfoProducers);
@@ -227,7 +229,7 @@
             groupBoxComicInfo.Margin = new Padding(2, 1, 2, 1);
             groupBoxComicInfo.Name = "groupBoxComicInfo";
             groupBoxComicInfo.Padding = new Padding(2, 1, 2, 1);
-            groupBoxComicInfo.Size = new Size(527, 89);
+            groupBoxComicInfo.Size = new Size(527, 110);
             groupBoxComicInfo.TabIndex = 0;
             groupBoxComicInfo.TabStop = false;
             groupBoxComicInfo.Text = "Info to include in ComicInfo.xml:";
@@ -235,18 +237,18 @@
             // checkBoxSettingsComicInfoImageSize
             // 
             checkBoxSettingsComicInfoImageSize.AutoSize = true;
-            checkBoxSettingsComicInfoImageSize.Location = new Point(400, 60);
+            checkBoxSettingsComicInfoImageSize.Location = new Point(263, 81);
             checkBoxSettingsComicInfoImageSize.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsComicInfoImageSize.Name = "checkBoxSettingsComicInfoImageSize";
             checkBoxSettingsComicInfoImageSize.Size = new Size(82, 19);
-            checkBoxSettingsComicInfoImageSize.TabIndex = 14;
+            checkBoxSettingsComicInfoImageSize.TabIndex = 15;
             checkBoxSettingsComicInfoImageSize.Text = "Image Size";
             checkBoxSettingsComicInfoImageSize.UseVisualStyleBackColor = false;
             // 
             // checkBoxSettingsComicInfoTranslators
             // 
             checkBoxSettingsComicInfoTranslators.AutoSize = true;
-            checkBoxSettingsComicInfoTranslators.Location = new Point(196, 39);
+            checkBoxSettingsComicInfoTranslators.Location = new Point(388, 39);
             checkBoxSettingsComicInfoTranslators.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsComicInfoTranslators.Name = "checkBoxSettingsComicInfoTranslators";
             checkBoxSettingsComicInfoTranslators.Size = new Size(82, 19);
@@ -257,7 +259,7 @@
             // checkBoxSettingsComicInfoProducers
             // 
             checkBoxSettingsComicInfoProducers.AutoSize = true;
-            checkBoxSettingsComicInfoProducers.Location = new Point(95, 39);
+            checkBoxSettingsComicInfoProducers.Location = new Point(263, 39);
             checkBoxSettingsComicInfoProducers.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsComicInfoProducers.Name = "checkBoxSettingsComicInfoProducers";
             checkBoxSettingsComicInfoProducers.Size = new Size(79, 19);
@@ -268,18 +270,18 @@
             // checkBoxSettingsComicInfoChapters
             // 
             checkBoxSettingsComicInfoChapters.AutoSize = true;
-            checkBoxSettingsComicInfoChapters.Location = new Point(292, 60);
+            checkBoxSettingsComicInfoChapters.Location = new Point(138, 81);
             checkBoxSettingsComicInfoChapters.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsComicInfoChapters.Name = "checkBoxSettingsComicInfoChapters";
             checkBoxSettingsComicInfoChapters.Size = new Size(73, 19);
-            checkBoxSettingsComicInfoChapters.TabIndex = 13;
+            checkBoxSettingsComicInfoChapters.TabIndex = 14;
             checkBoxSettingsComicInfoChapters.Text = "Chapters";
             checkBoxSettingsComicInfoChapters.UseVisualStyleBackColor = false;
             // 
             // checkBoxSettingsComicInfoPageCount
             // 
             checkBoxSettingsComicInfoPageCount.AutoSize = true;
-            checkBoxSettingsComicInfoPageCount.Location = new Point(400, 39);
+            checkBoxSettingsComicInfoPageCount.Location = new Point(138, 60);
             checkBoxSettingsComicInfoPageCount.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsComicInfoPageCount.Name = "checkBoxSettingsComicInfoPageCount";
             checkBoxSettingsComicInfoPageCount.Size = new Size(88, 19);
@@ -290,7 +292,7 @@
             // checkBoxSettingsComicInfoReadingDirection
             // 
             checkBoxSettingsComicInfoReadingDirection.AutoSize = true;
-            checkBoxSettingsComicInfoReadingDirection.Location = new Point(95, 60);
+            checkBoxSettingsComicInfoReadingDirection.Location = new Point(388, 60);
             checkBoxSettingsComicInfoReadingDirection.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsComicInfoReadingDirection.Name = "checkBoxSettingsComicInfoReadingDirection";
             checkBoxSettingsComicInfoReadingDirection.Size = new Size(120, 19);
@@ -315,7 +317,7 @@
             groupBoxExperimental.Controls.Add(checkBoxSettingsResizingEnable);
             groupBoxExperimental.Controls.Add(checkBoxSettingsExperimentalPageSpread);
             groupBoxExperimental.Controls.Add(checkBoxSettingsExperimentalRemoveDuplicateCovers);
-            groupBoxExperimental.Location = new Point(17, 108);
+            groupBoxExperimental.Location = new Point(17, 129);
             groupBoxExperimental.Margin = new Padding(2, 1, 2, 1);
             groupBoxExperimental.Name = "groupBoxExperimental";
             groupBoxExperimental.Padding = new Padding(2, 1, 2, 1);
@@ -330,7 +332,7 @@
             textBoxReplaceSeries.Margin = new Padding(2, 1, 2, 1);
             textBoxReplaceSeries.Name = "textBoxReplaceSeries";
             textBoxReplaceSeries.Size = new Size(275, 23);
-            textBoxReplaceSeries.TabIndex = 32;
+            textBoxReplaceSeries.TabIndex = 34;
             // 
             // checkBoxSettingsReplaceSeries
             // 
@@ -339,7 +341,7 @@
             checkBoxSettingsReplaceSeries.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsReplaceSeries.Name = "checkBoxSettingsReplaceSeries";
             checkBoxSettingsReplaceSeries.Size = new Size(135, 19);
-            checkBoxSettingsReplaceSeries.TabIndex = 31;
+            checkBoxSettingsReplaceSeries.TabIndex = 33;
             checkBoxSettingsReplaceSeries.Text = "Replace Series Name";
             checkBoxSettingsReplaceSeries.UseVisualStyleBackColor = false;
             checkBoxSettingsReplaceSeries.CheckedChanged += CheckBoxSettingsReplaceSeries_CheckedChanged;
@@ -384,7 +386,7 @@
             checkBoxSettingsCroppingEnable.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsCroppingEnable.Name = "checkBoxSettingsCroppingEnable";
             checkBoxSettingsCroppingEnable.Size = new Size(93, 19);
-            checkBoxSettingsCroppingEnable.TabIndex = 0;
+            checkBoxSettingsCroppingEnable.TabIndex = 32;
             checkBoxSettingsCroppingEnable.Text = "Crop Images";
             checkBoxSettingsCroppingEnable.UseVisualStyleBackColor = true;
             checkBoxSettingsCroppingEnable.CheckedChanged += CheckBoxSettingsCroppingEnable_CheckedChanged;
@@ -454,7 +456,7 @@
             checkBoxSettingsResizingEnable.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsResizingEnable.Name = "checkBoxSettingsResizingEnable";
             checkBoxSettingsResizingEnable.Size = new Size(99, 19);
-            checkBoxSettingsResizingEnable.TabIndex = 0;
+            checkBoxSettingsResizingEnable.TabIndex = 31;
             checkBoxSettingsResizingEnable.Text = "Resize Images";
             checkBoxSettingsResizingEnable.UseVisualStyleBackColor = false;
             checkBoxSettingsResizingEnable.CheckedChanged += CheckBoxSettingsResizingEnable_CheckedChanged;
@@ -494,14 +496,14 @@
             dropDownCompressionLevel.Margin = new Padding(2, 1, 2, 1);
             dropDownCompressionLevel.Name = "dropDownCompressionLevel";
             dropDownCompressionLevel.Size = new Size(174, 23);
-            dropDownCompressionLevel.TabIndex = 55;
+            dropDownCompressionLevel.TabIndex = 81;
             toolTipSettings.SetToolTip(dropDownCompressionLevel, "'No Compression' is fastest and recommended, as the images are already in a compressed format.");
             // 
             // groupBoxCompressionLevel
             // 
             groupBoxCompressionLevel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             groupBoxCompressionLevel.Controls.Add(dropDownCompressionLevel);
-            groupBoxCompressionLevel.Location = new Point(17, 424);
+            groupBoxCompressionLevel.Location = new Point(17, 445);
             groupBoxCompressionLevel.Margin = new Padding(2, 1, 2, 1);
             groupBoxCompressionLevel.Name = "groupBoxCompressionLevel";
             groupBoxCompressionLevel.Padding = new Padding(2, 1, 2, 1);
@@ -514,7 +516,7 @@
             // 
             groupBoxThreads.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             groupBoxThreads.Controls.Add(dropDownThreads);
-            groupBoxThreads.Location = new Point(332, 424);
+            groupBoxThreads.Location = new Point(332, 445);
             groupBoxThreads.Margin = new Padding(2, 1, 2, 1);
             groupBoxThreads.Name = "groupBoxThreads";
             groupBoxThreads.Padding = new Padding(2, 1, 2, 1);
@@ -531,15 +533,15 @@
             dropDownThreads.Margin = new Padding(2, 1, 2, 1);
             dropDownThreads.Name = "dropDownThreads";
             dropDownThreads.Size = new Size(174, 23);
-            dropDownThreads.TabIndex = 65;
+            dropDownThreads.TabIndex = 111;
             // 
             // buttonSettingsCheckForUpdate
             // 
             buttonSettingsCheckForUpdate.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            buttonSettingsCheckForUpdate.Location = new Point(17, 484);
+            buttonSettingsCheckForUpdate.Location = new Point(17, 505);
             buttonSettingsCheckForUpdate.Name = "buttonSettingsCheckForUpdate";
             buttonSettingsCheckForUpdate.Size = new Size(81, 25);
-            buttonSettingsCheckForUpdate.TabIndex = 90;
+            buttonSettingsCheckForUpdate.TabIndex = 121;
             buttonSettingsCheckForUpdate.Text = "Update";
             buttonSettingsCheckForUpdate.UseVisualStyleBackColor = true;
             buttonSettingsCheckForUpdate.Click += ButtonSettingsCheckForUpdate_Click;
@@ -547,10 +549,10 @@
             // buttonSettingsResetToDefault
             // 
             buttonSettingsResetToDefault.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            buttonSettingsResetToDefault.Location = new Point(202, 484);
+            buttonSettingsResetToDefault.Location = new Point(202, 505);
             buttonSettingsResetToDefault.Name = "buttonSettingsResetToDefault";
             buttonSettingsResetToDefault.Size = new Size(93, 25);
-            buttonSettingsResetToDefault.TabIndex = 202;
+            buttonSettingsResetToDefault.TabIndex = 151;
             buttonSettingsResetToDefault.Text = "Reset Settings";
             buttonSettingsResetToDefault.UseVisualStyleBackColor = true;
             buttonSettingsResetToDefault.Click += ButtonSettingsResetToDefault_Click;
@@ -566,7 +568,7 @@
             groupBoxResizing.Controls.Add(textBoxSettingsResizeWidth);
             groupBoxResizing.Controls.Add(dropDownKobo);
             groupBoxResizing.Controls.Add(dropDownKindle);
-            groupBoxResizing.Location = new Point(17, 279);
+            groupBoxResizing.Location = new Point(17, 300);
             groupBoxResizing.Margin = new Padding(2, 1, 2, 1);
             groupBoxResizing.Name = "groupBoxResizing";
             groupBoxResizing.Padding = new Padding(2, 1, 2, 1);
@@ -617,7 +619,7 @@
             textBoxSettingsResizeHeight.MaxLength = 4;
             textBoxSettingsResizeHeight.Name = "textBoxSettingsResizeHeight";
             textBoxSettingsResizeHeight.Size = new Size(48, 23);
-            textBoxSettingsResizeHeight.TabIndex = 7;
+            textBoxSettingsResizeHeight.TabIndex = 52;
             textBoxSettingsResizeHeight.KeyPress += TextBoxSettingsResizeHeight_KeyPress;
             textBoxSettingsResizeHeight.Leave += TextBoxSettingsResizeHeight_Leave;
             // 
@@ -627,7 +629,7 @@
             textBoxSettingsResizeWidth.MaxLength = 4;
             textBoxSettingsResizeWidth.Name = "textBoxSettingsResizeWidth";
             textBoxSettingsResizeWidth.Size = new Size(48, 23);
-            textBoxSettingsResizeWidth.TabIndex = 6;
+            textBoxSettingsResizeWidth.TabIndex = 51;
             textBoxSettingsResizeWidth.KeyPress += TextBoxSettingsResizeWidth_KeyPress;
             textBoxSettingsResizeWidth.Leave += TextBoxSettingsResizeWidth_Leave;
             // 
@@ -639,7 +641,7 @@
             dropDownKobo.Location = new Point(246, 48);
             dropDownKobo.Name = "dropDownKobo";
             dropDownKobo.Size = new Size(275, 23);
-            dropDownKobo.TabIndex = 2;
+            dropDownKobo.TabIndex = 54;
             dropDownKobo.SelectedIndexChanged += DropDownKobo_SelectedIndexChanged;
             // 
             // dropDownKindle
@@ -650,7 +652,7 @@
             dropDownKindle.Location = new Point(246, 19);
             dropDownKindle.Name = "dropDownKindle";
             dropDownKindle.Size = new Size(275, 23);
-            dropDownKindle.TabIndex = 1;
+            dropDownKindle.TabIndex = 53;
             dropDownKindle.SelectedIndexChanged += DropDownKindle_SelectedIndexChanged;
             // 
             // radioButtonSettingsCbz
@@ -658,10 +660,10 @@
             radioButtonSettingsCbz.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             radioButtonSettingsCbz.AutoSize = true;
             radioButtonSettingsCbz.Checked = true;
-            radioButtonSettingsCbz.Location = new Point(260, 430);
+            radioButtonSettingsCbz.Location = new Point(260, 451);
             radioButtonSettingsCbz.Name = "radioButtonSettingsCbz";
             radioButtonSettingsCbz.Size = new Size(47, 19);
-            radioButtonSettingsCbz.TabIndex = 204;
+            radioButtonSettingsCbz.TabIndex = 101;
             radioButtonSettingsCbz.TabStop = true;
             radioButtonSettingsCbz.Text = "CBZ";
             radioButtonSettingsCbz.UseVisualStyleBackColor = true;
@@ -670,10 +672,10 @@
             // 
             radioButtonSettingsZip.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             radioButtonSettingsZip.AutoSize = true;
-            radioButtonSettingsZip.Location = new Point(260, 455);
+            radioButtonSettingsZip.Location = new Point(260, 476);
             radioButtonSettingsZip.Name = "radioButtonSettingsZip";
             radioButtonSettingsZip.Size = new Size(42, 19);
-            radioButtonSettingsZip.TabIndex = 205;
+            radioButtonSettingsZip.TabIndex = 102;
             radioButtonSettingsZip.Text = "ZIP";
             radioButtonSettingsZip.UseVisualStyleBackColor = true;
             // 
@@ -686,7 +688,7 @@
             groupBoxCropping.Controls.Add(labelSettingsCropPadding);
             groupBoxCropping.Controls.Add(textBoxSettingsCropColorTolerance);
             groupBoxCropping.Controls.Add(textBoxSettingsCropPadding);
-            groupBoxCropping.Location = new Point(17, 363);
+            groupBoxCropping.Location = new Point(17, 384);
             groupBoxCropping.Margin = new Padding(2, 1, 2, 1);
             groupBoxCropping.Name = "groupBoxCropping";
             groupBoxCropping.Padding = new Padding(2, 1, 2, 1);
@@ -711,7 +713,7 @@
             textBoxSettingsCropDeviationTolerance.MaxLength = 3;
             textBoxSettingsCropDeviationTolerance.Name = "textBoxSettingsCropDeviationTolerance";
             textBoxSettingsCropDeviationTolerance.Size = new Size(40, 23);
-            textBoxSettingsCropDeviationTolerance.TabIndex = 16;
+            textBoxSettingsCropDeviationTolerance.TabIndex = 73;
             textBoxSettingsCropDeviationTolerance.Leave += TextBoxSettingsCropDeviationTolerance_Leave;
             // 
             // labelSettingsCropColorTolerance
@@ -740,7 +742,7 @@
             textBoxSettingsCropColorTolerance.MaxLength = 3;
             textBoxSettingsCropColorTolerance.Name = "textBoxSettingsCropColorTolerance";
             textBoxSettingsCropColorTolerance.Size = new Size(40, 23);
-            textBoxSettingsCropColorTolerance.TabIndex = 13;
+            textBoxSettingsCropColorTolerance.TabIndex = 72;
             textBoxSettingsCropColorTolerance.Leave += TextBoxSettingsCropColorTolerance_Leave;
             // 
             // textBoxSettingsCropPadding
@@ -749,8 +751,19 @@
             textBoxSettingsCropPadding.MaxLength = 3;
             textBoxSettingsCropPadding.Name = "textBoxSettingsCropPadding";
             textBoxSettingsCropPadding.Size = new Size(40, 23);
-            textBoxSettingsCropPadding.TabIndex = 12;
+            textBoxSettingsCropPadding.TabIndex = 71;
             textBoxSettingsCropPadding.Leave += TextBoxSettingsCropPadding_Leave;
+            // 
+            // checkBoxSettingsComicInfoIsbnAsin
+            // 
+            checkBoxSettingsComicInfoIsbnAsin.AutoSize = true;
+            checkBoxSettingsComicInfoIsbnAsin.Location = new Point(13, 81);
+            checkBoxSettingsComicInfoIsbnAsin.Margin = new Padding(2, 1, 2, 1);
+            checkBoxSettingsComicInfoIsbnAsin.Name = "checkBoxSettingsComicInfoIsbnAsin";
+            checkBoxSettingsComicInfoIsbnAsin.Size = new Size(82, 19);
+            checkBoxSettingsComicInfoIsbnAsin.TabIndex = 13;
+            checkBoxSettingsComicInfoIsbnAsin.Text = "ISBN/ASIN";
+            checkBoxSettingsComicInfoIsbnAsin.UseVisualStyleBackColor = false;
             // 
             // PopupSettings
             // 
@@ -758,7 +771,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = buttonSettingsCancel;
-            ClientSize = new Size(561, 521);
+            ClientSize = new Size(561, 542);
             Controls.Add(groupBoxCropping);
             Controls.Add(radioButtonSettingsZip);
             Controls.Add(radioButtonSettingsCbz);
@@ -853,5 +866,6 @@
         private TextBox textBoxSettingsCropDeviationTolerance;
         private TextBox textBoxReplaceSeries;
         private CheckBox checkBoxSettingsReplaceSeries;
+        public CheckBox checkBoxSettingsComicInfoIsbnAsin;
     }
 }

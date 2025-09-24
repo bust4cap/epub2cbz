@@ -61,6 +61,9 @@ namespace epub2cbz_gui
                         new XAttribute("name", "CheckboxReadingDirectionState"),
                         new XElement("value", PopupSettings.CheckboxStates.CheckboxReadingDirectionState.ToString())),
                     new XElement("setting",
+                        new XAttribute("name", "CheckboxIsbnAsinState"),
+                        new XElement("value", PopupSettings.CheckboxStates.CheckboxIsbnAsinState.ToString())),
+                    new XElement("setting",
                         new XAttribute("name", "CheckboxChaptersState"),
                         new XElement("value", PopupSettings.CheckboxStates.CheckboxChaptersState.ToString())),
                     new XElement("setting",
@@ -256,6 +259,12 @@ namespace epub2cbz_gui
                         && bool.TryParse(valueCheckboxReadingDirectionState, out bool parsedValueCheckboxReadingDirectionState))
                     {
                         PopupSettings.CheckboxStates.CheckboxReadingDirectionState = parsedValueCheckboxReadingDirectionState;
+                    }
+
+                    if (loadedSettings.TryGetValue("CheckboxIsbnAsinState", out string? valueCheckboxIsbnAsinState)
+                        && bool.TryParse(valueCheckboxIsbnAsinState, out bool parsedValueCheckboxIsbnAsinState))
+                    {
+                        PopupSettings.CheckboxStates.CheckboxIsbnAsinState = parsedValueCheckboxIsbnAsinState;
                     }
 
                     if (loadedSettings.TryGetValue("CheckboxChaptersState", out string? valueCheckboxChaptersState)

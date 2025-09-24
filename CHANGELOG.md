@@ -1,3 +1,7 @@
+## v2025.09.24-1
+- Made epub2cbz open source under the MIT license
+- Added ISBN/ASIN to ComicInfo
+
 ## v2025.09.22-1
 - Added "--dark" / "-d" command line argument. Enables dark mode
 - Added chapter number detection for filenames
