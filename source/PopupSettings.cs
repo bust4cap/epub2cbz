@@ -391,10 +391,14 @@ namespace epub2cbz_gui
         {
             groupBoxCropping.Enabled = checkBoxSettingsCroppingEnable.Checked;
 
-            dropDownThreads.MaxDropDownItems = Environment.ProcessorCount;
-            for (int i = Environment.ProcessorCount - 1; i > 0; i--)
+            dropDownThreads.MaxDropDownItems = Math.Max(1, Environment.ProcessorCount - 1);
+            if (dropDownThreads.MaxDropDownItems == 1) dropDownThreads.Items.Add(1);
+            else
             {
-                dropDownThreads.Items.Add(i);
+                for (int i = Environment.ProcessorCount - 1; i > 0; i--)
+                {
+                    dropDownThreads.Items.Add(i);
+                }
             }
 
             checkBoxSettingsComicInfoSeries.Checked = CheckboxStates.CheckboxSeriesState;

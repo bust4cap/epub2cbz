@@ -27,7 +27,7 @@ namespace epub2cbz_gui
     {
         public static string GetVersionDateYear { get; } = "2025";
         public static string GetVersionDateMonth { get; } = "09";
-        public static string GetVersionDateDay { get; } = "24";
+        public static string GetVersionDateDay { get; } = "26";
         public static int GetVersionNumber { get; } = 1;
     }
 

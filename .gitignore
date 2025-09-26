@@ -1,0 +1,9 @@
+# Visual Studio / IDE Files
+/source/.vs/
+
+# Build Output Directories
+/source/bin/
+/source/obj/
+
+# User-specific Project Settings
+/source/*.csproj.user

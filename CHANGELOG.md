@@ -1,3 +1,6 @@
+## v2025.09.26-1
+- Fixed program not running on systems with only 1 CPU core/thread
+
 ## v2025.09.24-1
 - Made epub2cbz open source under the MIT license
 - Added ISBN/ASIN to ComicInfo
