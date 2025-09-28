@@ -129,8 +129,8 @@
             // 
             // buttonSettingsOK
             // 
-            buttonSettingsOK.Anchor = AnchorStyles.Left;
-            buttonSettingsOK.Location = new Point(470, 3);
+            buttonSettingsOK.Anchor = AnchorStyles.None;
+            buttonSettingsOK.Location = new Point(474, 3);
             buttonSettingsOK.Margin = new Padding(2, 1, 2, 1);
             buttonSettingsOK.Name = "buttonSettingsOK";
             buttonSettingsOK.Size = new Size(77, 25);
@@ -141,8 +141,8 @@
             // 
             // buttonSettingsCancel
             // 
-            buttonSettingsCancel.Anchor = AnchorStyles.Right;
-            buttonSettingsCancel.Location = new Point(391, 3);
+            buttonSettingsCancel.Anchor = AnchorStyles.None;
+            buttonSettingsCancel.Location = new Point(395, 3);
             buttonSettingsCancel.Margin = new Padding(2, 1, 2, 1);
             buttonSettingsCancel.Name = "buttonSettingsCancel";
             buttonSettingsCancel.Size = new Size(75, 25);
@@ -659,7 +659,7 @@
             // buttonSettingsCheckForUpdate
             // 
             buttonSettingsCheckForUpdate.Anchor = AnchorStyles.None;
-            buttonSettingsCheckForUpdate.Location = new Point(14, 3);
+            buttonSettingsCheckForUpdate.Location = new Point(3, 3);
             buttonSettingsCheckForUpdate.Name = "buttonSettingsCheckForUpdate";
             buttonSettingsCheckForUpdate.Size = new Size(81, 25);
             buttonSettingsCheckForUpdate.TabIndex = 121;
@@ -670,7 +670,7 @@
             // buttonSettingsResetToDefault
             // 
             buttonSettingsResetToDefault.Anchor = AnchorStyles.None;
-            buttonSettingsResetToDefault.Location = new Point(201, 3);
+            buttonSettingsResetToDefault.Location = new Point(193, 3);
             buttonSettingsResetToDefault.Name = "buttonSettingsResetToDefault";
             buttonSettingsResetToDefault.Size = new Size(93, 25);
             buttonSettingsResetToDefault.TabIndex = 151;
@@ -1068,10 +1068,10 @@
             tableLayoutPanelSettingsBottom.AutoSize = true;
             tableLayoutPanelSettingsBottom.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tableLayoutPanelSettingsBottom.ColumnCount = 4;
-            tableLayoutPanelSettingsBottom.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
-            tableLayoutPanelSettingsBottom.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanelSettingsBottom.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            tableLayoutPanelSettingsBottom.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
+            tableLayoutPanelSettingsBottom.ColumnStyles.Add(new ColumnStyle());
+            tableLayoutPanelSettingsBottom.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanelSettingsBottom.ColumnStyles.Add(new ColumnStyle());
+            tableLayoutPanelSettingsBottom.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanelSettingsBottom.Controls.Add(buttonSettingsCheckForUpdate, 0, 0);
             tableLayoutPanelSettingsBottom.Controls.Add(buttonSettingsOK, 3, 0);
             tableLayoutPanelSettingsBottom.Controls.Add(buttonSettingsCancel, 2, 0);
