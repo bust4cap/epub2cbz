@@ -348,30 +348,6 @@ namespace epub2cbz_gui
             else textBoxSettingsCropDeviationTolerance.Text = tempValue.ToString();
         }
 
-        private void LabelSettingsCropPadding_SizeChanged(object sender, EventArgs e)
-        {
-            textBoxSettingsCropPadding.Left = labelSettingsCropPadding.Left
-                + labelSettingsCropPadding.Width
-                + labelSettingsCropPadding.Margin.Right
-                + textBoxSettingsCropPadding.Margin.Left;
-        }
-
-        private void LabelSettingsCropColorTolerance_SizeChanged(object sender, EventArgs e)
-        {
-            textBoxSettingsCropColorTolerance.Left = labelSettingsCropColorTolerance.Left
-                + labelSettingsCropColorTolerance.Width
-                + labelSettingsCropColorTolerance.Margin.Right
-                + textBoxSettingsCropColorTolerance.Margin.Left;
-        }
-
-        private void LabelSettingsCropDeviationTolerance_SizeChanged(object sender, EventArgs e)
-        {
-            textBoxSettingsCropDeviationTolerance.Left = labelSettingsCropDeviationTolerance.Left
-                + labelSettingsCropDeviationTolerance.Width
-                + labelSettingsCropDeviationTolerance.Margin.Right
-                + textBoxSettingsCropDeviationTolerance.Margin.Left;
-        }
-
         private void CheckBoxSettingsResizingEnable_CheckedChanged(object sender, EventArgs e)
         {
             groupBoxResizing.Enabled = checkBoxSettingsResizingEnable.Checked;
@@ -454,7 +430,7 @@ namespace epub2cbz_gui
             buttonSettingsCheckForUpdate.Enabled = true;
         }
 
-        private void PopupSettings_Load(object sender, EventArgs e)
+        private void LocalizeText()
         {
             checkBoxSettingsComicInfoSeries.Text = Resources.SettingsSeries;
             checkBoxSettingsComicInfoTitle.Text = Resources.SettingsTitle;
@@ -524,10 +500,21 @@ namespace epub2cbz_gui
             buttonSettingsCheckForUpdate.Text = Resources.SettingsUpdateWindowTitle;
             buttonSettingsCancel.Text = Resources.CancelButtonText;
             buttonSettingsResetToDefault.Text = Resources.ResetSettings;
+        }
 
-            radioButtonSettingsCbz.Left = (this.ClientRectangle.Width / 2) - (radioButtonSettingsCbz.Width / 2);
-            radioButtonSettingsZip.Left = (this.ClientRectangle.Width / 2) - (radioButtonSettingsCbz.Width / 2);
-            buttonSettingsResetToDefault.Left = ((buttonSettingsCancel.Left + buttonSettingsCheckForUpdate.Right) / 2) - (buttonSettingsResetToDefault.Width / 2);
+        private void CenterElements()
+        {
+            radioButtonSettingsCbz.Top = (panelSettingsCbzZip.ClientRectangle.Height / 7 * 2) - (radioButtonSettingsCbz.Height / 2);
+            radioButtonSettingsCbz.Left = (panelSettingsCbzZip.ClientRectangle.Width / 2) - (radioButtonSettingsCbz.Width / 2);
+            radioButtonSettingsZip.Top = (panelSettingsCbzZip.ClientRectangle.Height / 7 * 5) - (radioButtonSettingsZip.Height / 2);
+            radioButtonSettingsZip.Left = radioButtonSettingsCbz.Left;
+        }
+
+        private void PopupSettings_Load(object sender, EventArgs e)
+        {
+            LocalizeText();
+
+            CenterElements();
         }
     }
 }
