@@ -26,8 +26,8 @@ namespace epub2cbz_gui
     public static class VersionDate
     {
         public static string GetVersionDateYear { get; } = "2025";
-        public static string GetVersionDateMonth { get; } = "09";
-        public static string GetVersionDateDay { get; } = "26";
+        public static string GetVersionDateMonth { get; } = "10";
+        public static string GetVersionDateDay { get; } = "14";
         public static int GetVersionNumber { get; } = 1;
     }
 
@@ -1643,14 +1643,9 @@ namespace epub2cbz_gui
                                         using Stream resizedSourceStream = ResizeImage(croppedSourceStream);
                                         resizedSourceStream.CopyTo(destinationStream);
 
-                                        if (!int.TryParse(bookFull[i]["height"], out int originalHeight))
-                                        {
+                                        if (!int.TryParse(bookFull[i]["height"], out int originalHeight)) { }
+                                        if (!int.TryParse(bookFull[i]["width"], out int originalWidth)) { }
 
-                                        }
-                                        if (!int.TryParse(bookFull[i]["width"], out int originalWidth))
-                                        {
-
-                                        }
                                         (int resizedWidth, int resizedHeight) = CalculateScaling(originalWidth, originalHeight);
 
                                         if (resizedHeight > 0
@@ -1673,14 +1668,9 @@ namespace epub2cbz_gui
                                         using Stream resizedSourceStream = ResizeImage(bufferedSourceStream);
                                         resizedSourceStream.CopyTo(destinationStream);
 
-                                        if (!int.TryParse(bookFull[i]["height"], out int originalHeight))
-                                        {
+                                        if (!int.TryParse(bookFull[i]["height"], out int originalHeight)) { }
+                                        if (!int.TryParse(bookFull[i]["width"], out int originalWidth)) { }
 
-                                        }
-                                        if (!int.TryParse(bookFull[i]["width"], out int originalWidth))
-                                        {
-
-                                        }
                                         (int resizedWidth, int resizedHeight) = CalculateScaling(originalWidth, originalHeight);
 
                                         if (resizedHeight > 0
@@ -1700,14 +1690,9 @@ namespace epub2cbz_gui
                                 using Stream resizedSourceStream = ResizeImage(sourceStream);
                                 resizedSourceStream.CopyTo(destinationStream);
 
-                                if (!int.TryParse(bookFull[i]["height"], out int originalHeight))
-                                {
-                                    
-                                }
-                                if (!int.TryParse(bookFull[i]["width"], out int originalWidth))
-                                {
+                                if (!int.TryParse(bookFull[i]["height"], out int originalHeight)) { }
+                                if (!int.TryParse(bookFull[i]["width"], out int originalWidth)) { }
 
-                                }
                                 (int resizedWidth, int resizedHeight) = CalculateScaling(originalWidth, originalHeight);
 
                                 if (resizedHeight > 0
@@ -1745,14 +1730,9 @@ namespace epub2cbz_gui
                                     using Stream resizedSourceStream = ResizeImage(croppedSourceStream);
                                     resizedSourceStream.CopyTo(destinationStream);
 
-                                    if (!int.TryParse(bookFull[i]["height"], out int originalHeight))
-                                    {
+                                    if (!int.TryParse(bookFull[i]["height"], out int originalHeight)) { }
+                                    if (!int.TryParse(bookFull[i]["width"], out int originalWidth)) { }
 
-                                    }
-                                    if (!int.TryParse(bookFull[i]["width"], out int originalWidth))
-                                    {
-
-                                    }
                                     (int resizedWidth, int resizedHeight) = CalculateScaling(originalWidth, originalHeight);
 
                                     if (resizedHeight > 0
@@ -1775,14 +1755,9 @@ namespace epub2cbz_gui
                                     using Stream resizedSourceStream = ResizeImage(bufferedSourceStream);
                                     resizedSourceStream.CopyTo(destinationStream);
 
-                                    if (!int.TryParse(bookFull[i]["height"], out int originalHeight))
-                                    {
+                                    if (!int.TryParse(bookFull[i]["height"], out int originalHeight)) { }
+                                    if (!int.TryParse(bookFull[i]["width"], out int originalWidth)) { }
 
-                                    }
-                                    if (!int.TryParse(bookFull[i]["width"], out int originalWidth))
-                                    {
-
-                                    }
                                     (int resizedWidth, int resizedHeight) = CalculateScaling(originalWidth, originalHeight);
 
                                     if (resizedHeight > 0
@@ -1802,14 +1777,9 @@ namespace epub2cbz_gui
                             using Stream resizedSourceStream = ResizeImage(sourceStream);
                             resizedSourceStream.CopyTo(destinationStream);
 
-                            if (!int.TryParse(bookFull[i]["height"], out int originalHeight))
-                            {
+                            if (!int.TryParse(bookFull[i]["height"], out int originalHeight)) { }
+                            if (!int.TryParse(bookFull[i]["width"], out int originalWidth)) { }
 
-                            }
-                            if (!int.TryParse(bookFull[i]["width"], out int originalWidth))
-                            {
-
-                            }
                             (int resizedWidth, int resizedHeight) = CalculateScaling(originalWidth, originalHeight);
 
                             if (resizedHeight > 0
@@ -1858,57 +1828,64 @@ namespace epub2cbz_gui
             Dictionary<string, string?> metadata)
         {
             List<Dictionary<string, string>> chapters = [];
-            string ncxPath = GetNcxFile(opfDoc, opfPath);
+            List<string> navPaths = GetNcxFile(opfDoc, opfPath);
 
-            if (!string.IsNullOrEmpty(ncxPath))
+            if (navPaths.Count > 0)
             {
-                ZipArchiveEntry tocEntry = entryMap.GetValueOrDefault(ncxPath)!;
-                using StreamReader reader = new(tocEntry.Open());
-                string tocContent = reader.ReadToEnd();
-                tocContent = Encoding.UTF8.GetString(reader.CurrentEncoding.GetBytes(tocContent));
+                List<Dictionary<string, string>> xhtmlChapters = [];
+                List<Dictionary<string, string>> ncxChapters = [];
 
-                XDocument tocDoc = XDocument.Parse(tocContent);
-                XNamespace ops = "http://www.idpf.org/2007/ops";
-                XNamespace xhtml = "http://www.w3.org/1999/xhtml";
-                XNamespace ncx = "http://www.daisy.org/z3986/2005/ncx/";
-
-                if (ncxPath.EndsWith(".ncx"))
+                foreach (string navPath in navPaths)
                 {
-                    foreach (var navPoint in tocDoc.Descendants(ncx + "navPoint"))
-                    {
-                        string? title = navPoint.Descendants(ncx + "text").FirstOrDefault()?.Value.Trim();
-                        var page = navPoint.Descendants(ncx + "content").FirstOrDefault()?.Attribute("src")?.Value ?? string.Empty;
+                    ZipArchiveEntry tocEntry = entryMap.GetValueOrDefault(navPath)!;
+                    using StreamReader reader = new(tocEntry.Open());
+                    string tocContent = reader.ReadToEnd();
+                    tocContent = Encoding.UTF8.GetString(reader.CurrentEncoding.GetBytes(tocContent));
 
-                        string? imagePath = FindImagePathInFile(entryMap, epubFile, RemoveStartingDots(page.Split('#')[0]), metadata);
-                        if (!string.IsNullOrEmpty(imagePath))
+                    XDocument tocDoc = XDocument.Parse(tocContent);
+                    XNamespace ops = "http://www.idpf.org/2007/ops";
+                    XNamespace xhtml = "http://www.w3.org/1999/xhtml";
+                    XNamespace ncx = "http://www.daisy.org/z3986/2005/ncx/";
+
+                    if (navPath.EndsWith(".xhtml", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        var opfMetadata = tocDoc.Descendants(xhtml + "nav")
+                            .FirstOrDefault(i => (string?)i.Attribute(ops + "type") == "toc")?
+                            .Descendants(xhtml + "a")
+                            .Select(a => new { Href = a.Attribute("href")!.Value, Name = a.Value })
+                            .ToLookup(item => item.Href, item => item.Name);
+                        if (opfMetadata != null)
                         {
-                            imagePath = entryMap
-                                .Where(map => map.Key.Contains(imagePath, StringComparison.InvariantCultureIgnoreCase))
-                                .Select(map => map.Key)
-                                .FirstOrDefault(string.Empty);
+                            foreach (var e in opfMetadata)
+                            {
+                                string title = string.Join(" - ", e);
+                                var page = e.Key.ToString().Split('#')[0] ?? string.Empty;
+                                string? imagePath = FindImagePathInFile(entryMap, epubFile, RemoveStartingDots(page), metadata);
+                                if (!string.IsNullOrEmpty(imagePath))
+                                {
+                                    imagePath = entryMap
+                                        .Where(map => map.Key.Contains(imagePath, StringComparison.InvariantCultureIgnoreCase))
+                                        .Select(map => map.Key)
+                                        .FirstOrDefault(string.Empty);
+                                }
+
+                                xhtmlChapters.Add(new Dictionary<string, string>()
+                                {
+                                    ["title"] = title,
+                                    ["page"] = page,
+                                    ["image"] = imagePath ?? string.Empty
+                                });
+                            }
                         }
-                        chapters.Add(new Dictionary<string, string>()
-                        {
-                            ["title"] = title ?? string.Empty,
-                            ["page"] = page.Split('#')[0],
-                            ["image"] = imagePath ?? string.Empty
-                        });
                     }
-                }
-                else if (ncxPath.EndsWith(".xhtml"))
-                {
-                    var opfMetadata = tocDoc.Descendants(xhtml + "nav")
-                        .FirstOrDefault(i => (string?)i.Attribute(ops + "type") == "toc")?
-                        .Descendants(xhtml + "a")
-                        .Select(a => new { Href = a.Attribute("href")!.Value, Name = a.Value })
-                        .ToLookup(item => item.Href, item => item.Name);
-                    if (opfMetadata != null)
+                    else if (navPath.EndsWith(".ncx", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        foreach (var e in opfMetadata)
+                        foreach (var navPoint in tocDoc.Descendants(ncx + "navPoint"))
                         {
-                            string title = string.Join(" - ", e);
-                            var page = e.Key.ToString().Split('#').FirstOrDefault()?.Trim();
-                            string? imagePath = FindImagePathInFile(entryMap, epubFile, RemoveStartingDots(page ?? string.Empty), metadata);
+                            string title = navPoint.Descendants(ncx + "text").FirstOrDefault()?.Value.Trim() ?? string.Empty;
+                            var page = navPoint.Descendants(ncx + "content").FirstOrDefault()?.Attribute("src")?.Value.Split('#')[0] ?? string.Empty;
+
+                            string? imagePath = FindImagePathInFile(entryMap, epubFile, RemoveStartingDots(page), metadata);
                             if (!string.IsNullOrEmpty(imagePath))
                             {
                                 imagePath = entryMap
@@ -1916,16 +1893,18 @@ namespace epub2cbz_gui
                                     .Select(map => map.Key)
                                     .FirstOrDefault(string.Empty);
                             }
-
-                            chapters.Add(new Dictionary<string, string>()
+                            ncxChapters.Add(new Dictionary<string, string>()
                             {
-                                ["title"] = title.Trim(),
-                                ["page"] = page ?? string.Empty,
+                                ["title"] = title,
+                                ["page"] = page,
                                 ["image"] = imagePath ?? string.Empty
                             });
                         }
                     }
                 }
+
+                if (xhtmlChapters.Count >= ncxChapters.Count) chapters = xhtmlChapters;
+                else chapters = ncxChapters;
             }
             else
             {
@@ -2379,20 +2358,25 @@ namespace epub2cbz_gui
             return opfPath;
         }
 
-        private static string GetNcxFile(XDocument opfDoc,
+        private static List<string> GetNcxFile(XDocument opfDoc,
             string opfPath)
         {
             opfPath = opfPath[..(opfPath.LastIndexOf('/') + 1)];
 
             XNamespace opf = "http://www.idpf.org/2007/opf";
 
-            var itemNcx = opfDoc.Descendants(opf + "manifest").Descendants(opf + "item").FirstOrDefault(i => (string)i.Attribute("media-type")! == "application/x-dtbncx+xml");
-            var itemNav = opfDoc.Descendants(opf + "manifest").Descendants(opf + "item").FirstOrDefault(i => (string)i.Attribute("properties")! == "nav");
+            var navigationItems = opfDoc.Descendants(opf + "manifest")
+                                .Descendants(opf + "item")
+                                .Where(i =>
+                                    (string)i.Attribute("media-type")! == "application/x-dtbncx+xml" ||
+                                    (string)i.Attribute("properties")! == "nav"
+                                )
+                                .Select(item => (string)item.Attribute("href")!)
+                                .Distinct();
 
-            /// make opfPath an array
-            if (itemNcx != null) return opfPath += (string)itemNcx.Attribute("href")!;
-            else if (itemNav != null) return opfPath += (string)itemNav.Attribute("href")!;
-            else return string.Empty;
+            List<string> navPaths = [.. navigationItems.Select(item => opfPath + item)];
+
+            return navPaths;
         }
 
         private static (List<Dictionary<string, string>> bookFull, bool? correctSpread) RemoveDuplicateCover(Dictionary<string, ZipArchiveEntry> entryMap,

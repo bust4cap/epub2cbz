@@ -453,10 +453,10 @@ public partial class MainForm : Form
 
     private void ButtonSwitchModes_Click(object sender, EventArgs e)
     {
-        if (!PopupSettings.CheckboxStates.CheckboxFileModeState)
-        {
-            PopupSettings.CheckboxStates.CheckboxFileModeState = true;
+        PopupSettings.CheckboxStates.CheckboxFileModeState = !PopupSettings.CheckboxStates.CheckboxFileModeState;
 
+        if (PopupSettings.CheckboxStates.CheckboxFileModeState)
+        {
             toolTip.SetToolTip(buttonPath, Resources.PathButtonTextOutput);
             textBoxPath.Text = FolderNameClass.OutputFolderName;
             textBoxPath.PlaceholderText = Resources.PathButtonTextOutput;
@@ -476,8 +476,6 @@ public partial class MainForm : Form
         }
         else
         {
-            PopupSettings.CheckboxStates.CheckboxFileModeState = false;
-
             toolTip.SetToolTip(buttonPath, Resources.PathButtonTextInput);
             textBoxPath.Text = FolderNameClass.InputFolderName;
             textBoxPath.PlaceholderText = Resources.PathButtonTextInput;

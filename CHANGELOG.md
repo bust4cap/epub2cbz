@@ -1,3 +1,6 @@
+## v2025.10.14-1
+- Fixed chapter detection in more cases
+
 ## v2025.09.26-1
 - Fixed program not running on systems with only 1 CPU core/thread
 
