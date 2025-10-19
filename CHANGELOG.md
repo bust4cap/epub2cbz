@@ -1,3 +1,6 @@
+## v2025.10.19-2
+- Adjusted the "Remove first page" option to only remove the page if it is blank
+
 ## v2025.10.19-1
 - Added option to remove the first page after the cover as an alternative to adding a blank image
 - Fixed "Blank page behavior" also applying to "Add blank page" when it shouldn't have

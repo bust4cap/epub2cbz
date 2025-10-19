@@ -28,7 +28,7 @@ namespace epub2cbz_gui
         public static string GetVersionDateYear { get; } = "2025";
         public static string GetVersionDateMonth { get; } = "10";
         public static string GetVersionDateDay { get; } = "19";
-        public static int GetVersionNumber { get; } = 1;
+        public static int GetVersionNumber { get; } = 2;
     }
 
     static class Program
@@ -2674,7 +2674,11 @@ namespace epub2cbz_gui
 
             if (PopupSettings.CheckboxStates.CheckboxRemoveFirstPageState)
             {
-                bookFull.RemoveAt(1);
+                if (string.IsNullOrEmpty(bookFull[1]["image"])
+                    || IsImageBlankWhite(entryMap, bookFull[1]["image"]))
+                {
+                    bookFull.RemoveAt(1);
+                }
             }
 
             bookFull = IntegrateChapters(bookFull, chapters);

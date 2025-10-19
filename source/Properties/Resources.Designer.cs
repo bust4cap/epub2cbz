@@ -817,7 +817,7 @@ namespace epub2cbz_gui.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Remove first page after the Cover ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Remove first page after the Cover if it is blank ähnelt.
         /// </summary>
         internal static string SettingsExperimentalRemoveFirstPageTooltip {
             get {

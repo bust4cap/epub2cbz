@@ -340,7 +340,7 @@
     <value>移除第一页</value>
   </data>
   <data name="SettingsExperimentalRemoveFirstPageTooltip" xml:space="preserve">
-    <value>移除封面后的第一页</value>
+    <value>如果封面后的第一页为空白，则将其删除。</value>
   </data>
   <data name="SettingsExperimentalSplitPageSpread" xml:space="preserve">
     <value>分割宽图像(双页图)</value>

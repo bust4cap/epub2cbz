@@ -368,7 +368,7 @@
     <value>Remove first page</value>
   </data>
   <data name="SettingsExperimentalRemoveFirstPageTooltip" xml:space="preserve">
-    <value>Remove first page after the Cover</value>
+    <value>Remove first page after the Cover if it is blank</value>
   </data>
   <data name="SettingsExperimentalSplitPageSpread" xml:space="preserve">
     <value>Split wide images</value>

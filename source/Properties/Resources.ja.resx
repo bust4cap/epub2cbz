@@ -340,7 +340,7 @@
     <value>最初のページを削除</value>
   </data>
   <data name="SettingsExperimentalRemoveFirstPageTooltip" xml:space="preserve">
-    <value>表紙の次のページを削除</value>
+    <value>表紙の次のページが空白の場合に削除します。</value>
   </data>
   <data name="SettingsExperimentalSplitPageSpread" xml:space="preserve">
     <value>横長画像を分割</value>
