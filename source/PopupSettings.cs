@@ -37,6 +37,7 @@ namespace epub2cbz_gui
             public static bool CheckboxInsertAdditionalBlankImageState { get; set; } = false;
             public static bool CheckboxMetadataTitleState { get; set; } = false;
             public static bool CheckboxChapterFoldersState { get; set; } = false;
+            public static bool CheckboxRemoveFirstPageState { get; set; } = false;
 
             public static bool CheckboxReplaceSeriesState { get; set; } = false;
             public static string? TextboxReplaceSeriesState { get; set; } = string.Empty;
@@ -99,6 +100,7 @@ namespace epub2cbz_gui
             CheckboxStates.CheckboxBlankImageState = checkBoxSettingsExperimentalSpreadInsertBlank.Checked;
             CheckboxStates.CheckboxHigherResolutionCover = checkBoxSettingsExperimentalCoverResolution.Checked;
             CheckboxStates.CheckboxInsertAdditionalBlankImageState = checkBoxSettingsExperimentalAddBlankPage.Checked;
+            CheckboxStates.CheckboxRemoveFirstPageState = checkBoxSettingsExperimentalRemoveFirstPage.Checked;
             CheckboxStates.CheckboxMetadataTitleState = checkBoxSettingsExperimentalMetadataTitle.Checked;
             CheckboxStates.CheckboxChapterFoldersState = checkBoxSettingsExperimentalChapterFolders.Checked;
 
@@ -224,6 +226,7 @@ namespace epub2cbz_gui
             checkBoxSettingsExperimentalSpreadInsertBlank.Checked = true;
             checkBoxSettingsExperimentalCoverResolution.Checked = true;
             checkBoxSettingsExperimentalAddBlankPage.Checked = false;
+            checkBoxSettingsExperimentalRemoveFirstPage.Checked = false;
             checkBoxSettingsExperimentalMetadataTitle.Checked = false;
             checkBoxSettingsExperimentalChapterFolders.Checked = false;
             checkBoxSettingsReplaceSeries.Checked = false;
@@ -400,6 +403,7 @@ namespace epub2cbz_gui
             checkBoxSettingsExperimentalSpreadInsertBlank.Checked = CheckboxStates.CheckboxBlankImageState;
             checkBoxSettingsExperimentalCoverResolution.Checked = CheckboxStates.CheckboxHigherResolutionCover;
             checkBoxSettingsExperimentalAddBlankPage.Checked = CheckboxStates.CheckboxInsertAdditionalBlankImageState;
+            checkBoxSettingsExperimentalRemoveFirstPage.Checked = CheckboxStates.CheckboxRemoveFirstPageState;
             checkBoxSettingsExperimentalMetadataTitle.Checked = CheckboxStates.CheckboxMetadataTitleState;
             checkBoxSettingsExperimentalChapterFolders.Checked = CheckboxStates.CheckboxChapterFoldersState;
 
@@ -456,6 +460,7 @@ namespace epub2cbz_gui
             checkBoxSettingsExperimentalRemoveDuplicateCovers.Text = Resources.SettingsExperimentalRemoveDuplicateCovers;
             checkBoxSettingsExperimentalCoverResolution.Text = Resources.SettingsExperimentalHigherResolutionCover;
             checkBoxSettingsExperimentalAddBlankPage.Text = Resources.SettingsExperimentalAddBlankPage;
+            checkBoxSettingsExperimentalRemoveFirstPage.Text = Resources.SettingsExperimentalRemoveFirstPage;
             checkBoxSettingsExperimentalMetadataTitle.Text = Resources.SettingsExperimentalMetadataTitle;
             checkBoxSettingsExperimentalChapterFolders.Text = Resources.SettingsExperimentalChapterFolders;
             toolTipSettings.SetToolTip(checkBoxSettingsExperimentalSpreadInsertBlank, Resources.SettingsExperimentalSpreadInsertBlankTooltip);
@@ -464,6 +469,7 @@ namespace epub2cbz_gui
             toolTipSettings.SetToolTip(checkBoxSettingsExperimentalEveryPageIsChapter, Resources.SettingsExperimentalEveryPageIsChapterTooltip);
             toolTipSettings.SetToolTip(checkBoxSettingsExperimentalRemoveDuplicateCovers, Resources.SettingsExperimentalRemoveDuplicateCoversTooltip);
             toolTipSettings.SetToolTip(checkBoxSettingsExperimentalAddBlankPage, Resources.SettingsExperimentalAddBlankPageTooltip);
+            toolTipSettings.SetToolTip(checkBoxSettingsExperimentalRemoveFirstPage, Resources.SettingsExperimentalRemoveFirstPageTooltip);
 
             checkBoxSettingsReplaceSeries.Text = Resources.ReplaceSeries;
             textBoxReplaceSeries.PlaceholderText = Resources.ReplaceSeriesPlaceholder;

@@ -336,6 +336,12 @@
   <data name="SettingsExperimentalRemoveDuplicateCoversTooltip" xml:space="preserve">
     <value>如果封面再次顯示為第一頁，則移除重複封面。</value>
   </data>
+  <data name="SettingsExperimentalRemoveFirstPage" xml:space="preserve">
+    <value>移除第一頁</value>
+  </data>
+  <data name="SettingsExperimentalRemoveFirstPageTooltip" xml:space="preserve">
+    <value>移除封面後的第一頁</value>
+  </data>
   <data name="SettingsExperimentalSplitPageSpread" xml:space="preserve">
     <value>分割寬圖像(雙頁圖)</value>
   </data>

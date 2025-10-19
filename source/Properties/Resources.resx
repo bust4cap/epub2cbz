@@ -364,6 +364,12 @@
   <data name="SettingsExperimentalRemoveDuplicateCoversTooltip" xml:space="preserve">
     <value>Removes duplicate Cover if it is displayed as the first page again.</value>
   </data>
+  <data name="SettingsExperimentalRemoveFirstPage" xml:space="preserve">
+    <value>Remove first page</value>
+  </data>
+  <data name="SettingsExperimentalRemoveFirstPageTooltip" xml:space="preserve">
+    <value>Remove first page after the Cover</value>
+  </data>
   <data name="SettingsExperimentalSplitPageSpread" xml:space="preserve">
     <value>Split wide images</value>
   </data>

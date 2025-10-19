@@ -103,6 +103,7 @@
             panelSettingsCbzZip = new Panel();
             tableLayoutPanelSettingsBottom = new TableLayoutPanel();
             tableLayoutPanel1 = new TableLayoutPanel();
+            checkBoxSettingsExperimentalRemoveFirstPage = new CheckBox();
             groupBoxComicInfo.SuspendLayout();
             tableLayoutPanelComicInfo.SuspendLayout();
             groupBoxExperimental.SuspendLayout();
@@ -170,7 +171,7 @@
             checkBoxSettingsComicInfoTitle.Location = new Point(5, 4);
             checkBoxSettingsComicInfoTitle.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsComicInfoTitle.Name = "checkBoxSettingsComicInfoTitle";
-            checkBoxSettingsComicInfoTitle.Size = new Size(48, 19);
+            checkBoxSettingsComicInfoTitle.Size = new Size(49, 19);
             checkBoxSettingsComicInfoTitle.TabIndex = 1;
             checkBoxSettingsComicInfoTitle.Text = "Title";
             checkBoxSettingsComicInfoTitle.UseVisualStyleBackColor = false;
@@ -316,7 +317,7 @@
             checkBoxSettingsComicInfoTranslators.Location = new Point(404, 25);
             checkBoxSettingsComicInfoTranslators.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsComicInfoTranslators.Name = "checkBoxSettingsComicInfoTranslators";
-            checkBoxSettingsComicInfoTranslators.Size = new Size(82, 19);
+            checkBoxSettingsComicInfoTranslators.Size = new Size(83, 19);
             checkBoxSettingsComicInfoTranslators.TabIndex = 8;
             checkBoxSettingsComicInfoTranslators.Text = "Translators";
             checkBoxSettingsComicInfoTranslators.UseVisualStyleBackColor = false;
@@ -389,7 +390,7 @@
             groupBoxExperimental.Dock = DockStyle.Fill;
             groupBoxExperimental.Location = new Point(3, 121);
             groupBoxExperimental.Name = "groupBoxExperimental";
-            groupBoxExperimental.Size = new Size(547, 203);
+            groupBoxExperimental.Size = new Size(547, 223);
             groupBoxExperimental.TabIndex = 20;
             groupBoxExperimental.TabStop = false;
             groupBoxExperimental.Text = "Experimental Features:";
@@ -401,7 +402,6 @@
             tableLayoutPanelExperimental.ColumnCount = 2;
             tableLayoutPanelExperimental.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanelExperimental.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalCheckDRMProtection, 1, 3);
             tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalSpreadInsertBlank, 1, 0);
             tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalCoverResolution, 1, 1);
             tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalChapterFolders, 1, 4);
@@ -415,12 +415,14 @@
             tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalMetadataTitle, 0, 4);
             tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalAddBlankPage, 0, 3);
             tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsResizingEnable, 0, 5);
+            tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalCheckDRMProtection, 0, 7);
+            tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalRemoveFirstPage, 1, 3);
             tableLayoutPanelExperimental.Dock = DockStyle.Fill;
             tableLayoutPanelExperimental.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
             tableLayoutPanelExperimental.Location = new Point(3, 19);
             tableLayoutPanelExperimental.Name = "tableLayoutPanelExperimental";
             tableLayoutPanelExperimental.Padding = new Padding(3);
-            tableLayoutPanelExperimental.RowCount = 7;
+            tableLayoutPanelExperimental.RowCount = 8;
             tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857132F));
             tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857132F));
             tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857132F));
@@ -428,18 +430,19 @@
             tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857132F));
             tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857132F));
             tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857132F));
-            tableLayoutPanelExperimental.Size = new Size(541, 181);
+            tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanelExperimental.Size = new Size(541, 201);
             tableLayoutPanelExperimental.TabIndex = 207;
             // 
             // checkBoxSettingsExperimentalCheckDRMProtection
             // 
             checkBoxSettingsExperimentalCheckDRMProtection.Anchor = AnchorStyles.Left;
             checkBoxSettingsExperimentalCheckDRMProtection.AutoSize = true;
-            checkBoxSettingsExperimentalCheckDRMProtection.Location = new Point(272, 81);
+            checkBoxSettingsExperimentalCheckDRMProtection.Location = new Point(5, 179);
             checkBoxSettingsExperimentalCheckDRMProtection.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsExperimentalCheckDRMProtection.Name = "checkBoxSettingsExperimentalCheckDRMProtection";
-            checkBoxSettingsExperimentalCheckDRMProtection.Size = new Size(195, 19);
-            checkBoxSettingsExperimentalCheckDRMProtection.TabIndex = 28;
+            checkBoxSettingsExperimentalCheckDRMProtection.Size = new Size(195, 18);
+            checkBoxSettingsExperimentalCheckDRMProtection.TabIndex = 35;
             checkBoxSettingsExperimentalCheckDRMProtection.Text = "Check if files are DRM protected";
             checkBoxSettingsExperimentalCheckDRMProtection.UseVisualStyleBackColor = false;
             // 
@@ -452,7 +455,7 @@
             checkBoxSettingsExperimentalSpreadInsertBlank.Name = "checkBoxSettingsExperimentalSpreadInsertBlank";
             checkBoxSettingsExperimentalSpreadInsertBlank.Size = new Size(133, 19);
             checkBoxSettingsExperimentalSpreadInsertBlank.TabIndex = 22;
-            checkBoxSettingsExperimentalSpreadInsertBlank.Text = "Blank Page behavior";
+            checkBoxSettingsExperimentalSpreadInsertBlank.Text = "Blank page behavior";
             toolTipSettings.SetToolTip(checkBoxSettingsExperimentalSpreadInsertBlank, "When preserving Page Spread and a Blank Image would have to be inserted to do so, check if a Blank Image is following and if it is, delete that one instead of having 2 Blank Images back to back.");
             checkBoxSettingsExperimentalSpreadInsertBlank.UseVisualStyleBackColor = false;
             // 
@@ -463,9 +466,9 @@
             checkBoxSettingsExperimentalCoverResolution.Location = new Point(272, 31);
             checkBoxSettingsExperimentalCoverResolution.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsExperimentalCoverResolution.Name = "checkBoxSettingsExperimentalCoverResolution";
-            checkBoxSettingsExperimentalCoverResolution.Size = new Size(179, 19);
+            checkBoxSettingsExperimentalCoverResolution.Size = new Size(177, 19);
             checkBoxSettingsExperimentalCoverResolution.TabIndex = 24;
-            checkBoxSettingsExperimentalCoverResolution.Text = "Keep higher resolution Cover";
+            checkBoxSettingsExperimentalCoverResolution.Text = "Keep higher resolution cover";
             checkBoxSettingsExperimentalCoverResolution.UseVisualStyleBackColor = false;
             // 
             // checkBoxSettingsExperimentalChapterFolders
@@ -475,9 +478,9 @@
             checkBoxSettingsExperimentalChapterFolders.Location = new Point(272, 106);
             checkBoxSettingsExperimentalChapterFolders.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsExperimentalChapterFolders.Name = "checkBoxSettingsExperimentalChapterFolders";
-            checkBoxSettingsExperimentalChapterFolders.Size = new Size(192, 19);
+            checkBoxSettingsExperimentalChapterFolders.Size = new Size(188, 19);
             checkBoxSettingsExperimentalChapterFolders.TabIndex = 30;
-            checkBoxSettingsExperimentalChapterFolders.Text = "Create Folders for each Chapter";
+            checkBoxSettingsExperimentalChapterFolders.Text = "Create folders for each chapter";
             checkBoxSettingsExperimentalChapterFolders.UseVisualStyleBackColor = false;
             // 
             // checkBoxSettingsExperimentalSplitPageSpread
@@ -509,9 +512,9 @@
             checkBoxSettingsExperimentalPageSpread.Location = new Point(5, 6);
             checkBoxSettingsExperimentalPageSpread.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsExperimentalPageSpread.Name = "checkBoxSettingsExperimentalPageSpread";
-            checkBoxSettingsExperimentalPageSpread.Size = new Size(227, 19);
+            checkBoxSettingsExperimentalPageSpread.Size = new Size(194, 19);
             checkBoxSettingsExperimentalPageSpread.TabIndex = 21;
-            checkBoxSettingsExperimentalPageSpread.Text = "Try to preserve Page Spread alignment";
+            checkBoxSettingsExperimentalPageSpread.Text = "Preserve page spread alignment";
             toolTipSettings.SetToolTip(checkBoxSettingsExperimentalPageSpread, "Tries to preserve correct Page Spread alignment, so a right page will stay a right page and a left page will stay a left page. Assumes Epub has set this info correctly.");
             checkBoxSettingsExperimentalPageSpread.UseVisualStyleBackColor = false;
             checkBoxSettingsExperimentalPageSpread.CheckedChanged += CheckBoxSettingsPageSpread_CheckedChanged;
@@ -525,7 +528,7 @@
             checkBoxSettingsCroppingEnable.Name = "checkBoxSettingsCroppingEnable";
             checkBoxSettingsCroppingEnable.Size = new Size(93, 19);
             checkBoxSettingsCroppingEnable.TabIndex = 32;
-            checkBoxSettingsCroppingEnable.Text = "Crop Images";
+            checkBoxSettingsCroppingEnable.Text = "Crop images";
             checkBoxSettingsCroppingEnable.UseVisualStyleBackColor = true;
             checkBoxSettingsCroppingEnable.CheckedChanged += CheckBoxSettingsCroppingEnable_CheckedChanged;
             // 
@@ -536,9 +539,9 @@
             checkBoxSettingsReplaceSeries.Location = new Point(5, 156);
             checkBoxSettingsReplaceSeries.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsReplaceSeries.Name = "checkBoxSettingsReplaceSeries";
-            checkBoxSettingsReplaceSeries.Size = new Size(135, 19);
+            checkBoxSettingsReplaceSeries.Size = new Size(132, 19);
             checkBoxSettingsReplaceSeries.TabIndex = 33;
-            checkBoxSettingsReplaceSeries.Text = "Replace Series Name";
+            checkBoxSettingsReplaceSeries.Text = "Replace series name";
             checkBoxSettingsReplaceSeries.UseVisualStyleBackColor = false;
             checkBoxSettingsReplaceSeries.CheckedChanged += CheckBoxSettingsReplaceSeries_CheckedChanged;
             // 
@@ -549,9 +552,9 @@
             checkBoxSettingsExperimentalRemoveDuplicateCovers.Location = new Point(5, 31);
             checkBoxSettingsExperimentalRemoveDuplicateCovers.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsExperimentalRemoveDuplicateCovers.Name = "checkBoxSettingsExperimentalRemoveDuplicateCovers";
-            checkBoxSettingsExperimentalRemoveDuplicateCovers.Size = new Size(160, 19);
+            checkBoxSettingsExperimentalRemoveDuplicateCovers.Size = new Size(158, 19);
             checkBoxSettingsExperimentalRemoveDuplicateCovers.TabIndex = 23;
-            checkBoxSettingsExperimentalRemoveDuplicateCovers.Text = "Remove duplicate Covers";
+            checkBoxSettingsExperimentalRemoveDuplicateCovers.Text = "Remove duplicate covers";
             toolTipSettings.SetToolTip(checkBoxSettingsExperimentalRemoveDuplicateCovers, "Removes duplicate Cover if it is displayed as the first page again. (Can happen with books bought on Amazon)");
             checkBoxSettingsExperimentalRemoveDuplicateCovers.UseVisualStyleBackColor = false;
             checkBoxSettingsExperimentalRemoveDuplicateCovers.CheckedChanged += CheckBoxSettingsExperimentalRemoveDuplicateCovers_CheckedChanged;
@@ -563,9 +566,9 @@
             checkBoxSettingsExperimentalEveryPageIsChapter.Location = new Point(5, 56);
             checkBoxSettingsExperimentalEveryPageIsChapter.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsExperimentalEveryPageIsChapter.Name = "checkBoxSettingsExperimentalEveryPageIsChapter";
-            checkBoxSettingsExperimentalEveryPageIsChapter.Size = new Size(188, 19);
+            checkBoxSettingsExperimentalEveryPageIsChapter.Size = new Size(185, 19);
             checkBoxSettingsExperimentalEveryPageIsChapter.TabIndex = 25;
-            checkBoxSettingsExperimentalEveryPageIsChapter.Text = "Fix every Page being a Chapter";
+            checkBoxSettingsExperimentalEveryPageIsChapter.Text = "Fix every page being a chapter";
             toolTipSettings.SetToolTip(checkBoxSettingsExperimentalEveryPageIsChapter, "Some books can have every page as a separate chapter. This removes all of them for a cleaner look. (Can happen with books bought on Amazon)");
             checkBoxSettingsExperimentalEveryPageIsChapter.UseVisualStyleBackColor = false;
             // 
@@ -576,9 +579,9 @@
             checkBoxSettingsExperimentalMetadataTitle.Location = new Point(5, 106);
             checkBoxSettingsExperimentalMetadataTitle.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsExperimentalMetadataTitle.Name = "checkBoxSettingsExperimentalMetadataTitle";
-            checkBoxSettingsExperimentalMetadataTitle.Size = new Size(123, 19);
+            checkBoxSettingsExperimentalMetadataTitle.Size = new Size(121, 19);
             checkBoxSettingsExperimentalMetadataTitle.TabIndex = 29;
-            checkBoxSettingsExperimentalMetadataTitle.Text = "Use metadata Title";
+            checkBoxSettingsExperimentalMetadataTitle.Text = "Use metadata title";
             checkBoxSettingsExperimentalMetadataTitle.UseVisualStyleBackColor = false;
             // 
             // checkBoxSettingsExperimentalAddBlankPage
@@ -590,7 +593,7 @@
             checkBoxSettingsExperimentalAddBlankPage.Name = "checkBoxSettingsExperimentalAddBlankPage";
             checkBoxSettingsExperimentalAddBlankPage.Size = new Size(109, 19);
             checkBoxSettingsExperimentalAddBlankPage.TabIndex = 27;
-            checkBoxSettingsExperimentalAddBlankPage.Text = "Add Blank Page";
+            checkBoxSettingsExperimentalAddBlankPage.Text = "Add blank page";
             checkBoxSettingsExperimentalAddBlankPage.UseVisualStyleBackColor = false;
             // 
             // checkBoxSettingsResizingEnable
@@ -602,7 +605,7 @@
             checkBoxSettingsResizingEnable.Name = "checkBoxSettingsResizingEnable";
             checkBoxSettingsResizingEnable.Size = new Size(99, 19);
             checkBoxSettingsResizingEnable.TabIndex = 31;
-            checkBoxSettingsResizingEnable.Text = "Resize Images";
+            checkBoxSettingsResizingEnable.Text = "Resize images";
             checkBoxSettingsResizingEnable.UseVisualStyleBackColor = false;
             checkBoxSettingsResizingEnable.CheckedChanged += CheckBoxSettingsResizingEnable_CheckedChanged;
             // 
@@ -684,7 +687,7 @@
             groupBoxResizing.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             groupBoxResizing.Controls.Add(tableLayoutPanelResizing);
             groupBoxResizing.Dock = DockStyle.Fill;
-            groupBoxResizing.Location = new Point(3, 330);
+            groupBoxResizing.Location = new Point(3, 350);
             groupBoxResizing.Name = "groupBoxResizing";
             groupBoxResizing.Size = new Size(547, 98);
             groupBoxResizing.TabIndex = 203;
@@ -883,7 +886,7 @@
             groupBoxCropping.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             groupBoxCropping.Controls.Add(tableLayoutPanelCropping);
             groupBoxCropping.Dock = DockStyle.Fill;
-            groupBoxCropping.Location = new Point(3, 434);
+            groupBoxCropping.Location = new Point(3, 454);
             groupBoxCropping.Name = "groupBoxCropping";
             groupBoxCropping.Size = new Size(547, 63);
             groupBoxCropping.TabIndex = 206;
@@ -963,14 +966,14 @@
             labelSettingsCropColorTolerance.AutoSize = true;
             labelSettingsCropColorTolerance.Location = new Point(3, 7);
             labelSettingsCropColorTolerance.Name = "labelSettingsCropColorTolerance";
-            labelSettingsCropColorTolerance.Size = new Size(92, 15);
+            labelSettingsCropColorTolerance.Size = new Size(93, 15);
             labelSettingsCropColorTolerance.TabIndex = 15;
             labelSettingsCropColorTolerance.Text = "Color Tolerance:";
             // 
             // textBoxSettingsCropColorTolerance
             // 
             textBoxSettingsCropColorTolerance.Anchor = AnchorStyles.None;
-            textBoxSettingsCropColorTolerance.Location = new Point(101, 3);
+            textBoxSettingsCropColorTolerance.Location = new Point(102, 3);
             textBoxSettingsCropColorTolerance.MaxLength = 3;
             textBoxSettingsCropColorTolerance.Name = "textBoxSettingsCropColorTolerance";
             textBoxSettingsCropColorTolerance.Size = new Size(34, 23);
@@ -1028,7 +1031,7 @@
             tableLayoutPanelSettings.RowStyles.Add(new RowStyle());
             tableLayoutPanelSettings.RowStyles.Add(new RowStyle());
             tableLayoutPanelSettings.RowStyles.Add(new RowStyle());
-            tableLayoutPanelSettings.Size = new Size(565, 610);
+            tableLayoutPanelSettings.Size = new Size(565, 632);
             tableLayoutPanelSettings.TabIndex = 207;
             // 
             // tableLayoutPanelSettingsCenter
@@ -1044,7 +1047,7 @@
             tableLayoutPanelSettingsCenter.Controls.Add(groupBoxThreads, 2, 0);
             tableLayoutPanelSettingsCenter.Dock = DockStyle.Fill;
             tableLayoutPanelSettingsCenter.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
-            tableLayoutPanelSettingsCenter.Location = new Point(6, 512);
+            tableLayoutPanelSettingsCenter.Location = new Point(6, 532);
             tableLayoutPanelSettingsCenter.Name = "tableLayoutPanelSettingsCenter";
             tableLayoutPanelSettingsCenter.RowCount = 1;
             tableLayoutPanelSettingsCenter.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
@@ -1078,11 +1081,11 @@
             tableLayoutPanelSettingsBottom.Controls.Add(buttonSettingsResetToDefault, 1, 0);
             tableLayoutPanelSettingsBottom.Dock = DockStyle.Fill;
             tableLayoutPanelSettingsBottom.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
-            tableLayoutPanelSettingsBottom.Location = new Point(6, 574);
+            tableLayoutPanelSettingsBottom.Location = new Point(6, 594);
             tableLayoutPanelSettingsBottom.Name = "tableLayoutPanelSettingsBottom";
             tableLayoutPanelSettingsBottom.RowCount = 1;
             tableLayoutPanelSettingsBottom.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanelSettingsBottom.Size = new Size(553, 31);
+            tableLayoutPanelSettingsBottom.Size = new Size(553, 32);
             tableLayoutPanelSettingsBottom.TabIndex = 2;
             // 
             // tableLayoutPanel1
@@ -1104,8 +1107,20 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
-            tableLayoutPanel1.Size = new Size(553, 500);
+            tableLayoutPanel1.Size = new Size(553, 520);
             tableLayoutPanel1.TabIndex = 3;
+            // 
+            // checkBoxSettingsExperimentalRemoveFirstPage
+            // 
+            checkBoxSettingsExperimentalRemoveFirstPage.Anchor = AnchorStyles.Left;
+            checkBoxSettingsExperimentalRemoveFirstPage.AutoSize = true;
+            checkBoxSettingsExperimentalRemoveFirstPage.Location = new Point(272, 81);
+            checkBoxSettingsExperimentalRemoveFirstPage.Margin = new Padding(2, 1, 2, 1);
+            checkBoxSettingsExperimentalRemoveFirstPage.Name = "checkBoxSettingsExperimentalRemoveFirstPage";
+            checkBoxSettingsExperimentalRemoveFirstPage.Size = new Size(121, 19);
+            checkBoxSettingsExperimentalRemoveFirstPage.TabIndex = 28;
+            checkBoxSettingsExperimentalRemoveFirstPage.Text = "Remove first page";
+            checkBoxSettingsExperimentalRemoveFirstPage.UseVisualStyleBackColor = false;
             // 
             // PopupSettings
             // 
@@ -1115,7 +1130,7 @@
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             CancelButton = buttonSettingsCancel;
-            ClientSize = new Size(565, 610);
+            ClientSize = new Size(565, 632);
             Controls.Add(tableLayoutPanelSettings);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Margin = new Padding(2, 1, 2, 1);
@@ -1247,5 +1262,6 @@
         private TableLayoutPanel tableLayoutPanelSettingsBottom;
         private Panel panelSettingsCbzZip;
         private TableLayoutPanel tableLayoutPanel1;
+        private CheckBox checkBoxSettingsExperimentalRemoveFirstPage;
     }
 }

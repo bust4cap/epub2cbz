@@ -336,6 +336,12 @@
   <data name="SettingsExperimentalRemoveDuplicateCoversTooltip" xml:space="preserve">
     <value>表紙が1ページ目として再表示される場合、重複分を削除します。</value>
   </data>
+  <data name="SettingsExperimentalRemoveFirstPage" xml:space="preserve">
+    <value>最初のページを削除</value>
+  </data>
+  <data name="SettingsExperimentalRemoveFirstPageTooltip" xml:space="preserve">
+    <value>表紙の次のページを削除</value>
+  </data>
   <data name="SettingsExperimentalSplitPageSpread" xml:space="preserve">
     <value>横長画像を分割</value>
   </data>

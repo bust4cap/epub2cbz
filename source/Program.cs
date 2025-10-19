@@ -27,7 +27,7 @@ namespace epub2cbz_gui
     {
         public static string GetVersionDateYear { get; } = "2025";
         public static string GetVersionDateMonth { get; } = "10";
-        public static string GetVersionDateDay { get; } = "14";
+        public static string GetVersionDateDay { get; } = "19";
         public static int GetVersionNumber { get; } = 1;
     }
 
@@ -2661,7 +2661,20 @@ namespace epub2cbz_gui
 
             if (PopupSettings.CheckboxStates.CheckboxInsertAdditionalBlankImageState)
             {
-                bookFull = InsertBlankPage(entryMap, epubFilename, bookFull);
+                bookFull.Insert(1, new Dictionary<string, string>()
+                {
+                    ["page"] = "blank",
+                    ["image"] = string.Empty,
+                    ["spread"] = string.Empty,
+                    ["doublepage"] = "false",
+                    ["height"] = string.Empty,
+                    ["width"] = string.Empty
+                });
+            }
+
+            if (PopupSettings.CheckboxStates.CheckboxRemoveFirstPageState)
+            {
+                bookFull.RemoveAt(1);
             }
 
             bookFull = IntegrateChapters(bookFull, chapters);

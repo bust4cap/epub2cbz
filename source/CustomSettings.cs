@@ -91,6 +91,9 @@ namespace epub2cbz_gui
                         new XAttribute("name", "CheckboxInsertAdditionalBlankImageState"),
                         new XElement("value", PopupSettings.CheckboxStates.CheckboxInsertAdditionalBlankImageState.ToString())),
                     new XElement("setting",
+                        new XAttribute("name", "CheckboxRemoveFirstPageState"),
+                        new XElement("value", PopupSettings.CheckboxStates.CheckboxRemoveFirstPageState.ToString())),
+                    new XElement("setting",
                         new XAttribute("name", "CheckboxMetadataTitleState"),
                         new XElement("value", PopupSettings.CheckboxStates.CheckboxMetadataTitleState.ToString())),
                     new XElement("setting",
@@ -319,6 +322,12 @@ namespace epub2cbz_gui
                         && bool.TryParse(valueCheckboxInsertAdditionalBlankImageState, out bool parsedValueCheckboxInsertAdditionalBlankImageState))
                     {
                         PopupSettings.CheckboxStates.CheckboxInsertAdditionalBlankImageState = parsedValueCheckboxInsertAdditionalBlankImageState;
+                    }
+
+                    if (loadedSettings.TryGetValue("CheckboxRemoveFirstPageState", out string? valueCheckboxRemoveFirstPageState)
+                        && bool.TryParse(valueCheckboxRemoveFirstPageState, out bool parsedValueCheckboxRemoveFirstPageState))
+                    {
+                        PopupSettings.CheckboxStates.CheckboxRemoveFirstPageState = parsedValueCheckboxRemoveFirstPageState;
                     }
 
                     if (loadedSettings.TryGetValue("CheckboxMetadataTitleState", out string? valueCheckboxMetadataTitleState)

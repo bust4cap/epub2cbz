@@ -1,3 +1,7 @@
+## v2025.10.19-1
+- Added option to remove the first page after the cover as an alternative to adding a blank image
+- Fixed "Blank page behavior" also applying to "Add blank page" when it shouldn't have
+
 ## v2025.10.14-1
 - Fixed chapter detection in more cases
 

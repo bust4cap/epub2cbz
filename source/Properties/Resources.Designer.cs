@@ -19,7 +19,7 @@ namespace epub2cbz_gui.Properties {
     // -Klasse über ein Tool wie ResGen oder Visual Studio automatisch generiert.
     // Um einen Member hinzuzufügen oder zu entfernen, bearbeiten Sie die .ResX-Datei und führen dann ResGen
     // mit der /str-Option erneut aus, oder Sie erstellen Ihr VS-Projekt neu.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -804,6 +804,24 @@ namespace epub2cbz_gui.Properties {
         internal static string SettingsExperimentalRemoveDuplicateCoversTooltip {
             get {
                 return ResourceManager.GetString("SettingsExperimentalRemoveDuplicateCoversTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Remove first page ähnelt.
+        /// </summary>
+        internal static string SettingsExperimentalRemoveFirstPage {
+            get {
+                return ResourceManager.GetString("SettingsExperimentalRemoveFirstPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Remove first page after the Cover ähnelt.
+        /// </summary>
+        internal static string SettingsExperimentalRemoveFirstPageTooltip {
+            get {
+                return ResourceManager.GetString("SettingsExperimentalRemoveFirstPageTooltip", resourceCulture);
             }
         }
         
