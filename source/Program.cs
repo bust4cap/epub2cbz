@@ -27,8 +27,8 @@ namespace epub2cbz_gui
     {
         public static string GetVersionDateYear { get; } = "2025";
         public static string GetVersionDateMonth { get; } = "10";
-        public static string GetVersionDateDay { get; } = "19";
-        public static int GetVersionNumber { get; } = 2;
+        public static string GetVersionDateDay { get; } = "29";
+        public static int GetVersionNumber { get; } = 1;
     }
 
     static class Program
@@ -137,7 +137,7 @@ namespace epub2cbz_gui
 
                     if (chapterPage == Path.GetFileName(bookFull[i]["page"].Split('#')[0]))
                     {
-                        bookmark = chapter["title"];
+                        bookmark = chapter["title"].Trim();
                         break;
                     }
                 }
@@ -667,7 +667,11 @@ namespace epub2cbz_gui
         private static bool? CheckPageSpread(string readingDirection,
             List<Dictionary<string, string>> bookFull)
         {
+            if (bookFull[1]["doublepage"] == "true") return true;
+            if (bookFull.Count < 3) return null;
+
             int pageSpreadCounter = 0;
+            bool foundSpreadInfo = false;
             string firstPage;
             string secondPage;
 
@@ -686,22 +690,31 @@ namespace epub2cbz_gui
             {
                 if (bookFull[i]["doublepage"] == "true")
                 {
+                    if ((i + pageSpreadCounter) % 2 != 0) return true;
                     pageSpreadCounter++;
-					continue;
+                    continue;
                 }
 
-                if (bookFull[i]["spread"].Contains(firstPage) && (i + pageSpreadCounter) % 2 != 0
-                    || bookFull[i]["spread"].Contains(secondPage) && (i + pageSpreadCounter) % 2 == 0)
+                if (string.IsNullOrEmpty(bookFull[i]["spread"]))
+                {
+                    continue;
+                }
+
+                foundSpreadInfo = true;
+
+                if (bookFull[i]["spread"].Contains(firstPage, StringComparison.InvariantCultureIgnoreCase) && (i + pageSpreadCounter) % 2 != 0
+                    || bookFull[i]["spread"].Contains(secondPage, StringComparison.InvariantCultureIgnoreCase) && (i + pageSpreadCounter) % 2 == 0)
                 {
                     return true; // Spread seems to be correct
                 }
-                else if (bookFull[i]["spread"].Contains(firstPage) && (i + pageSpreadCounter) % 2 == 0
-                    || bookFull[i]["spread"].Contains(secondPage) && (i + pageSpreadCounter) % 2 != 0)
+                else if (bookFull[i]["spread"].Contains(firstPage, StringComparison.InvariantCultureIgnoreCase) && (i + pageSpreadCounter) % 2 == 0
+                    || bookFull[i]["spread"].Contains(secondPage, StringComparison.InvariantCultureIgnoreCase) && (i + pageSpreadCounter) % 2 != 0)
                 {
                     return false; // blank page needed
                 }
             }
-            return null;  // no page spread info found
+
+            return foundSpreadInfo ? false : null;
         }
 
         private static List<Dictionary<string, string>> FixPageAlignmentPost(List<Dictionary<string, string>> bookFull,
@@ -709,69 +722,190 @@ namespace epub2cbz_gui
         {
             for (int i = 1; i < bookFull.Count; i++)
             {
-                string isDoublePage = bookFull[i]["doublepage"];
                 //  Add blank page before double page if page alignment is incorrect
-                if (isDoublePage == "true")
+                if (bookFull[i]["doublepage"] == "true")
                 {
-                    if (readingDirection == "No"
-                        && bookFull[i - 1]["spread"].Contains("left")
-                        && !bookFull[i]["spread"].Contains("right"))
+                    if (readingDirection == "No")
                     {
-                        bookFull.Insert(i, new Dictionary<string, string>()
+                        // For ltr books - if current page is wide and last page was a single left page
+                        if (i > 1
+                            && bookFull[i - 1]["spread"].Contains("left", StringComparison.InvariantCultureIgnoreCase)
+                            && bookFull[i - 1]["doublepage"] == "false")
                         {
-                            ["page"] = "blank",
-                            ["image"] = string.Empty,
-                            ["spread"] = "page-spread-right",
-                            ["doublepage"] = "false",
-                            ["height"] = string.Empty,
-                            ["width"] = string.Empty
-                        });
+                            bookFull.Insert(i, new Dictionary<string, string>()
+                            {
+                                ["page"] = "blank",
+                                ["image"] = string.Empty,
+                                ["spread"] = "page-spread-right",
+                                ["doublepage"] = "false",
+                                ["height"] = string.Empty,
+                                ["width"] = string.Empty
+                            });
+
+                            i++;
+                        }
+                        else if (i > 1
+                            && bookFull[i - 1]["spread"] == string.Empty
+                            && bookFull[i - 1]["doublepage"] == "false"
+                            && (bookFull[i - 2]["doublepage"] == "true" || (i - 2) == 0))
+                        {
+                            bookFull.Insert(i, new Dictionary<string, string>()
+                            {
+                                ["page"] = "blank",
+                                ["image"] = string.Empty,
+                                ["spread"] = "page-spread-right",
+                                ["doublepage"] = "false",
+                                ["height"] = string.Empty,
+                                ["width"] = string.Empty
+                            });
+
+                            i++;
+                        }
                     }
-                    else if (readingDirection == "YesAndRightToLeft"
-                        && bookFull[i - 1]["spread"].Contains("right")
-                        && !bookFull[i]["spread"].Contains("left"))
+                    else if (readingDirection == "YesAndRightToLeft")
                     {
-                        bookFull.Insert(i, new Dictionary<string, string>()
+                        // For rtl books - if current page is wide and last page was a single right page
+                        if (i > 1
+                            && bookFull[i - 1]["spread"].Contains("right", StringComparison.InvariantCultureIgnoreCase)
+                            && bookFull[i - 1]["doublepage"] == "false")
                         {
-                            ["page"] = "blank",
-                            ["image"] = string.Empty,
-                            ["spread"] = "page-spread-left",
-                            ["doublepage"] = "false",
-                            ["height"] = string.Empty,
-                            ["width"] = string.Empty
-                        });
+                            bookFull.Insert(i, new Dictionary<string, string>()
+                            {
+                                ["page"] = "blank",
+                                ["image"] = string.Empty,
+                                ["spread"] = "page-spread-left",
+                                ["doublepage"] = "false",
+                                ["height"] = string.Empty,
+                                ["width"] = string.Empty
+                            });
+
+                            i++;
+                        }
+                        else if (i > 1
+                            && bookFull[i - 1]["spread"] == string.Empty
+                            && bookFull[i - 1]["doublepage"] == "false"
+                            && (bookFull[i - 2]["doublepage"] == "true" || (i - 2) == 0))
+                        {
+                            bookFull.Insert(i, new Dictionary<string, string>()
+                            {
+                                ["page"] = "blank",
+                                ["image"] = string.Empty,
+                                ["spread"] = "page-spread-left",
+                                ["doublepage"] = "false",
+                                ["height"] = string.Empty,
+                                ["width"] = string.Empty
+                            });
+
+                            i++;
+                        }
                     }
                 }
                 //  Add blank page for single pages and after double pages if page alignment is incorrect
                 else
                 {
-                    if (bookFull[i - 1]["spread"].Contains("left") && bookFull[i]["spread"].Contains("left")
-                        || (readingDirection == "YesAndRightToLeft" && bookFull[i - 1]["doublepage"] == "true"
-                            && bookFull[i]["spread"].Contains("left") && !bookFull[i - 1]["spread"].Contains("right")))
+                    if (readingDirection == "No")
                     {
-                        bookFull.Insert(i, new Dictionary<string, string>()
+                        if (i > 1
+                            && bookFull[i - 1]["doublepage"] == "true"
+                            && bookFull[i]["spread"].Contains("right", StringComparison.InvariantCultureIgnoreCase))
                         {
-                            ["page"] = "blank",
-                            ["image"] = string.Empty,
-                            ["spread"] = "page-spread-right",
-                            ["doublepage"] = "false",
-                            ["height"] = string.Empty,
-                            ["width"] = string.Empty
-                        });
+                            bookFull.Insert(i, new Dictionary<string, string>()
+                            {
+                                ["page"] = "blank",
+                                ["image"] = string.Empty,
+                                ["spread"] = "page-spread-left",
+                                ["doublepage"] = "false",
+                                ["height"] = string.Empty,
+                                ["width"] = string.Empty
+                            });
+
+                            i++;
+                        }
+                        else if (i > 1
+                            && bookFull[i - 1]["doublepage"] == "false"
+                            && bookFull[i - 1]["spread"].Contains("left", StringComparison.InvariantCultureIgnoreCase)
+                            && bookFull[i]["spread"].Contains("left", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            bookFull.Insert(i, new Dictionary<string, string>()
+                            {
+                                ["page"] = "blank",
+                                ["image"] = string.Empty,
+                                ["spread"] = "page-spread-right",
+                                ["doublepage"] = "false",
+                                ["height"] = string.Empty,
+                                ["width"] = string.Empty
+                            });
+
+                            i++;
+                        }
+                        else if (i > 1
+                            && bookFull[i - 1]["spread"].Contains("right", StringComparison.InvariantCultureIgnoreCase)
+                            && bookFull[i]["spread"].Contains("right", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            bookFull.Insert(i, new Dictionary<string, string>()
+                            {
+                                ["page"] = "blank",
+                                ["image"] = string.Empty,
+                                ["spread"] = "page-spread-left",
+                                ["doublepage"] = "false",
+                                ["height"] = string.Empty,
+                                ["width"] = string.Empty
+                            });
+
+                            i++;
+                        }
                     }
-                    else if (bookFull[i - 1]["spread"].Contains("right") && bookFull[i]["spread"].Contains("right")
-                        || (readingDirection == "No" && bookFull[i - 1]["doublepage"] == "true"
-                            && bookFull[i]["spread"].Contains("right") && !bookFull[i - 1]["spread"].Contains("left")))
+                    else if (readingDirection == "YesAndRightToLeft")
                     {
-                        bookFull.Insert(i, new Dictionary<string, string>()
+                        if (i > 1
+                            && bookFull[i - 1]["doublepage"] == "true"
+                            && bookFull[i]["spread"].Contains("left", StringComparison.InvariantCultureIgnoreCase))
                         {
-                            ["page"] = "blank",
-                            ["image"] = string.Empty,
-                            ["spread"] = "page-spread-left",
-                            ["doublepage"] = "false",
-                            ["height"] = string.Empty,
-                            ["width"] = string.Empty
-                        });
+                            bookFull.Insert(i, new Dictionary<string, string>()
+                            {
+                                ["page"] = "blank",
+                                ["image"] = string.Empty,
+                                ["spread"] = "page-spread-right",
+                                ["doublepage"] = "false",
+                                ["height"] = string.Empty,
+                                ["width"] = string.Empty
+                            });
+
+                            i++;
+                        }
+                        else if (i > 1
+                            && bookFull[i - 1]["spread"].Contains("left", StringComparison.InvariantCultureIgnoreCase)
+                            && bookFull[i]["spread"].Contains("left", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            bookFull.Insert(i, new Dictionary<string, string>()
+                            {
+                                ["page"] = "blank",
+                                ["image"] = string.Empty,
+                                ["spread"] = "page-spread-right",
+                                ["doublepage"] = "false",
+                                ["height"] = string.Empty,
+                                ["width"] = string.Empty
+                            });
+
+                            i++;
+                        }
+                        else if (i > 1
+                            && bookFull[i - 1]["doublepage"] == "false"
+                            && bookFull[i - 1]["spread"].Contains("right", StringComparison.InvariantCultureIgnoreCase)
+                            && bookFull[i]["spread"].Contains("right", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            bookFull.Insert(i, new Dictionary<string, string>()
+                            {
+                                ["page"] = "blank",
+                                ["image"] = string.Empty,
+                                ["spread"] = "page-spread-left",
+                                ["doublepage"] = "false",
+                                ["height"] = string.Empty,
+                                ["width"] = string.Empty
+                            });
+
+                            i++;
+                        }
                     }
                 }
             }
@@ -1070,7 +1204,7 @@ namespace epub2cbz_gui
                 .Where(a => a.Attribute("id")?.Value == dcRole)
                 .Select(a => a?.Value)]);
             }
-            return string.Join(" &amp; ", dcRoles.Select(a => a?.Trim()));
+            return string.Join(" & ", dcRoles.Select(a => a?.Trim()));
         }
 
         private static (Dictionary<string, string?>, string readDir) ParseMetadataXml(XDocument xmlDoc)
@@ -1112,7 +1246,7 @@ namespace epub2cbz_gui
                     List<string> dcAuthors = [.. xmlMetadata.Descendants(dc + "creator")
                         .Select(element => element.Value)
                         .Distinct()];
-                    metadata["Authors"] = string.Join(" &amp; ", dcAuthors.Select(a => a.Trim()));
+                    metadata["Authors"] = string.Join(" & ", dcAuthors.Select(a => a.Trim()));
                 }
 
                 if (PopupSettings.CheckboxStates.CheckboxLanguageState)
@@ -1541,7 +1675,7 @@ namespace epub2cbz_gui
 
                     if (numberWideImages > 0)
                     {
-                        if (bookFull[i]["doublepage"] == "true")
+                        if (i > 0 && bookFull[i]["doublepage"] == "true")
                         {
                             MemoryStream encodedDataLeft = new();
                             MemoryStream encodedDataRight = new();
@@ -1980,9 +2114,9 @@ namespace epub2cbz_gui
 
             if (!string.IsNullOrEmpty(actualFilename))
             {
-                if (actualFilename.EndsWith(".xhtml") ||
-                    actualFilename.EndsWith(".html") ||
-                    actualFilename.EndsWith(".xml"))
+                if (actualFilename.EndsWith(".xhtml", StringComparison.InvariantCultureIgnoreCase) ||
+                    actualFilename.EndsWith(".html", StringComparison.InvariantCultureIgnoreCase) ||
+                    actualFilename.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))
                 {
                     ZipArchiveEntry fileEntry = entryMap.GetValueOrDefault(actualFilename)!;
                     using StreamReader reader = new(fileEntry.Open());
@@ -2023,7 +2157,7 @@ namespace epub2cbz_gui
                         {
                             foreach (var itemSrcListFile in itemSrcList)
                             {
-                                if (!itemSrcListFile.Value.EndsWith(".png"))
+                                if (!itemSrcListFile.Value.EndsWith(".png", StringComparison.InvariantCultureIgnoreCase))
                                 {
                                     itemSrc = itemSrcListFile.Value;
                                     break;
@@ -2302,10 +2436,29 @@ namespace epub2cbz_gui
                     {
                         xmlWriter.WriteAttributeString("DoublePage", "True");
                     }
-                    if (PopupSettings.CheckboxStates.CheckboxChaptersState
-                        && bookFull[i].TryGetValue("bookmark", out string? valueBookmark))
+                    if (PopupSettings.CheckboxStates.CheckboxChaptersState)
                     {
-                        xmlWriter.WriteAttributeString("Bookmark", valueBookmark);
+                        if (PopupSettings.CheckboxStates.CheckboxOffsetChaptersState)
+                        {
+                            if (i <= 1)
+                            {
+                                if (bookFull[i].TryGetValue("bookmark", out string? valueBookmark))
+                                {
+                                    xmlWriter.WriteAttributeString("Bookmark", valueBookmark);
+                                }
+                            }
+                            else if (bookFull[i - 1].TryGetValue("bookmark", out string? valueBookmark))
+                            {
+                                xmlWriter.WriteAttributeString("Bookmark", valueBookmark);
+                            }
+                        }
+                        else
+                        {
+                            if (bookFull[i].TryGetValue("bookmark", out string? valueBookmark))
+                            {
+                                xmlWriter.WriteAttributeString("Bookmark", valueBookmark);
+                            }
+                        }
                     }
                     if (PopupSettings.CheckboxStates.CheckboxImageSizeState)
                     {
@@ -2384,14 +2537,24 @@ namespace epub2cbz_gui
             string epubFilename,
             bool? correctSpread)
         {
+            bool wasWide = false;
+
             if (PopupSettings.CheckboxStates.CheckboxHigherResolutionCover
                 && !string.IsNullOrEmpty(bookFull[0]["height"])
                 && !string.IsNullOrEmpty(bookFull[1]["height"]))
             {
-                if (int.Parse(bookFull[0]["height"]) > int.Parse(bookFull[1]["height"])) bookFull.RemoveAt(1);
+                if (int.Parse(bookFull[0]["height"]) > int.Parse(bookFull[1]["height"]))
+                {
+                    if (bookFull[1]["doublepage"] == "true") wasWide = true;
+                    bookFull.RemoveAt(1);
+                }
                 else bookFull.RemoveAt(0);
             }
-            else bookFull.RemoveAt(1);
+            else
+            {
+                if (bookFull[1]["doublepage"] == "true") wasWide = true;
+                bookFull.RemoveAt(1);
+            }
 
 #if DEBUG
             string debugMessage = string.Empty;
@@ -2399,7 +2562,9 @@ namespace epub2cbz_gui
 
             if (PopupSettings.CheckboxStates.CheckboxPageSpreadState)
             {
-                if (correctSpread == true)
+                if (correctSpread == true
+                    && wasWide == false
+                    && bookFull[1]["doublepage"] == "false")
                 {
                     bool isBlank = false;
 
@@ -2407,6 +2572,11 @@ namespace epub2cbz_gui
                         && PopupSettings.CheckboxStates.CheckboxBlankImageState)
                     {
                         isBlank = IsImageBlankWhite(entryMap, bookFull[1]["image"]);
+                    }
+                    else if (bookFull[1]["image"] == string.Empty
+                        && PopupSettings.CheckboxStates.CheckboxBlankImageState)
+                    {
+                        isBlank = true;
                     }
 
                     // add blank image to keep correct page spread
@@ -2627,12 +2797,13 @@ namespace epub2cbz_gui
 
             List<Dictionary<string, string>> bookFull = ParseOpfPagesXml(entryMap, epubFile, opfPath, opfDoc, pages, metadata);
 
+            bookFull = ParseAlternativeCover(entryMap, epubFile, opfDoc, bookFull);
+
             if (PopupSettings.CheckboxStates.CheckboxPageSpreadState)
             {
                 bookFull = FixPageAlignmentPost(bookFull, readingDirection);
             }
 
-            bookFull = ParseAlternativeCover(entryMap, epubFile, opfDoc, bookFull);
             List<Dictionary<string, string>> chapters = ParseEpubToc(entryMap, epubFile, opfDoc, opfPath, metadata);
             chapters = ParseAlternativeToc(entryMap, opfDoc, chapters, bookFull);
             bool? correctSpread = CheckPageSpread(readingDirection, bookFull);

@@ -50,7 +50,6 @@
             checkBoxSettingsComicInfoPageCount = new CheckBox();
             groupBoxExperimental = new GroupBox();
             tableLayoutPanelExperimental = new TableLayoutPanel();
-            checkBoxSettingsExperimentalCheckDRMProtection = new CheckBox();
             checkBoxSettingsExperimentalSpreadInsertBlank = new CheckBox();
             checkBoxSettingsExperimentalCoverResolution = new CheckBox();
             checkBoxSettingsExperimentalChapterFolders = new CheckBox();
@@ -64,6 +63,9 @@
             checkBoxSettingsExperimentalMetadataTitle = new CheckBox();
             checkBoxSettingsExperimentalAddBlankPage = new CheckBox();
             checkBoxSettingsResizingEnable = new CheckBox();
+            checkBoxSettingsExperimentalCheckDRMProtection = new CheckBox();
+            checkBoxSettingsExperimentalRemoveFirstPage = new CheckBox();
+            checkBoxSettingsExperimentalOffsetChapters = new CheckBox();
             toolTipSettings = new ToolTip(components);
             dropDownCompressionLevel = new ComboBox();
             groupBoxCompressionLevel = new GroupBox();
@@ -103,7 +105,6 @@
             panelSettingsCbzZip = new Panel();
             tableLayoutPanelSettingsBottom = new TableLayoutPanel();
             tableLayoutPanel1 = new TableLayoutPanel();
-            checkBoxSettingsExperimentalRemoveFirstPage = new CheckBox();
             groupBoxComicInfo.SuspendLayout();
             tableLayoutPanelComicInfo.SuspendLayout();
             groupBoxExperimental.SuspendLayout();
@@ -417,6 +418,7 @@
             tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsResizingEnable, 0, 5);
             tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalCheckDRMProtection, 0, 7);
             tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalRemoveFirstPage, 1, 3);
+            tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalOffsetChapters, 1, 7);
             tableLayoutPanelExperimental.Dock = DockStyle.Fill;
             tableLayoutPanelExperimental.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
             tableLayoutPanelExperimental.Location = new Point(3, 19);
@@ -433,18 +435,6 @@
             tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanelExperimental.Size = new Size(541, 201);
             tableLayoutPanelExperimental.TabIndex = 207;
-            // 
-            // checkBoxSettingsExperimentalCheckDRMProtection
-            // 
-            checkBoxSettingsExperimentalCheckDRMProtection.Anchor = AnchorStyles.Left;
-            checkBoxSettingsExperimentalCheckDRMProtection.AutoSize = true;
-            checkBoxSettingsExperimentalCheckDRMProtection.Location = new Point(5, 179);
-            checkBoxSettingsExperimentalCheckDRMProtection.Margin = new Padding(2, 1, 2, 1);
-            checkBoxSettingsExperimentalCheckDRMProtection.Name = "checkBoxSettingsExperimentalCheckDRMProtection";
-            checkBoxSettingsExperimentalCheckDRMProtection.Size = new Size(195, 18);
-            checkBoxSettingsExperimentalCheckDRMProtection.TabIndex = 35;
-            checkBoxSettingsExperimentalCheckDRMProtection.Text = "Check if files are DRM protected";
-            checkBoxSettingsExperimentalCheckDRMProtection.UseVisualStyleBackColor = false;
             // 
             // checkBoxSettingsExperimentalSpreadInsertBlank
             // 
@@ -608,6 +598,44 @@
             checkBoxSettingsResizingEnable.Text = "Resize images";
             checkBoxSettingsResizingEnable.UseVisualStyleBackColor = false;
             checkBoxSettingsResizingEnable.CheckedChanged += CheckBoxSettingsResizingEnable_CheckedChanged;
+            // 
+            // checkBoxSettingsExperimentalCheckDRMProtection
+            // 
+            checkBoxSettingsExperimentalCheckDRMProtection.Anchor = AnchorStyles.Left;
+            checkBoxSettingsExperimentalCheckDRMProtection.AutoSize = true;
+            checkBoxSettingsExperimentalCheckDRMProtection.Location = new Point(5, 179);
+            checkBoxSettingsExperimentalCheckDRMProtection.Margin = new Padding(2, 1, 2, 1);
+            checkBoxSettingsExperimentalCheckDRMProtection.Name = "checkBoxSettingsExperimentalCheckDRMProtection";
+            checkBoxSettingsExperimentalCheckDRMProtection.Size = new Size(195, 18);
+            checkBoxSettingsExperimentalCheckDRMProtection.TabIndex = 35;
+            checkBoxSettingsExperimentalCheckDRMProtection.Text = "Check if files are DRM protected";
+            checkBoxSettingsExperimentalCheckDRMProtection.UseVisualStyleBackColor = false;
+            // 
+            // checkBoxSettingsExperimentalRemoveFirstPage
+            // 
+            checkBoxSettingsExperimentalRemoveFirstPage.Anchor = AnchorStyles.Left;
+            checkBoxSettingsExperimentalRemoveFirstPage.AutoSize = true;
+            checkBoxSettingsExperimentalRemoveFirstPage.Location = new Point(272, 81);
+            checkBoxSettingsExperimentalRemoveFirstPage.Margin = new Padding(2, 1, 2, 1);
+            checkBoxSettingsExperimentalRemoveFirstPage.Name = "checkBoxSettingsExperimentalRemoveFirstPage";
+            checkBoxSettingsExperimentalRemoveFirstPage.Size = new Size(121, 19);
+            checkBoxSettingsExperimentalRemoveFirstPage.TabIndex = 28;
+            checkBoxSettingsExperimentalRemoveFirstPage.Text = "Remove first page";
+            checkBoxSettingsExperimentalRemoveFirstPage.UseVisualStyleBackColor = false;
+            // 
+            // checkBoxSettingsExperimentalOffsetChapters
+            // 
+            checkBoxSettingsExperimentalOffsetChapters.Anchor = AnchorStyles.Left;
+            checkBoxSettingsExperimentalOffsetChapters.AutoSize = true;
+            checkBoxSettingsExperimentalOffsetChapters.Location = new Point(272, 179);
+            checkBoxSettingsExperimentalOffsetChapters.Margin = new Padding(2, 1, 2, 1);
+            checkBoxSettingsExperimentalOffsetChapters.Name = "checkBoxSettingsExperimentalOffsetChapters";
+            checkBoxSettingsExperimentalOffsetChapters.Size = new Size(100, 18);
+            checkBoxSettingsExperimentalOffsetChapters.TabIndex = 36;
+            checkBoxSettingsExperimentalOffsetChapters.Text = "Shift Chapters";
+            toolTipSettings.SetToolTip(checkBoxSettingsExperimentalOffsetChapters, "Affected titles may include:\r\n- Dr. Mashirito's Ultimate Manga Techniques\r\n- Fist of the North Star v17\r\n- Fist of the North Star v18\r\n- Moan: Junji Ito Story Collection\r\n- Real v16");
+            checkBoxSettingsExperimentalOffsetChapters.UseVisualStyleBackColor = false;
+            checkBoxSettingsExperimentalOffsetChapters.Visible = false;
             // 
             // dropDownCompressionLevel
             // 
@@ -1110,18 +1138,6 @@
             tableLayoutPanel1.Size = new Size(553, 520);
             tableLayoutPanel1.TabIndex = 3;
             // 
-            // checkBoxSettingsExperimentalRemoveFirstPage
-            // 
-            checkBoxSettingsExperimentalRemoveFirstPage.Anchor = AnchorStyles.Left;
-            checkBoxSettingsExperimentalRemoveFirstPage.AutoSize = true;
-            checkBoxSettingsExperimentalRemoveFirstPage.Location = new Point(272, 81);
-            checkBoxSettingsExperimentalRemoveFirstPage.Margin = new Padding(2, 1, 2, 1);
-            checkBoxSettingsExperimentalRemoveFirstPage.Name = "checkBoxSettingsExperimentalRemoveFirstPage";
-            checkBoxSettingsExperimentalRemoveFirstPage.Size = new Size(121, 19);
-            checkBoxSettingsExperimentalRemoveFirstPage.TabIndex = 28;
-            checkBoxSettingsExperimentalRemoveFirstPage.Text = "Remove first page";
-            checkBoxSettingsExperimentalRemoveFirstPage.UseVisualStyleBackColor = false;
-            // 
             // PopupSettings
             // 
             AcceptButton = buttonSettingsOK;
@@ -1263,5 +1279,6 @@
         private Panel panelSettingsCbzZip;
         private TableLayoutPanel tableLayoutPanel1;
         private CheckBox checkBoxSettingsExperimentalRemoveFirstPage;
+        private CheckBox checkBoxSettingsExperimentalOffsetChapters;
     }
 }

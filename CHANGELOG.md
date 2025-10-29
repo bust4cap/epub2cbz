@@ -1,3 +1,9 @@
+## v2025.10.29-1
+- Fixed page alignment in more cases
+- Fixed chapter detection in more cases
+- Fixed certain display issues for authors and other contributors
+- Other small code fixes
+
 ## v2025.10.19-2
 - Adjusted the "Remove first page" option to only remove the page if it is blank
 

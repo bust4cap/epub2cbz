@@ -39,6 +39,8 @@ namespace epub2cbz_gui
             public static bool CheckboxChapterFoldersState { get; set; } = false;
             public static bool CheckboxRemoveFirstPageState { get; set; } = false;
 
+            public static bool CheckboxOffsetChaptersState { get; set; } = false;
+
             public static bool CheckboxReplaceSeriesState { get; set; } = false;
             public static string? TextboxReplaceSeriesState { get; set; } = string.Empty;
 
@@ -103,6 +105,8 @@ namespace epub2cbz_gui
             CheckboxStates.CheckboxRemoveFirstPageState = checkBoxSettingsExperimentalRemoveFirstPage.Checked;
             CheckboxStates.CheckboxMetadataTitleState = checkBoxSettingsExperimentalMetadataTitle.Checked;
             CheckboxStates.CheckboxChapterFoldersState = checkBoxSettingsExperimentalChapterFolders.Checked;
+
+            CheckboxStates.CheckboxOffsetChaptersState = checkBoxSettingsExperimentalOffsetChapters.Checked;
 
             CheckboxStates.CheckboxReplaceSeriesState = checkBoxSettingsReplaceSeries.Checked;
             CheckboxStates.TextboxReplaceSeriesState = textBoxReplaceSeries.Text;
@@ -231,6 +235,8 @@ namespace epub2cbz_gui
             checkBoxSettingsExperimentalChapterFolders.Checked = false;
             checkBoxSettingsReplaceSeries.Checked = false;
             textBoxReplaceSeries.Text = string.Empty;
+
+            checkBoxSettingsExperimentalOffsetChapters.Checked = false;
 
             radioButtonSettingsZip.Checked = false;
             radioButtonSettingsCbz.Checked = true;
@@ -406,6 +412,11 @@ namespace epub2cbz_gui
             checkBoxSettingsExperimentalRemoveFirstPage.Checked = CheckboxStates.CheckboxRemoveFirstPageState;
             checkBoxSettingsExperimentalMetadataTitle.Checked = CheckboxStates.CheckboxMetadataTitleState;
             checkBoxSettingsExperimentalChapterFolders.Checked = CheckboxStates.CheckboxChapterFoldersState;
+
+#if DEBUG
+            checkBoxSettingsExperimentalOffsetChapters.Visible = true;
+#endif
+            checkBoxSettingsExperimentalOffsetChapters.Checked = CheckboxStates.CheckboxOffsetChaptersState;
 
             checkBoxSettingsReplaceSeries.Checked = CheckboxStates.CheckboxReplaceSeriesState;
             textBoxReplaceSeries.Text = CheckboxStates.TextboxReplaceSeriesState;
