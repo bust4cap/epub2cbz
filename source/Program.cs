@@ -143,9 +143,7 @@ namespace epub2cbz_gui
 
                 foreach (var chapter in chapters)
                 {
-                    string chapterPage = Path.GetFileName(chapter["page"].Split('#').FirstOrDefault()) ?? string.Empty;
-
-                    if (chapterPage == Path.GetFileName(bookFull[i]["page"].Split('#')[0]))
+                    if (chapter["page"] == Path.GetFileName(bookFull[i]["page"]))
                     {
                         bookmark = chapter["title"].Trim();
                         break;
@@ -455,11 +453,11 @@ namespace epub2cbz_gui
             bool? correctSpread,
             string epubFile)
         {
-            if (chapters.Count > 0 &&
-                    Path.GetFileName(chapters[0]["page"].Split('#')[0]) == Path.GetFileName(bookFull[1]["page"]) &&
-                    (chapters[0]["title"].Contains("Cover")
-                    || chapters[0]["title"] == "カバー"
-                    || chapters[0]["title"] == "表紙"))
+            if (chapters.Count > 0
+                && chapters[0]["page"] == Path.GetFileName(bookFull[1]["page"])
+                && (chapters[0]["title"].Contains("Cover")
+                || chapters[0]["title"] == "カバー"
+                || chapters[0]["title"] == "表紙"))
             {
                 (bookFull, correctSpread) = RemoveDuplicateCover(entryMap, bookFull, epubFilename, correctSpread);
             }
@@ -1344,12 +1342,12 @@ namespace epub2cbz_gui
                     {
                         foreach (var book in bookFull)
                         {
-                            if (Path.GetFileName(book["page"].Split('#')[0]) == Path.GetFileName(entry.Split('#')[0]))
+                            if (Path.GetFileName(book["page"]) == Path.GetFileName(entry.Split('#')[0]))
                             {
                                 newChapters.Add(new Dictionary<string, string>()
                                 {
                                     ["title"] = $"Page {bookFull.IndexOf(book) + 1}",
-                                    ["page"] = RemoveStartingDots(entry.Split('#')[0]),
+                                    ["page"] = Path.GetFileName(entry.Split('#')[0]),
                                     ["image"] = string.Empty
                                 });
                                 break;
@@ -1377,7 +1375,7 @@ namespace epub2cbz_gui
 
             foreach (var newChapter in newChapters)
             {
-                string fileName = Path.GetFileName(newChapter["page"].Split('#')[0]);
+                string fileName = newChapter["page"];
 
                 if (seen.Contains(fileName)) continue;
 
@@ -1391,7 +1389,8 @@ namespace epub2cbz_gui
         private static List<Dictionary<string, string>> ParseAlternativeToc(Dictionary<string, ZipArchiveEntry> entryMap,
             XDocument opfDoc,
             List<Dictionary<string, string>> chapters,
-            List<Dictionary<string, string>> bookFull)
+            List<Dictionary<string, string>> bookFull,
+            string opfPath)
         {
             List<Dictionary<string, string>> newToc = [];
             string altTocFile = string.Empty;
@@ -1403,11 +1402,12 @@ namespace epub2cbz_gui
 
             if (!string.IsNullOrEmpty(altTocFile))
             {
+                altTocFile = ResolveRootPath(opfPath, altTocFile.Split('#')[0]);
                 foreach (var book in bookFull)
                 {
                     int index = bookFull.IndexOf(book);
 
-                    if (Path.GetFileName(book["page"]) == Path.GetFileName(altTocFile.Split('#')[0]))
+                    if (book["page"] == altTocFile)
                     {
                         newToc = GetTocFile(entryMap, chapters, bookFull, index);
                         break;
@@ -2010,7 +2010,7 @@ namespace epub2cbz_gui
                                 xhtmlChapters.Add(new Dictionary<string, string>()
                                 {
                                     ["title"] = title,
-                                    ["page"] = page,
+                                    ["page"] = Path.GetFileName(page),
                                     ["image"] = imagePath ?? string.Empty
                                 });
                             }
@@ -2036,7 +2036,7 @@ namespace epub2cbz_gui
                             ncxChapters.Add(new Dictionary<string, string>()
                             {
                                 ["title"] = title,
-                                ["page"] = page,
+                                ["page"] = Path.GetFileName(page),
                                 ["image"] = imagePath ?? string.Empty
                             });
                         }
@@ -2053,7 +2053,7 @@ namespace epub2cbz_gui
 
             for (int i = chapters.Count - 2; i >= 0; i--)
             {
-                if (chapters[i]["page"].Split('#')[0] == chapters[i + 1]["page"].Split('#')[0])
+                if (chapters[i]["page"] == chapters[i + 1]["page"])
                 {
                     chapters[i]["title"] = chapters[i]["title"] + " - " + chapters[i + 1]["title"];
                     chapters.RemoveAt(i + 1);
@@ -2061,13 +2061,6 @@ namespace epub2cbz_gui
             }
 
             return chapters;
-        }
-
-        private static string RemoveStartingDots(string path)
-        {
-            return path.StartsWith("../") ? path[3..] :
-                   path.StartsWith("./") ? path[2..] :
-                   path;
         }
 
         private static string FindImagePathInCss(Dictionary<string, ZipArchiveEntry> entryMap,
@@ -2817,7 +2810,7 @@ namespace epub2cbz_gui
             }
 
             List<Dictionary<string, string>> chapters = ParseEpubToc(entryMap, epubFile, opfDoc, opfPath, metadata);
-            chapters = ParseAlternativeToc(entryMap, opfDoc, chapters, bookFull);
+            chapters = ParseAlternativeToc(entryMap, opfDoc, chapters, bookFull, opfPath);
             bool? correctSpread = CheckPageSpread(readingDirection, bookFull);
 
 #if DEBUG
