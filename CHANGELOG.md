@@ -1,3 +1,6 @@
+## v2025.11.14-1
+- Fixed potential major issues with page order
+
 ## v2025.10.29-1
 - Fixed page alignment in more cases
 - Fixed chapter detection in more cases

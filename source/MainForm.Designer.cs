@@ -99,7 +99,7 @@ partial class MainForm
         checkBoxComicInfo.Location = new Point(142, 14);
         checkBoxComicInfo.Margin = new Padding(2, 1, 2, 1);
         checkBoxComicInfo.Name = "checkBoxComicInfo";
-        checkBoxComicInfo.Size = new Size(142, 19);
+        checkBoxComicInfo.Size = new Size(141, 19);
         checkBoxComicInfo.TabIndex = 2;
         checkBoxComicInfo.Text = Resources.ComicInfoCheckboxText;
         checkBoxComicInfo.UseVisualStyleBackColor = true;
@@ -113,7 +113,7 @@ partial class MainForm
         checkBoxImages.Location = new Point(288, 14);
         checkBoxImages.Margin = new Padding(2, 1, 2, 1);
         checkBoxImages.Name = "checkBoxImages";
-        checkBoxImages.Size = new Size(103, 19);
+        checkBoxImages.Size = new Size(102, 19);
         checkBoxImages.TabIndex = 3;
         checkBoxImages.Text = Resources.ImagesCheckboxText;
         checkBoxImages.UseVisualStyleBackColor = true;

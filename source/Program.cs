@@ -26,8 +26,8 @@ namespace epub2cbz_gui
     public static class VersionDate
     {
         public static string GetVersionDateYear { get; } = "2025";
-        public static string GetVersionDateMonth { get; } = "10";
-        public static string GetVersionDateDay { get; } = "29";
+        public static string GetVersionDateMonth { get; } = "11";
+        public static string GetVersionDateDay { get; } = "14";
         public static int GetVersionNumber { get; } = 1;
     }
 
@@ -122,6 +122,16 @@ namespace epub2cbz_gui
             Blank,
             Cbz,
             Split
+        }
+
+        public static string ResolveRootPath(string rootFile, string relativeFile)
+        {
+            string decodedPath = WebUtility.UrlDecode(relativeFile);
+
+            Uri baseUri = new(new Uri("dummy://root/"), rootFile);
+            Uri resolvedUri = new(baseUri, decodedPath);
+
+            return resolvedUri.AbsolutePath.TrimStart('/');
         }
 
         private static List<Dictionary<string, string>> IntegrateChapters(List<Dictionary<string, string>> bookFull,
@@ -515,42 +525,29 @@ namespace epub2cbz_gui
         }
 
         private static bool CheckDRMProtection(Dictionary<string, ZipArchiveEntry> entryMap,
-            List<Dictionary<string, string>> pages)
+            string filename)
         {
             bool isDRMProtected = true;
 
-            string filename = pages[0]["pages"].Split('#')[0];
-            filename = RemoveStartingDots(filename);
-
-            string actualFilename = entryMap
-                    .Where(map => map.Key.Contains(filename, StringComparison.InvariantCultureIgnoreCase))
-                    .Select(map => map.Key)
-                    .FirstOrDefault(string.Empty);
-
-            if (!string.IsNullOrEmpty(actualFilename))
+            if (!entryMap.TryGetValue(filename, out var fileEntry))
             {
-                if (actualFilename.EndsWith(".xhtml", StringComparison.InvariantCultureIgnoreCase) ||
-                    actualFilename.EndsWith(".html", StringComparison.InvariantCultureIgnoreCase) ||
-                    actualFilename.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))      // Walter Isaacson - Steve Jobs
-                {
-                    ZipArchiveEntry fileEntry = entryMap
-                        .Where(map => map.Key.Contains(filename, StringComparison.InvariantCultureIgnoreCase))
-                        .Select(map => map.Value)
-                        .FirstOrDefault()!;
+                return isDRMProtected;
+            }
 
+            if (!string.IsNullOrEmpty(filename))
+            {
+                if (filename.EndsWith(".xhtml", StringComparison.InvariantCultureIgnoreCase) ||
+                    filename.EndsWith(".html", StringComparison.InvariantCultureIgnoreCase) ||
+                    filename.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))      // Walter Isaacson - Steve Jobs
+                {
                     using StreamReader reader = new(fileEntry.Open());
                     string fileContent = reader.ReadToEnd();
                     fileContent = Encoding.UTF8.GetString(reader.CurrentEncoding.GetBytes(fileContent));
                     if (fileContent.Contains("html", StringComparison.InvariantCultureIgnoreCase)) isDRMProtected = false;
                 }
-                else if (imageExtensions.Any(ext => actualFilename.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase)))
+                else if (imageExtensions.Any(ext => filename.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     byte[] buffer = new byte[4];
-
-                    ZipArchiveEntry fileEntry = entryMap
-                        .Where(map => map.Key.Contains(filename, StringComparison.InvariantCultureIgnoreCase))
-                        .Select(map => map.Value)
-                        .FirstOrDefault()!;
 
                     using Stream fileStream = fileEntry.Open();
 
@@ -927,18 +924,18 @@ namespace epub2cbz_gui
 
             for (int i = 0; i < dicPagesIdsSpread.Count; i++)
             {
-                string? imagePath = FindImagePathInFile(entryMap, epubFile, RemoveStartingDots(dicPagesIdsSpread[i]["pages"].Split('#')[0]), metadata);
+                string? imagePath = FindImagePathInFile(entryMap, epubFile, dicPagesIdsSpread[i]["pages"].Split('#')[0], metadata, opfPath);
                 if (!string.IsNullOrEmpty(imagePath))
                 {
-                    imagePath = entryMap
-                        .Where(map => map.Key.Contains(RemoveStartingDots(imagePath), StringComparison.InvariantCultureIgnoreCase))
-                        .Select(map => map.Key)
-                        .FirstOrDefault(string.Empty);
+                    if (!entryMap.TryGetValue(imagePath, out var bookEntry))
+                    {
 
-                    if (!string.IsNullOrEmpty(imagePath))
+                    }
+
+                    if (!string.IsNullOrEmpty(imagePath)
+                        && bookEntry != null)
                     {
                         // Handle wide images first
-                        ZipArchiveEntry bookEntry = entryMap.GetValueOrDefault(imagePath)!;
                         using var streamDimensions = bookEntry.Open();
 
                         int width = 0;
@@ -971,15 +968,17 @@ namespace epub2cbz_gui
                     string cssImage = FindImagePathInCss(entryMap, cssPath, dicPagesIdsSpread[i]["ids"]);
                     if (!string.IsNullOrEmpty(cssImage))
                     {
-                        cssImage = entryMap
-                            .Where(map => map.Key.Contains(RemoveStartingDots(cssImage), StringComparison.InvariantCultureIgnoreCase))
-                            .Select(map => map.Key)
-                            .FirstOrDefault(string.Empty);
+                        cssImage = ResolveRootPath(cssPath, cssImage);
 
-                        if (!string.IsNullOrEmpty(cssImage))
+                        if (!entryMap.TryGetValue(cssImage, out var bookEntry))
+                        {
+
+                        }
+
+                        if (!string.IsNullOrEmpty(cssImage)
+                            && bookEntry != null)
                         {
                             // Handle wide images first
-                            ZipArchiveEntry bookEntry = entryMap.GetValueOrDefault(cssImage)!;
                             using var streamDimensions = bookEntry.Open();
 
                             int width = 0;
@@ -1036,15 +1035,13 @@ namespace epub2cbz_gui
             opfContent = opfContent.Replace("\0", string.Empty).Replace("\x01", string.Empty);
             opfContent = opfContent.Replace("&amp;", "&").Replace("&", "&amp;");
 
-            Dictionary<string, string?> pages = [];
-            List<Dictionary<string, string>> dicPagesIdsSpread = [];
-
             XDocument opfDoc = XDocument.Parse(opfContent);
 
             return opfDoc;
         }
 
-        private static List<Dictionary<string, string>> ParseSpineXml(XDocument opfDoc)
+        private static List<Dictionary<string, string>> ParseSpineXml(XDocument opfDoc,
+            string opfPath)
         {
             Dictionary<string, string?> pages = [];
             List<Dictionary<string, string>> dicPagesIdsSpread = [];
@@ -1066,6 +1063,8 @@ namespace epub2cbz_gui
                 if (opfManifest != null)
                 {
                     string? opfHref = (string?)opfManifest.Attribute("href");
+                    if (!string.IsNullOrEmpty(opfHref)) opfHref = ResolveRootPath(opfPath, opfHref);
+
                     dicPagesIdsSpread.Add(new Dictionary<string, string>()
                     {
                         ["pages"] = opfHref ?? string.Empty,
@@ -1323,13 +1322,13 @@ namespace epub2cbz_gui
             {
                 try
                 {
-                    string altTocPath = RemoveStartingDots(bookFull[number + i]["page"]);
+                    string altTocPath = bookFull[number + i]["page"];
 
-                    ZipArchiveEntry altTocEntry = entryMap
-                        .Where(map => map.Key.Contains(altTocPath!, StringComparison.InvariantCultureIgnoreCase))
-                        .Select(map => map.Value)
-                        .FirstOrDefault()!;
-                    using StreamReader reader = new(altTocEntry.Open());
+                    if (!entryMap.TryGetValue(altTocPath, out var altTocEntry))
+                    {
+
+                    }
+                    using StreamReader reader = new(altTocEntry!.Open());
                     string altTocContent = reader.ReadToEnd();
                     altTocContent = Encoding.UTF8.GetString(reader.CurrentEncoding.GetBytes(altTocContent));
 
@@ -1426,7 +1425,8 @@ namespace epub2cbz_gui
         private static List<Dictionary<string, string>> ParseAlternativeCover(Dictionary<string, ZipArchiveEntry> entryMap,
             string epubFile,
             XDocument opfDoc,
-            List<Dictionary<string, string>> bookFull)
+            List<Dictionary<string, string>> bookFull,
+            string opfPath)
         {
             string coverPath = string.Empty;
 
@@ -1445,19 +1445,20 @@ namespace epub2cbz_gui
             if (!string.IsNullOrEmpty(coverPath) &&
                 imageExtensions.Any(ext => coverPath.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase)))
             {
-                coverPath = RemoveStartingDots(coverPath);
+                string filename = ResolveRootPath(opfPath, coverPath);
 
-                string filename = entryMap
-                        .Where(map => map.Key.Contains(RemoveStartingDots(coverPath), StringComparison.InvariantCultureIgnoreCase))
-                        .Select(map => map.Key)
-                        .FirstOrDefault(string.Empty);
+                if (!entryMap.TryGetValue(filename, out var bookEntry))
+                {
 
-                if (!string.IsNullOrEmpty(filename) && filename != bookFull[0]["image"])
+                }
+
+                if (!string.IsNullOrEmpty(filename)
+                    && filename != bookFull[0]["image"]
+                    && bookEntry != null)
                 {
 #if DEBUG
                     AppendColoredText($"DEBUG: '{Path.GetFileNameWithoutExtension(epubFile)}' - Alternative Cover" + Environment.NewLine, System.Drawing.Color.DarkOrange);
 #endif
-                    ZipArchiveEntry bookEntry = entryMap.GetValueOrDefault(filename)!;
                     using var streamDimensions = bookEntry.Open();
 
                     int width = 0;
@@ -1994,13 +1995,16 @@ namespace epub2cbz_gui
                             {
                                 string title = string.Join(" - ", e);
                                 var page = e.Key.ToString().Split('#')[0] ?? string.Empty;
-                                string? imagePath = FindImagePathInFile(entryMap, epubFile, RemoveStartingDots(page), metadata);
+
+                                page = ResolveRootPath(navPath, page);
+
+                                string? imagePath = FindImagePathInFile(entryMap, epubFile, page, metadata, opfPath);
                                 if (!string.IsNullOrEmpty(imagePath))
                                 {
-                                    imagePath = entryMap
-                                        .Where(map => map.Key.Contains(imagePath, StringComparison.InvariantCultureIgnoreCase))
-                                        .Select(map => map.Key)
-                                        .FirstOrDefault(string.Empty);
+                                    if (!entryMap.TryGetValue(imagePath, out var fileEntry))
+                                    {
+                                        imagePath = null;
+                                    }
                                 }
 
                                 xhtmlChapters.Add(new Dictionary<string, string>()
@@ -2019,13 +2023,15 @@ namespace epub2cbz_gui
                             string title = navPoint.Descendants(ncx + "text").FirstOrDefault()?.Value.Trim() ?? string.Empty;
                             var page = navPoint.Descendants(ncx + "content").FirstOrDefault()?.Attribute("src")?.Value.Split('#')[0] ?? string.Empty;
 
-                            string? imagePath = FindImagePathInFile(entryMap, epubFile, RemoveStartingDots(page), metadata);
+                            page = ResolveRootPath(navPath, page);
+
+                            string? imagePath = FindImagePathInFile(entryMap, epubFile, page, metadata, opfPath);
                             if (!string.IsNullOrEmpty(imagePath))
                             {
-                                imagePath = entryMap
-                                    .Where(map => map.Key.Contains(imagePath, StringComparison.InvariantCultureIgnoreCase))
-                                    .Select(map => map.Key)
-                                    .FirstOrDefault(string.Empty);
+                                if (!entryMap.TryGetValue(imagePath, out var fileEntry))
+                                {
+                                    imagePath = null;
+                                }
                             }
                             ncxChapters.Add(new Dictionary<string, string>()
                             {
@@ -2069,9 +2075,12 @@ namespace epub2cbz_gui
             string pageId)
         {
             string imagePath = string.Empty;
-            filename = RemoveStartingDots(filename);
 
-            ZipArchiveEntry fileEntry = entryMap.GetValueOrDefault(filename)!;
+            if (!entryMap.TryGetValue(filename, out var fileEntry))
+            {
+                return imagePath;
+            }
+
             using StreamReader reader = new(fileEntry.Open());
             string fileContent = reader.ReadToEnd();
             fileContent = Encoding.UTF8.GetString(reader.CurrentEncoding.GetBytes(fileContent));
@@ -2090,8 +2099,6 @@ namespace epub2cbz_gui
                 int endIndex = imagePath.LastIndexOf('\"');
 
                 imagePath = imagePath[startIndex..endIndex];
-
-                imagePath = RemoveStartingDots(imagePath);
             }
 
             return imagePath;
@@ -2099,18 +2106,19 @@ namespace epub2cbz_gui
 
         private static string? FindImagePathInFile(Dictionary<string, ZipArchiveEntry> entryMap,
             string epubFile,
-            string filename,
-            Dictionary<string, string?> metadata)
+            string actualFilename,
+            Dictionary<string, string?> metadata,
+            string opfPath)
         {
             string imagePath = string.Empty;
 
             string? authors = metadata.GetValueOrDefault("Authors", string.Empty);
             string? publisher = metadata.GetValueOrDefault("Publisher", string.Empty);
 
-            string actualFilename = entryMap
-                        .Where(map => map.Key.Contains(filename, StringComparison.InvariantCultureIgnoreCase))
-                        .Select(map => map.Key)
-                        .FirstOrDefault(string.Empty);
+            if (!entryMap.TryGetValue(actualFilename, out var fileEntry))
+            {
+                return null;
+            }
 
             if (!string.IsNullOrEmpty(actualFilename))
             {
@@ -2118,7 +2126,6 @@ namespace epub2cbz_gui
                     actualFilename.EndsWith(".html", StringComparison.InvariantCultureIgnoreCase) ||
                     actualFilename.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    ZipArchiveEntry fileEntry = entryMap.GetValueOrDefault(actualFilename)!;
                     using StreamReader reader = new(fileEntry.Open());
                     string fileContent = reader.ReadToEnd();
                     fileContent = Encoding.UTF8.GetString(reader.CurrentEncoding.GetBytes(fileContent));
@@ -2153,14 +2160,14 @@ namespace epub2cbz_gui
                     if (itemSrcList.Count > 1)
                     {
                         if (authors == "Shigeru Mizuki"
-                            || publisher == "Drawn &amp; Quarterly")
+                            || publisher == "Drawn & Quarterly")
                         {
                             foreach (var itemSrcListFile in itemSrcList)
                             {
                                 if (!itemSrcListFile.Value.EndsWith(".png", StringComparison.InvariantCultureIgnoreCase))
                                 {
-                                    itemSrc = itemSrcListFile.Value;
-                                    break;
+                                    itemSrc = ResolveRootPath(actualFilename, itemSrcListFile.Value);
+                                    //break;
                                 }
                             }
                         }
@@ -2171,15 +2178,17 @@ namespace epub2cbz_gui
 
                             foreach (var itemSrcListFile in itemSrcList)
                             {
-                                string itemSrcFile = entryMap
-                                    .Where(map => map.Key.Contains(RemoveStartingDots(itemSrcListFile.Value), StringComparison.InvariantCultureIgnoreCase))
-                                    .Select(map => map.Key)
-                                    .FirstOrDefault(string.Empty);
-                                ZipArchiveEntry bookEntry = entryMap.GetValueOrDefault(itemSrcFile)!;
+                                string itemSrcFile = ResolveRootPath(actualFilename, itemSrcListFile.Value);
+
+                                if (!entryMap.TryGetValue(itemSrcFile, out var bookEntry))
+                                {
+                                    return null;
+                                }
+
                                 using var stream = bookEntry.Open();
                                 (int width, int height) = GetImageDimensions(stream);
 
-                                imageData.Add((itemSrcListFile.Value, width, height));
+                                imageData.Add((itemSrcFile, width, height));
                             }
 
                             var (ImageSrc, Width, Height) = imageData
@@ -2192,23 +2201,26 @@ namespace epub2cbz_gui
                     }
                     else if (itemSrcList.Count == 1)
                     {
-                        itemSrc = (string)itemSrcList[0].Value;
+                        itemSrc = ResolveRootPath(actualFilename, (string)itemSrcList[0].Value);
                     }
 
                     if (string.IsNullOrEmpty(itemSrc))
                     {
                         var itemXlink = fileDoc.Descendants(ns + "body").Descendants(svg + "image").FirstOrDefault();
-                        if (itemXlink != null) imagePath = (string)itemXlink.Attribute(xlink + "href")!;
+                        if (itemXlink != null)
+                        {
+                            imagePath = ResolveRootPath(actualFilename, (string)itemXlink.Attribute(xlink + "href")!);
+                        }
                     }
                     else imagePath = itemSrc;
                 }
                 else if (imageExtensions.Any(ext => actualFilename.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    imagePath = actualFilename;
+                    imagePath = ResolveRootPath(opfPath, actualFilename);
                 }
             }
 
-            return RemoveStartingDots(imagePath);
+            return imagePath;
         }
 
         private static (string seriesName, string volumeNumber, string isVolumeOrChapter) GetVolumeAndChapterNumber(string epubFilename)
@@ -2499,14 +2511,16 @@ namespace epub2cbz_gui
             else throw new Exception(Resources.OPFFileNotFound);
         }
 
-        private static string GetCssFile(string opfPath, XDocument opfDoc)
+        private static string GetCssFile(string opfPath,
+            XDocument opfDoc)
         {
-            opfPath = opfPath[..(opfPath.LastIndexOf('/') + 1)];
-
             XNamespace opf = "http://www.idpf.org/2007/opf";
 
             var item = opfDoc.Descendants(opf + "manifest").Descendants(opf + "item").FirstOrDefault(i => (string)i.Attribute("media-type")! == "text/css");
-            if (item != null) opfPath += (string)item.Attribute("href")!;
+            if (item != null)
+            {
+                opfPath = ResolveRootPath(opfPath, (string)item.Attribute("href")!);
+            }
 
             return opfPath;
         }
@@ -2514,8 +2528,6 @@ namespace epub2cbz_gui
         private static List<string> GetNcxFile(XDocument opfDoc,
             string opfPath)
         {
-            opfPath = opfPath[..(opfPath.LastIndexOf('/') + 1)];
-
             XNamespace opf = "http://www.idpf.org/2007/opf";
 
             var navigationItems = opfDoc.Descendants(opf + "manifest")
@@ -2527,7 +2539,7 @@ namespace epub2cbz_gui
                                 .Select(item => (string)item.Attribute("href")!)
                                 .Distinct();
 
-            List<string> navPaths = [.. navigationItems.Select(item => opfPath + item)];
+            List<string> navPaths = [.. navigationItems.Select(item => ResolveRootPath(opfPath, item))];
 
             return navPaths;
         }
@@ -2749,12 +2761,12 @@ namespace epub2cbz_gui
             }
 
             XDocument opfDoc = GetOpfDocument(entryMap, opfPath);
-            List<Dictionary<string, string>> pages = ParseSpineXml(opfDoc);
+            List<Dictionary<string, string>> pages = ParseSpineXml(opfDoc, opfPath);
 
             /// Try to check if Epub is still DRM protected
             /// 
 
-            if (PopupSettings.CheckboxStates.CheckboxDRMProtectionState && CheckDRMProtection(entryMap, pages))
+            if (PopupSettings.CheckboxStates.CheckboxDRMProtectionState && CheckDRMProtection(entryMap, pages[0]["pages"].Split('#')[0]))
             {
                 Interlocked.Increment(ref numberCurrentEpub);
                 AppendColoredText($"({numberCurrentEpub.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "
@@ -2797,7 +2809,7 @@ namespace epub2cbz_gui
 
             List<Dictionary<string, string>> bookFull = ParseOpfPagesXml(entryMap, epubFile, opfPath, opfDoc, pages, metadata);
 
-            bookFull = ParseAlternativeCover(entryMap, epubFile, opfDoc, bookFull);
+            bookFull = ParseAlternativeCover(entryMap, epubFile, opfDoc, bookFull, opfPath);
 
             if (PopupSettings.CheckboxStates.CheckboxPageSpreadState)
             {
