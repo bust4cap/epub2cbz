@@ -1,3 +1,6 @@
+## v2025.11.15-2
+- Fixed epubs that only contain images
+
 ## v2025.11.15-1
 - Fixed chapter detection in more rare cases
 - Fixed timer display for conversions that take over an hour
