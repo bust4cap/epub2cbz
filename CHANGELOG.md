@@ -1,3 +1,7 @@
+## v2025.11.15-1
+- Fixed chapter detection in more rare cases
+- Fixed timer display for conversions that take over an hour
+
 ## v2025.11.14-1
 - Fixed potential major issues with page order
 

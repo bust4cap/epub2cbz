@@ -27,7 +27,7 @@ namespace epub2cbz_gui
     {
         public static string GetVersionDateYear { get; } = "2025";
         public static string GetVersionDateMonth { get; } = "11";
-        public static string GetVersionDateDay { get; } = "14";
+        public static string GetVersionDateDay { get; } = "15";
         public static int GetVersionNumber { get; } = 1;
     }
 
@@ -2998,7 +2998,7 @@ namespace epub2cbz_gui
             bool wasAborted,
             MainForm mainForm)
         {
-            AppendColoredText(Environment.NewLine + string.Format(Resources.Timer, ts.Minutes, ts.Seconds, ts.Milliseconds), System.Drawing.Color.White);
+            AppendColoredText(Environment.NewLine + string.Format(Resources.Timer, Math.Floor(ts.TotalMinutes), ts.Seconds, ts.Milliseconds), System.Drawing.Color.White);
 
             if (wasAborted)
             {
