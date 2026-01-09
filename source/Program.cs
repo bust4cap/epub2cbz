@@ -2342,7 +2342,7 @@ namespace epub2cbz_gui
                     .Replace("<br>", "\n")
                     .Replace("\u00A0", " ")); // non breaking space (Mail)
             }
-            xmlWriter.WriteElementString("Notes", "Created using: epub2cbz-gui");
+            xmlWriter.WriteElementString("Notes", "Created using: epub2cbz");
             if (PopupSettings.CheckboxStates.CheckboxDateState
                 && metadata.TryGetValue("Date", out string? dateValue)
                 && !string.IsNullOrEmpty(dateValue))
