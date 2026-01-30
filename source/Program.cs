@@ -423,18 +423,9 @@ namespace epub2cbz_gui
             ResizeOptions options = new()
             {
                 Size = new SixLabors.ImageSharp.Size(maxWidth, maxHeight),
-                Mode = ResizeMode.Max
+                Mode = ResizeMode.Max,
+                Sampler = KnownResamplers.Bicubic
             };
-
-            if (image.Height < maxHeight
-                && image.Width < maxWidth)
-            {
-                options.Sampler = KnownResamplers.Lanczos3;
-            }
-            else
-            {
-                options.Sampler = KnownResamplers.Bicubic;
-            }
 
             image.Mutate(x => x.Resize(options));
 
