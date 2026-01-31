@@ -2539,7 +2539,7 @@ namespace epub2cbz_gui
                 && !string.IsNullOrEmpty(bookFull[0]["height"])
                 && !string.IsNullOrEmpty(bookFull[1]["height"]))
             {
-                if (int.Parse(bookFull[0]["height"]) > int.Parse(bookFull[1]["height"]))
+                if (int.Parse(bookFull[0]["height"]) >= int.Parse(bookFull[1]["height"]))
                 {
                     if (bookFull[1]["doublepage"] == "true") wasWide = true;
                     bookFull.RemoveAt(1);
