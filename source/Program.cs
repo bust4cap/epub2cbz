@@ -187,7 +187,7 @@ namespace epub2cbz_gui
                 ulong dimageHash2 = dhashAlgorithm.Hash(image2);
                 double dpercentageImageSimilarity = CompareHash.Similarity(dimageHash1, dimageHash2);
 
-                if (dpercentageImageSimilarity >= 95)
+                if (dpercentageImageSimilarity >= 97.5)
                 {
 #if DEBUG
                     AppendColoredText($"DEBUG: '{Path.GetFileNameWithoutExtension(epubFile)}' - Duplicate Cover Similarity: "
