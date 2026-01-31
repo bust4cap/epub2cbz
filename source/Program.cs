@@ -25,10 +25,10 @@ namespace epub2cbz_gui
 {
     public static class VersionDate
     {
-        public static string GetVersionDateYear { get; } = "2025";
-        public static string GetVersionDateMonth { get; } = "11";
-        public static string GetVersionDateDay { get; } = "15";
-        public static int GetVersionNumber { get; } = 2;
+        public static string GetVersionDateYear { get; } = "2026";
+        public static string GetVersionDateMonth { get; } = "01";
+        public static string GetVersionDateDay { get; } = "31";
+        public static int GetVersionNumber { get; } = 1;
     }
 
     static class Program

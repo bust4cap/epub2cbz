@@ -1,3 +1,10 @@
+## v2026.01.31-1
+- Updated Notes value of ComicInfo
+- Always use Bicubic resampling for resizing images
+- Fixed duplicate Covers with the same height removing the wrong one
+- Increased duplicate Cover threshold from 95 to 97.5%
+
+
 ## v2025.11.15-2
 - Fixed epubs that only contain images
 
