@@ -633,7 +633,7 @@
             checkBoxSettingsExperimentalOffsetChapters.Size = new Size(100, 18);
             checkBoxSettingsExperimentalOffsetChapters.TabIndex = 36;
             checkBoxSettingsExperimentalOffsetChapters.Text = "Shift Chapters";
-            toolTipSettings.SetToolTip(checkBoxSettingsExperimentalOffsetChapters, "Affected titles may include:\r\n- Dr. Mashirito's Ultimate Manga Techniques\r\n- Fist of the North Star v17\r\n- Fist of the North Star v18\r\n- Moan: Junji Ito Story Collection\r\n- Real v16");
+            toolTipSettings.SetToolTip(checkBoxSettingsExperimentalOffsetChapters, "Affected titles may include:\r\n- Dr. Mashirito's Ultimate Manga Techniques\r\n- Fist of the North Star v17 - v18\r\n- Kingdom v01 - v05\r\n- Moan: Junji Ito Story Collection\r\n- Real v16");
             checkBoxSettingsExperimentalOffsetChapters.UseVisualStyleBackColor = false;
             checkBoxSettingsExperimentalOffsetChapters.Visible = false;
             // 

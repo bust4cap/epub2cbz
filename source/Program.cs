@@ -26,8 +26,8 @@ namespace epub2cbz_gui
     public static class VersionDate
     {
         public static string GetVersionDateYear { get; } = "2026";
-        public static string GetVersionDateMonth { get; } = "03";
-        public static string GetVersionDateDay { get; } = "17";
+        public static string GetVersionDateMonth { get; } = "04";
+        public static string GetVersionDateDay { get; } = "15";
         public static int GetVersionNumber { get; } = 1;
     }
 
@@ -1836,22 +1836,18 @@ namespace epub2cbz_gui
                     {
                         valueBookmark = valueBookmark.Replace("__", "_");
                     }
-                    valueBookmark = valueBookmark.Replace("Ä", "A").Replace("ä", "a")
-                        .Replace("Ö", "O").Replace("ö", "o")
-                        .Replace("Ü", "U").Replace("ü", "u")
-                        .Replace("ẞ", "SS").Replace("ß", "ss");
 
 
-                    valueBookmark = $"{currentChapterIndex.ToString().PadLeft((totalChapters - 1).ToString().Length, '0')} - {valueBookmark}";
+                    valueBookmark = $"{currentChapterIndex.ToString().PadLeft((totalChapters - 1).ToString().Length, '0')} - {valueBookmark}/";
                     currentChapterFolder = valueBookmark;
 
                     currentChapterIndex++;
                 }
 
                 string baseFileNameFirst = prefix + i.ToString().PadLeft((bookFull.Count + numberWideImages - 1).ToString().Length, '0') + Path.GetExtension(bookFull[i]["image"]);
-                string fullEntryPathFirst = Path.Combine(currentChapterFolder, baseFileNameFirst);
+                string fullEntryPathFirst = $"{currentChapterFolder}{baseFileNameFirst}";
                 string baseFileNameSecond = prefix + (i + 1).ToString().PadLeft((bookFull.Count + numberWideImages - 1).ToString().Length, '0') + Path.GetExtension(bookFull[i]["image"]);
-                string fullEntryPathSecond = Path.Combine(currentChapterFolder, baseFileNameSecond);
+                string fullEntryPathSecond = $"{currentChapterFolder}{baseFileNameSecond}";
 
                 if (!string.IsNullOrEmpty(bookFull[i]["image"]) &&
                     imageExtensions.Any(ext => bookFull[i]["image"].EndsWith(ext, StringComparison.InvariantCultureIgnoreCase)))
@@ -2026,7 +2022,7 @@ namespace epub2cbz_gui
                     }
                     else
                     {
-                        ZipArchiveEntry destinationEntry = destinationArchive.CreateEntry(Path.Combine(currentChapterFolder, prefix + i.ToString().PadLeft((bookFull.Count - 1).ToString().Length, '0') + Path.GetExtension(bookFull[i]["image"])), compressionLevel);
+                        ZipArchiveEntry destinationEntry = destinationArchive.CreateEntry($"{currentChapterFolder}{prefix + i.ToString().PadLeft((bookFull.Count - 1).ToString().Length, '0') + Path.GetExtension(bookFull[i]["image"])}", compressionLevel);
                         using Stream sourceStream = bookEntry.Open();
                         using Stream destinationStream = destinationEntry.Open();
 
@@ -2124,7 +2120,7 @@ namespace epub2cbz_gui
                         blankImage.SaveAsPng(memoryStream);
                         byte[] encodedData = memoryStream.ToArray();
 
-                        ZipArchiveEntry destinationEntry = destinationArchive.CreateEntry(Path.Combine(currentChapterFolder, prefix + i.ToString().PadLeft((bookFull.Count + numberWideImages - 1).ToString().Length, '0') + ".png"), compressionLevel);
+                        ZipArchiveEntry destinationEntry = destinationArchive.CreateEntry($"{currentChapterFolder}{prefix + i.ToString().PadLeft((bookFull.Count + numberWideImages - 1).ToString().Length, '0') + ".png"}", compressionLevel);
 
                         using Stream sourceStream = new MemoryStream(encodedData);
                         using Stream destinationStream = destinationEntry.Open();
