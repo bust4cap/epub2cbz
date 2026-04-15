@@ -1,3 +1,6 @@
+## v2026.04.15-1
+- Fixed chapter support for KOReader via folders
+
 ## v2026.03.17-1
 - Added preliminary Barnes & Noble EPUB support
 
