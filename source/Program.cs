@@ -99,7 +99,8 @@ namespace epub2cbz_gui
             { "Kindle Paperwhite 1/2", (758, 1024) },
             { "Kindle 11/Voyage/Oasis", (1072, 1448) },
             { "Kindle Paperwhite 3/4", (1072, 1448) },
-            { "Kindle Oasis 2/3/Paperwhite 12/Colorsoft 12", (1264, 1680) },
+            { "Kindle Oasis 2/3", (1264, 1680) },
+            { "Kindle Paperwhite 12/Colorsoft 12", (1272, 1696) },
             { "Kindle Paperwhite 5/Signature Edition", (1236, 1648) },
             { "Kindle Scribe", (1860, 2480) },
         };

@@ -798,12 +798,11 @@
             dropDownKindle.Anchor = AnchorStyles.None;
             dropDownKindle.DropDownStyle = ComboBoxStyle.DropDownList;
             dropDownKindle.FormattingEnabled = true;
-            dropDownKindle.Items.AddRange(new object[] { "Kindle 1/2", "Kindle DX/DXG", "Kindle 5-10/Keyboard/Touch", "Kindle Paperwhite 1/2", "Kindle 11/Voyage/Oasis", "Kindle Paperwhite 3/4", "Kindle Oasis 2/3/Paperwhite 12/Colorsoft 12", "Kindle Paperwhite 5/Signature Edition", "Kindle Scribe" });
             dropDownKindle.Location = new Point(107, 3);
             dropDownKindle.Name = "dropDownKindle";
             dropDownKindle.Size = new Size(275, 23);
             dropDownKindle.TabIndex = 53;
-            dropDownKindle.SelectedIndexChanged += DropDownKindle_SelectedIndexChanged;
+            dropDownKindle.SelectionChangeCommitted += DropDownKindle_SelectionChangeCommitted;
             // 
             // labelSettingsResizeKindle
             // 
@@ -834,12 +833,11 @@
             dropDownKobo.Anchor = AnchorStyles.None;
             dropDownKobo.DropDownStyle = ComboBoxStyle.DropDownList;
             dropDownKobo.FormattingEnabled = true;
-            dropDownKobo.Items.AddRange(new object[] { "Kobo Mini/Touch", "Kobo Glo", "Kobo Glo HD/Clara HD/Clara 2E/Clara Colour", "Kobo Aura/Nia", "Kobo Aura HD", "Kobo Aura H2O", "Kobo Elipsa/Aura ONE", "Kobo Libra H2O/Libra 2/Libra Colour", "Kobo Forma/Sage" });
             dropDownKobo.Location = new Point(107, 3);
             dropDownKobo.Name = "dropDownKobo";
             dropDownKobo.Size = new Size(275, 23);
             dropDownKobo.TabIndex = 54;
-            dropDownKobo.SelectedIndexChanged += DropDownKobo_SelectedIndexChanged;
+            dropDownKobo.SelectionChangeCommitted += DropDownKobo_SelectionChangeCommitted;
             // 
             // labelSettingsResizeKobo
             // 

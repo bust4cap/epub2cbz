@@ -268,25 +268,31 @@ namespace epub2cbz_gui
             e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
         }
 
-        private void DropDownKindle_SelectedIndexChanged(object sender, EventArgs e)
+        private void DropDownKindle_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            if (Program.DeviceResolutionKindle.Any(kindle => dropDownKindle.SelectedItem!.ToString() == kindle.Key))
+            if (dropDownKindle.SelectedItem is string selectedKindle)
             {
-                (int width, int height) = Program.DeviceResolutionKindle[dropDownKindle.SelectedItem!.ToString()!];
-                textBoxSettingsResizeWidth.Text = width.ToString();
-                textBoxSettingsResizeHeight.Text = height.ToString();
-                toolTipSettings.SetToolTip(dropDownKindle, dropDownKindle.SelectedItem.ToString());
+                if (Program.DeviceResolutionKindle.TryGetValue(selectedKindle, out var resolution))
+                {
+                    textBoxSettingsResizeWidth.Text = resolution.width.ToString();
+                    textBoxSettingsResizeHeight.Text = resolution.height.ToString();
+
+                    toolTipSettings.SetToolTip(dropDownKindle, selectedKindle);
+                }
             }
         }
 
-        private void DropDownKobo_SelectedIndexChanged(object sender, EventArgs e)
+        private void DropDownKobo_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            if (Program.DeviceResolutionKobo.Any(kobo => dropDownKobo.SelectedItem!.ToString() == kobo.Key))
+            if (dropDownKobo.SelectedItem is string selectedKobo)
             {
-                (int width, int height) = Program.DeviceResolutionKobo[dropDownKobo.SelectedItem!.ToString()!];
-                textBoxSettingsResizeWidth.Text = width.ToString();
-                textBoxSettingsResizeHeight.Text = height.ToString();
-                toolTipSettings.SetToolTip(dropDownKobo, dropDownKobo.SelectedItem.ToString());
+                if (Program.DeviceResolutionKobo.TryGetValue(selectedKobo, out var resolution))
+                {
+                    textBoxSettingsResizeWidth.Text = resolution.width.ToString();
+                    textBoxSettingsResizeHeight.Text = resolution.height.ToString();
+
+                    toolTipSettings.SetToolTip(dropDownKobo, selectedKobo);
+                }
             }
         }
 
@@ -527,11 +533,21 @@ namespace epub2cbz_gui
             radioButtonSettingsZip.Left = radioButtonSettingsCbz.Left;
         }
 
+        private void PopulateDropdownListKindleKobo()
+        {
+            dropDownKindle.DataSource = Program.DeviceResolutionKindle.Keys.ToList();
+            dropDownKobo.DataSource = Program.DeviceResolutionKobo.Keys.ToList();
+
+            dropDownKindle.SelectedIndex = -1;
+            dropDownKobo.SelectedIndex = -1;
+        }
+
         private void PopupSettings_Load(object sender, EventArgs e)
         {
             LocalizeText();
 
             CenterElements();
+            PopulateDropdownListKindleKobo();
         }
     }
 }
