@@ -1,5 +1,6 @@
 ## v2026.04.22-1
 - Fixed conversion for certain EPUBs with improperly formatted nav files
+- Corrected Kindle Paperwhite 12/Colorsoft 12 preset resolution
 
 ## v2026.04.15-1
 - Fixed chapter support for KOReader via folders
