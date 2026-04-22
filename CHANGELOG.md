@@ -1,3 +1,6 @@
+## v2026.04.22-1
+- Fixed conversion for certain EPUBs with improperly formatted nav files
+
 ## v2026.04.15-1
 - Fixed chapter support for KOReader via folders
 
@@ -11,7 +14,7 @@
 - Increased duplicate Cover threshold from 95 to 97.5%
 
 ## v2025.11.15-2
-- Fixed epubs that only contain images
+- Fixed EPUBs that only contain images
 
 ## v2025.11.15-1
 - Fixed chapter detection in more rare cases

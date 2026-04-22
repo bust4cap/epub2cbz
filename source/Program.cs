@@ -27,7 +27,7 @@ namespace epub2cbz_gui
     {
         public static string GetVersionDateYear { get; } = "2026";
         public static string GetVersionDateMonth { get; } = "04";
-        public static string GetVersionDateDay { get; } = "15";
+        public static string GetVersionDateDay { get; } = "22";
         public static int GetVersionNumber { get; } = 1;
     }
 
@@ -565,9 +565,8 @@ namespace epub2cbz_gui
                     filename.EndsWith(".html", StringComparison.InvariantCultureIgnoreCase) ||
                     filename.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))      // Walter Isaacson - Steve Jobs
                 {
-                    using StreamReader reader = new(fileEntry.Open());
+                    using StreamReader reader = new(fileEntry.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
                     string fileContent = reader.ReadToEnd();
-                    fileContent = Encoding.UTF8.GetString(reader.CurrentEncoding.GetBytes(fileContent));
                     if (fileContent.Contains("html", StringComparison.InvariantCultureIgnoreCase)) isDRMProtected = false;
                 }
                 else if (imageExtensions.Any(ext => filename.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase)))
@@ -1113,9 +1112,8 @@ namespace epub2cbz_gui
             opfReplicaMap = ResolveRootPath(opfPath, opfReplicaMap);
 
             ZipArchiveEntry fileEntry = entryMap.GetValueOrDefault(opfReplicaMap)!;
-            using StreamReader reader = new(fileEntry.Open());
+            using StreamReader reader = new(fileEntry.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
             string opfContent = reader.ReadToEnd();
-            opfContent = Encoding.UTF8.GetString(reader.CurrentEncoding.GetBytes(opfContent));
 
             XDocument replicaMapDoc = XDocument.Parse(opfContent);
 
@@ -1126,9 +1124,8 @@ namespace epub2cbz_gui
             string opfPath)
         {
             ZipArchiveEntry fileEntry = entryMap.GetValueOrDefault(opfPath)!;
-            using StreamReader reader = new(fileEntry.Open());
+            using StreamReader reader = new(fileEntry.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
             string opfContent = reader.ReadToEnd();
-            opfContent = Encoding.UTF8.GetString(reader.CurrentEncoding.GetBytes(opfContent));
 
             // Replace null characters
             opfContent = opfContent.Replace("\0", string.Empty).Replace("\x01", string.Empty);
@@ -1463,9 +1460,8 @@ namespace epub2cbz_gui
                     {
 
                     }
-                    using StreamReader reader = new(altTocEntry!.Open());
+                    using StreamReader reader = new(altTocEntry!.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
                     string altTocContent = reader.ReadToEnd();
-                    altTocContent = Encoding.UTF8.GetString(reader.CurrentEncoding.GetBytes(altTocContent));
 
                     XDocument altTocDoc = XDocument.Parse(altTocContent);
                     XNamespace altToc = "http://www.w3.org/1999/xhtml";
@@ -2183,9 +2179,12 @@ namespace epub2cbz_gui
                 foreach (string navPath in navPaths)
                 {
                     ZipArchiveEntry tocEntry = entryMap.GetValueOrDefault(navPath)!;
-                    using StreamReader reader = new(tocEntry.Open());
+                    using StreamReader reader = new(tocEntry.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
                     string tocContent = reader.ReadToEnd();
-                    tocContent = Encoding.UTF8.GetString(reader.CurrentEncoding.GetBytes(tocContent));
+
+#pragma warning disable SYSLIB1045 // "GeneratedRegexAttribute"
+                    tocContent = Regex.Replace(tocContent, @"&(?!([a-zA-Z]+|#\d+|#x[a-zA-Z0-9]+);)", "&amp;");
+#pragma warning restore SYSLIB1045
 
                     XDocument tocDoc = XDocument.Parse(tocContent);
                     XNamespace ops = "http://www.idpf.org/2007/ops";
@@ -2284,9 +2283,8 @@ namespace epub2cbz_gui
                 return imagePath;
             }
 
-            using StreamReader reader = new(fileEntry.Open());
+            using StreamReader reader = new(fileEntry.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
             string fileContent = reader.ReadToEnd();
-            fileContent = Encoding.UTF8.GetString(reader.CurrentEncoding.GetBytes(fileContent));
 
             var parser = new StylesheetParser();
             var stylesheet = parser.Parse(fileContent);
@@ -2329,9 +2327,8 @@ namespace epub2cbz_gui
                     actualFilename.EndsWith(".html", StringComparison.InvariantCultureIgnoreCase) ||
                     actualFilename.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    using StreamReader reader = new(fileEntry.Open());
+                    using StreamReader reader = new(fileEntry.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
                     string fileContent = reader.ReadToEnd();
-                    fileContent = Encoding.UTF8.GetString(reader.CurrentEncoding.GetBytes(fileContent));
 
 #if DEBUG
                     /// Likely the last page of samples
@@ -2698,9 +2695,8 @@ namespace epub2cbz_gui
             const string containerPath = "META-INF/container.xml";
 
             ZipArchiveEntry xmlEntry = entryMap.GetValueOrDefault(containerPath) ?? throw new Exception(Resources.ContainerXMLNotFound);
-            using StreamReader reader = new(xmlEntry.Open());
+            using StreamReader reader = new(xmlEntry.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
             string xmlContent = reader.ReadToEnd();
-            xmlContent = Encoding.UTF8.GetString(reader.CurrentEncoding.GetBytes(xmlContent));
 
             XDocument xmlDoc = XDocument.Parse(xmlContent);
             XNamespace xmlns = "urn:oasis:names:tc:opendocument:xmlns:container";
