@@ -1666,6 +1666,8 @@ namespace epub2cbz_gui
             int dimensionY)
         {
             var image = new Image<Rgba32>(dimensionX, dimensionY, SixLabors.ImageSharp.Color.White);
+
+#if DEBUG
             var black = SixLabors.ImageSharp.Color.ParseHex("040404");
             var gray = SixLabors.ImageSharp.Color.ParseHex("E6E6E6");
 
@@ -1695,6 +1697,7 @@ namespace epub2cbz_gui
 
             image.Mutate(x => x.Draw(drawingOptions, black, 1, borderOuter));
             image.Mutate(x => x.Draw(drawingOptions, gray, 1, borderInner));
+#endif
 
             return image;
         }
