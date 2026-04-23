@@ -407,7 +407,8 @@ public partial class MainForm : Form
     private void OutputBoxConsole_DragEnter(object sender, DragEventArgs e)
     {
         if (PopupSettings.CheckboxStates.CheckboxFileModeState
-            && e.Data!.GetDataPresent(DataFormats.FileDrop))
+            && e.Data!.GetDataPresent(DataFormats.FileDrop)
+            && buttonStart.Text == Resources.StartButtonText)
         {
             e.Effect = DragDropEffects.Copy;
         }
