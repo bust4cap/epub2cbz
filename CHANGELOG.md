@@ -1,3 +1,8 @@
+## v2026.04.24-1
+- Disabled drag and drop while conversion is in progress
+- Sped up creation of blank images
+- Changed config file location. Old configs will be migrated to the new location
+
 ## v2026.04.22-1
 - Fixed conversion for certain EPUBs with improperly formatted nav files
 - Corrected Kindle Paperwhite 12/Colorsoft 12 preset resolution
