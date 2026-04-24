@@ -1,6 +1,6 @@
 ﻿using CoenM.ImageHash;
 using CoenM.ImageHash.HashAlgorithms;
-using epub2cbz_gui.Properties;
+using epub2cbz.Properties;
 using ExCSS;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
@@ -21,7 +21,7 @@ using System.Xml;
 using System.Xml.Linq;
 using ImageSharpDrawing = SixLabors.ImageSharp.Drawing;
 
-namespace epub2cbz_gui
+namespace epub2cbz
 {
     public static class VersionDate
     {

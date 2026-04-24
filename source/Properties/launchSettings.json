@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "epub2cbz-gui": {
+    "epub2cbz": {
       "commandName": "Project"
     }
   }

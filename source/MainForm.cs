@@ -1,8 +1,8 @@
-using epub2cbz_gui.Properties;
+using epub2cbz.Properties;
 using System.Globalization;
 using System.Resources;
 
-namespace epub2cbz_gui;
+namespace epub2cbz;
 
 public partial class MainForm : Form
 {
@@ -501,7 +501,7 @@ public partial class MainForm : Form
 
     private void UpdateFileModeConsoleText()
     {
-        ResourceManager rm = new("epub2cbz_gui.Properties.Resources", typeof(MainForm).Assembly);
+        ResourceManager rm = new("epub2cbz.Properties.Resources", typeof(MainForm).Assembly);
 
         List<CultureInfo> culturesToCheck =
         [

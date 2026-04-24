@@ -1,10 +1,15 @@
-﻿using System.Xml.Linq;
+﻿using System.Text;
+using System.Xml.Linq;
 
-namespace epub2cbz_gui
+namespace epub2cbz
 {
     internal class CustomSettings
     {
         private static readonly string configName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), // AppData/Local
+            "epub2cbz",
+            "epub2cbz.cfg");
+
+        private static readonly string configNameOld = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), // AppData/Local
             "epub2cbz-gui",
             "epub2cbz-gui.cfg");
 
@@ -23,7 +28,7 @@ namespace epub2cbz_gui
         {
             XDocument config = new(
                 new XDeclaration("1.0", "utf-8", null),
-                new XElement("epub2cbz-gui_config",
+                new XElement("epub2cbz_config",
                     new XElement("setting",
                         new XAttribute("name", "CheckboxSeriesState"),
                         new XElement("value", PopupSettings.CheckboxStates.CheckboxSeriesState.ToString())),
@@ -160,6 +165,16 @@ namespace epub2cbz_gui
 
         public static void LoadSettings()
         {
+            if (!File.Exists(configName)
+                && File.Exists(configNameOld))
+            {
+                // migrate old config to new one
+                Directory.CreateDirectory(Path.GetDirectoryName(configName)!);
+                string oldContent = File.ReadAllText(configNameOld);
+                string newContent = oldContent.Replace("epub2cbz-gui_config", "epub2cbz_config");
+                File.WriteAllText(configName, newContent, Encoding.UTF8);
+            }
+
             if (File.Exists(configName))
             {
                 Dictionary<string, string> loadedSettings = [];
@@ -174,7 +189,7 @@ namespace epub2cbz_gui
                     return;
                 }
 
-                XElement? settingsElement = config.Descendants("epub2cbz-gui_config").FirstOrDefault();
+                XElement? settingsElement = config.Descendants("epub2cbz_config").FirstOrDefault();
 
                 if (settingsElement != null)
                 {

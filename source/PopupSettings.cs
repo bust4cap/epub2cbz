@@ -1,6 +1,6 @@
-﻿using epub2cbz_gui.Properties;
+﻿using epub2cbz.Properties;
 
-namespace epub2cbz_gui
+namespace epub2cbz
 {
     public partial class PopupSettings : Form
     {

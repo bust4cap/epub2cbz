@@ -1,7 +1,7 @@
-﻿using epub2cbz_gui.Properties;
+﻿using epub2cbz.Properties;
 using System.Data;
 
-namespace epub2cbz_gui
+namespace epub2cbz
 {
     public partial class FileModeListForm : Form
     {

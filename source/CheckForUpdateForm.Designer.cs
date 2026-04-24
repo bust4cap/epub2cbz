@@ -1,4 +1,4 @@
-﻿namespace epub2cbz_gui
+﻿namespace epub2cbz
 {
     partial class CheckForUpdateForm
     {
