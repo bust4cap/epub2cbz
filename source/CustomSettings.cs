@@ -1,5 +1,4 @@
-﻿using System.Text;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 
 namespace epub2cbz
 {
@@ -165,15 +164,41 @@ namespace epub2cbz
 
         public static void LoadSettings()
         {
-            if (!File.Exists(configName)
-                && File.Exists(configNameOld))
+            /// migrate old config to new location
+            try
             {
-                // migrate old config to new one
-                Directory.CreateDirectory(Path.GetDirectoryName(configName)!);
-                string oldContent = File.ReadAllText(configNameOld);
-                string newContent = oldContent.Replace("epub2cbz-gui_config", "epub2cbz_config");
-                File.WriteAllText(configName, newContent, Encoding.UTF8);
+                if (!File.Exists(configName)
+                    && File.Exists(configNameOld))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(configName)!);
+
+                    XDocument doc = XDocument.Load(configNameOld);
+                    if (doc.Root != null && doc.Root.Name.LocalName == "epub2cbz-gui_config")
+                    {
+                        doc.Root.Name = "epub2cbz_config";
+                    }
+                    doc.Save(configName);
+                }
+
+                string oldFolder = Path.GetDirectoryName(configNameOld)!;
+                if (Directory.Exists(oldFolder)
+                    && File.Exists(configName))
+                {
+                    if (File.Exists(configNameOld))
+                    {
+                        File.Delete(configNameOld);
+                    }
+                    if (!Directory.EnumerateFileSystemEntries(oldFolder).Any())
+                    {
+                        Directory.Delete(oldFolder);
+                    }
+                }
             }
+            catch
+            {
+
+            }
+            ///
 
             if (File.Exists(configName))
             {

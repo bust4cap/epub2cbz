@@ -1,3 +1,6 @@
+## v2026.04.26-1
+- Delete old config file after migration
+
 ## v2026.04.24-1
 - Disabled drag and drop while conversion is in progress
 - Sped up creation of blank images
