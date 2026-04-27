@@ -2278,6 +2278,8 @@ namespace epub2cbz
             string cssPath,
             string xhtmlPage)
         {
+            string imagePath = string.Empty;
+
             if (!string.IsNullOrEmpty(xhtmlPage))
             {
                 if (xhtmlPage.EndsWith(".xhtml", StringComparison.InvariantCultureIgnoreCase) ||
@@ -2333,11 +2335,13 @@ namespace epub2cbz
                                 && backgroundImageValue.EndsWith(")", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 string innerValue = backgroundImageValue[4..^1];
-                                return innerValue.Trim('\'', '\"');
+                                imagePath = innerValue.Trim('\'', '\"');
                             }
                         }
                     }
-                    else if (divClass != null && !string.IsNullOrWhiteSpace(divClass.Value))
+                    
+                    if (string.IsNullOrEmpty(imagePath)
+                        && divClass != null && !string.IsNullOrWhiteSpace(divClass.Value))
                     {
                         string[] classNames = divClass.Value.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
@@ -2354,7 +2358,8 @@ namespace epub2cbz
                                     && backgroundImageValue.EndsWith(")", StringComparison.InvariantCultureIgnoreCase))
                                 {
                                     string innerValue = backgroundImageValue[4..^1];
-                                    return innerValue.Trim('\'', '\"');
+                                    imagePath = innerValue.Trim('\'', '\"');
+                                    break;
                                 }
                             }
                             else
@@ -2370,7 +2375,8 @@ namespace epub2cbz
                                         && backgroundImageValue.EndsWith(")", StringComparison.InvariantCultureIgnoreCase))
                                     {
                                         string innerValue = backgroundImageValue[4..^1];
-                                        return innerValue.Trim('\'', '\"');
+                                        imagePath = innerValue.Trim('\'', '\"');
+                                        break;
                                     }
                                 }
                             }
@@ -2379,7 +2385,7 @@ namespace epub2cbz
                 }
             }
 
-            return string.Empty;
+            return imagePath;
         }
 
         private static string? FindImagePathInFile(Dictionary<string, ZipArchiveEntry> entryMap,
