@@ -1,3 +1,6 @@
+## v2026.04.27-1
+- Fixed more EPUBs that reference images in a css
+
 ## v2026.04.26-1
 - Delete old config file after migration
 

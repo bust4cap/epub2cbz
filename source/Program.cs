@@ -27,7 +27,7 @@ namespace epub2cbz
     {
         public static string GetVersionDateYear { get; } = "2026";
         public static string GetVersionDateMonth { get; } = "04";
-        public static string GetVersionDateDay { get; } = "26";
+        public static string GetVersionDateDay { get; } = "27";
         public static int GetVersionNumber { get; } = 1;
     }
 
@@ -992,7 +992,6 @@ namespace epub2cbz
             Dictionary<string, string?> metadata)
         {
             List<Dictionary<string, string>> bookFull = [];
-            bool coverFound = false;
             string cssPath = GetCssFile(opfPath, opfDoc);
             const double wideImageRatio = 1.125; // Images have to be at least 12.5% wider than tall to be considered "wide"
 
@@ -1032,14 +1031,14 @@ namespace epub2cbz
                             ["height"] = height.ToString(),
                             ["width"] = width.ToString()
                         });
-                        coverFound = true;
                         continue;
                     }
                 }
                 //  If image paths are only found in a css file (e.g. The Hobbit)
-                else if (dicPagesIdsSpread.Count > i && !coverFound)
+                else if (dicPagesIdsSpread.Count > i)
                 {
-                    string cssImage = FindImagePathInCss(entryMap, cssPath, dicPagesIdsSpread[i]["ids"]);
+                    string cssImage = FindImagePathInCss(entryMap, cssPath, dicPagesIdsSpread[i]["pages"].Split('#')[0]);
+
                     if (!string.IsNullOrEmpty(cssImage))
                     {
                         cssImage = ResolveRootPath(cssPath, cssImage);
@@ -2276,36 +2275,111 @@ namespace epub2cbz
         }
 
         private static string FindImagePathInCss(Dictionary<string, ZipArchiveEntry> entryMap,
-            string filename,
-            string pageId)
+            string cssPath,
+            string xhtmlPage)
         {
-            string imagePath = string.Empty;
-
-            if (!entryMap.TryGetValue(filename, out var fileEntry))
+            if (!string.IsNullOrEmpty(xhtmlPage))
             {
-                return imagePath;
+                if (xhtmlPage.EndsWith(".xhtml", StringComparison.InvariantCultureIgnoreCase) ||
+                    xhtmlPage.EndsWith(".html", StringComparison.InvariantCultureIgnoreCase) ||
+                    xhtmlPage.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if (!entryMap.TryGetValue(xhtmlPage, out var xhtmlSource))
+                    {
+                        return string.Empty;
+                    }
+
+                    using StreamReader xhtmlReader = new(xhtmlSource.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+                    string xhtmlFileContent = xhtmlReader.ReadToEnd();
+
+                    if (!entryMap.TryGetValue(cssPath, out var cssSource))
+                    {
+                        return string.Empty;
+                    }
+
+                    using StreamReader reader = new(cssSource.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+                    string fileContent = reader.ReadToEnd();
+
+                    var parser = new StylesheetParser();
+                    var stylesheet = parser.Parse(fileContent);
+
+                    XDocument fileDoc;
+                    try
+                    {
+                        fileDoc = XDocument.Parse(xhtmlFileContent);
+                    }
+                    catch
+                    {
+                        return string.Empty;
+                    }
+
+                    XNamespace ns = fileDoc.Root!.Name.Namespace;
+
+                    var divInfo = fileDoc.Descendants(ns + "body").Descendants(ns + "div").FirstOrDefault();
+                    var divId = divInfo?.Attribute("id");
+                    var divClass = divInfo?.Attribute("class");
+
+                    if (divId != null && !string.IsNullOrWhiteSpace(divId.Value))
+                    {
+                        string selector = "#" + divId.Value;
+                        var rule = stylesheet.StyleRules.FirstOrDefault(r => r.SelectorText.ToString() == selector);
+
+                        if (rule != null)
+                        {
+                            string backgroundImageValue = rule.Style.BackgroundImage.ToString();
+
+                            if (!string.IsNullOrWhiteSpace(backgroundImageValue)
+                                && backgroundImageValue.StartsWith("url(", StringComparison.InvariantCultureIgnoreCase)
+                                && backgroundImageValue.EndsWith(")", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                string innerValue = backgroundImageValue[4..^1];
+                                return innerValue.Trim('\'', '\"');
+                            }
+                        }
+                    }
+                    else if (divClass != null && !string.IsNullOrWhiteSpace(divClass.Value))
+                    {
+                        string[] classNames = divClass.Value.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+                        foreach (var className in classNames)
+                        {
+                            var rule = stylesheet.StyleRules.FirstOrDefault(r => r.SelectorText.ToString() == $"div.{className}");
+
+                            if (rule != null)
+                            {
+                                string backgroundImageValue = rule.Style.BackgroundImage.ToString();
+
+                                if (!string.IsNullOrWhiteSpace(backgroundImageValue)
+                                    && backgroundImageValue.StartsWith("url(", StringComparison.InvariantCultureIgnoreCase)
+                                    && backgroundImageValue.EndsWith(")", StringComparison.InvariantCultureIgnoreCase))
+                                {
+                                    string innerValue = backgroundImageValue[4..^1];
+                                    return innerValue.Trim('\'', '\"');
+                                }
+                            }
+                            else
+                            {
+                                rule = stylesheet.StyleRules.FirstOrDefault(r => r.SelectorText.ToString() == $".{className}");
+
+                                if (rule != null)
+                                {
+                                    string backgroundImageValue = rule.Style.BackgroundImage.ToString();
+
+                                    if (!string.IsNullOrWhiteSpace(backgroundImageValue)
+                                        && backgroundImageValue.StartsWith("url(", StringComparison.InvariantCultureIgnoreCase)
+                                        && backgroundImageValue.EndsWith(")", StringComparison.InvariantCultureIgnoreCase))
+                                    {
+                                        string innerValue = backgroundImageValue[4..^1];
+                                        return innerValue.Trim('\'', '\"');
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
-            using StreamReader reader = new(fileEntry.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
-            string fileContent = reader.ReadToEnd();
-
-            var parser = new StylesheetParser();
-            var stylesheet = parser.Parse(fileContent);
-
-            string selector = "#" + pageId;
-            var rule = stylesheet.StyleRules.FirstOrDefault(r => r.SelectorText.ToString() == selector);
-
-            if (rule != null)
-            {
-                imagePath = rule.Style.BackgroundImage.ToString();
-
-                int startIndex = imagePath.IndexOf('\"') + 1;
-                int endIndex = imagePath.LastIndexOf('\"');
-
-                imagePath = imagePath[startIndex..endIndex];
-            }
-
-            return imagePath;
+            return string.Empty;
         }
 
         private static string? FindImagePathInFile(Dictionary<string, ZipArchiveEntry> entryMap,
@@ -2319,17 +2393,17 @@ namespace epub2cbz
             string? authors = metadata.GetValueOrDefault("Authors", string.Empty);
             string? publisher = metadata.GetValueOrDefault("Publisher", string.Empty);
 
-            if (!entryMap.TryGetValue(actualFilename, out var fileEntry))
-            {
-                return null;
-            }
-
             if (!string.IsNullOrEmpty(actualFilename))
             {
                 if (actualFilename.EndsWith(".xhtml", StringComparison.InvariantCultureIgnoreCase) ||
                     actualFilename.EndsWith(".html", StringComparison.InvariantCultureIgnoreCase) ||
                     actualFilename.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))
                 {
+                    if (!entryMap.TryGetValue(actualFilename, out var fileEntry))
+                    {
+                        return null;
+                    }
+
                     using StreamReader reader = new(fileEntry.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
                     string fileContent = reader.ReadToEnd();
 

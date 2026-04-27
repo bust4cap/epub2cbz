@@ -155,7 +155,7 @@ namespace epub2cbz
 
             if (string.IsNullOrEmpty(VersionNumbers.NewestVersion) || VersionNumbers.NewestVersion == "Error")
             {
-                string elementValue = string.Empty;
+                string newestVersionValue = string.Empty;
                 var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
                 string url = @"https://raw.githubusercontent.com/bust4cap/epub2cbz/refs/heads/main/ver/latest";
 
@@ -166,11 +166,11 @@ namespace epub2cbz
                     var response = await client.GetAsync(url, cts.Token);
                     response.EnsureSuccessStatusCode();
                     string content = await response.Content.ReadAsStringAsync(cts.Token);
-                    elementValue = content.Trim();
+                    newestVersionValue = content.Trim();
                 }
                 catch (Exception)
                 {
-                    elementValue = "Error";
+                    newestVersionValue = "Error";
                 }
                 finally
                 {
@@ -179,7 +179,7 @@ namespace epub2cbz
                     {
                         Invoke(new Action(() =>
                         {
-                            VersionNumbers.NewestVersion = elementValue;
+                            VersionNumbers.NewestVersion = newestVersionValue;
                             VersionNumbers.CurrentVersion = $"v{VersionDate.GetVersionDateYear}." +
                                                             $"{VersionDate.GetVersionDateMonth}." +
                                                             $"{VersionDate.GetVersionDateDay}-" +
