@@ -1,3 +1,7 @@
+## v2026.05.03-1
+- Default to file mode when starting the program for the first time
+- Removed SixLabors.ImageSharp.Drawing dependency, resulting in a slighty reduced file size
+
 ## v2026.04.27-1
 - Fixed more EPUBs that reference images in a css
 
