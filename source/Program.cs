@@ -3,7 +3,6 @@ using CoenM.ImageHash.HashAlgorithms;
 using epub2cbz.Properties;
 using ExCSS;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Gif;
 using SixLabors.ImageSharp.Formats.Jpeg;
@@ -19,7 +18,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
-using ImageSharpDrawing = SixLabors.ImageSharp.Drawing;
 
 namespace epub2cbz
 {
@@ -1665,38 +1663,6 @@ namespace epub2cbz
             int dimensionY)
         {
             var image = new Image<Rgba32>(dimensionX, dimensionY, SixLabors.ImageSharp.Color.White);
-
-#if DEBUG
-            var black = SixLabors.ImageSharp.Color.ParseHex("040404");
-            var gray = SixLabors.ImageSharp.Color.ParseHex("E6E6E6");
-
-            var borderOuter = new ImageSharpDrawing.Polygon(new SixLabors.ImageSharp.PointF[]
-            {
-            new(0, 0),
-            new(dimensionX - 1, 0),
-            new(dimensionX - 1, dimensionY - 1),
-            new(0, dimensionY - 1)
-            });
-
-            var borderInner = new ImageSharpDrawing.Polygon(new SixLabors.ImageSharp.PointF[]
-            {
-            new(1, 1),
-            new(dimensionX - 2, 1),
-            new(dimensionX - 2, dimensionY - 2),
-            new(1, dimensionY - 2)
-            });
-
-            var drawingOptions = new DrawingOptions()
-            {
-                GraphicsOptions = new GraphicsOptions()
-                {
-                    Antialias = false
-                }
-            };
-
-            image.Mutate(x => x.Draw(drawingOptions, black, 1, borderOuter));
-            image.Mutate(x => x.Draw(drawingOptions, gray, 1, borderInner));
-#endif
 
             return image;
         }
