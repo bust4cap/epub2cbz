@@ -4,13 +4,14 @@ C# program to extract .epub Manga and Comic ebooks into .cbz files, including a 
 ![Main view](img/epub2cbz-gui_1.png)
 
 ## Prerequisites
-- Epubs must be DRM-free and should ideally be in the format of "[Series] v[Volume].epub", for example "Two Pieces v69.epub" (both are optional, but are derived from the filename, if calibre tags are not found)
+- Epubs must be DRM-free
+- They should ideally be in the format of "[Series] v[Volume].epub", for example "Two Pieces v69.epub" (both are optional, but are derived from the filename, if ComicInfo is enabled and calibre tags are not found)
 - If you download the smaller package (without "_full" in the filename), you need to install [.NET Desktop Runtime 9.0](https://dotnet.microsoft.com/download/dotnet/9.0). The program should guide you to the correct website, if it isn't installed yet.
 
 ## How to
 - Start the epub2cbz.exe
-- If in Folder Mode, click on the "Input Folder" button (📁) and select the folder containing the epub files
 - If in File Mode, drag and drop the epub files onto the main text window and optionally select an "Output Folder" (📁)
+- If in Folder Mode, click on the "Input Folder" button (📁) and select the folder containing the epub files
 - (Click on the mode switch button (🔄) to switch between these two modes)
 - Enable or disable certain options, like creating a ComicInfo.xml file or extracting images. The settings menu (⚙) contains more options (recommended settings are enabled by default)
 - Click the "Start" button and wait<br/>
