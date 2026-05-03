@@ -56,7 +56,7 @@ namespace epub2cbz
 
 
             public static bool CheckboxSimpleExtractionState { get; set; } = false;
-            public static bool CheckboxFileModeState { get; set; } = false;
+            public static bool CheckboxFileModeState { get; set; } = true;
 
 
 
