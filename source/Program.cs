@@ -758,7 +758,8 @@ namespace epub2cbz
                                 ["spread"] = "page-spread-right",
                                 ["doublepage"] = "false",
                                 ["height"] = string.Empty,
-                                ["width"] = string.Empty
+                                ["width"] = string.Empty,
+                                ["size"] = string.Empty
                             });
 
                             i++;
@@ -775,7 +776,8 @@ namespace epub2cbz
                                 ["spread"] = "page-spread-right",
                                 ["doublepage"] = "false",
                                 ["height"] = string.Empty,
-                                ["width"] = string.Empty
+                                ["width"] = string.Empty,
+                                ["size"] = string.Empty
                             });
 
                             i++;
@@ -795,7 +797,8 @@ namespace epub2cbz
                                 ["spread"] = "page-spread-left",
                                 ["doublepage"] = "false",
                                 ["height"] = string.Empty,
-                                ["width"] = string.Empty
+                                ["width"] = string.Empty,
+                                ["size"] = string.Empty
                             });
 
                             i++;
@@ -812,7 +815,8 @@ namespace epub2cbz
                                 ["spread"] = "page-spread-left",
                                 ["doublepage"] = "false",
                                 ["height"] = string.Empty,
-                                ["width"] = string.Empty
+                                ["width"] = string.Empty,
+                                ["size"] = string.Empty
                             });
 
                             i++;
@@ -835,7 +839,8 @@ namespace epub2cbz
                                 ["spread"] = "page-spread-left",
                                 ["doublepage"] = "false",
                                 ["height"] = string.Empty,
-                                ["width"] = string.Empty
+                                ["width"] = string.Empty,
+                                ["size"] = string.Empty
                             });
 
                             i++;
@@ -852,7 +857,8 @@ namespace epub2cbz
                                 ["spread"] = "page-spread-right",
                                 ["doublepage"] = "false",
                                 ["height"] = string.Empty,
-                                ["width"] = string.Empty
+                                ["width"] = string.Empty,
+                                ["size"] = string.Empty
                             });
 
                             i++;
@@ -868,7 +874,8 @@ namespace epub2cbz
                                 ["spread"] = "page-spread-left",
                                 ["doublepage"] = "false",
                                 ["height"] = string.Empty,
-                                ["width"] = string.Empty
+                                ["width"] = string.Empty,
+                                ["size"] = string.Empty
                             });
 
                             i++;
@@ -887,7 +894,8 @@ namespace epub2cbz
                                 ["spread"] = "page-spread-right",
                                 ["doublepage"] = "false",
                                 ["height"] = string.Empty,
-                                ["width"] = string.Empty
+                                ["width"] = string.Empty,
+                                ["size"] = string.Empty
                             });
 
                             i++;
@@ -903,7 +911,8 @@ namespace epub2cbz
                                 ["spread"] = "page-spread-right",
                                 ["doublepage"] = "false",
                                 ["height"] = string.Empty,
-                                ["width"] = string.Empty
+                                ["width"] = string.Empty,
+                                ["size"] = string.Empty
                             });
 
                             i++;
@@ -920,7 +929,8 @@ namespace epub2cbz
                                 ["spread"] = "page-spread-left",
                                 ["doublepage"] = "false",
                                 ["height"] = string.Empty,
-                                ["width"] = string.Empty
+                                ["width"] = string.Empty,
+                                ["size"] = string.Empty
                             });
 
                             i++;
@@ -972,7 +982,8 @@ namespace epub2cbz
                             ["spread"] = string.Empty,
                             ["doublepage"] = isDoublePage.ToString().ToLower(),
                             ["height"] = height.ToString(),
-                            ["width"] = width.ToString()
+                            ["width"] = width.ToString(),
+                            ["size"] = bookEntry.Length.ToString()
                         });
                         continue;
                     }
@@ -1027,7 +1038,8 @@ namespace epub2cbz
                             ["spread"] = dicPagesIdsSpread[i]["spread"] ?? string.Empty,
                             ["doublepage"] = isDoublePage.ToString().ToLower(),
                             ["height"] = height.ToString(),
-                            ["width"] = width.ToString()
+                            ["width"] = width.ToString(),
+                            ["size"] = bookEntry.Length.ToString()
                         });
                         continue;
                     }
@@ -1070,7 +1082,8 @@ namespace epub2cbz
                                 ["spread"] = dicPagesIdsSpread[i]["spread"] ?? string.Empty,
                                 ["doublepage"] = isDoublePage.ToString().ToLower(),
                                 ["height"] = height.ToString(),
-                                ["width"] = width.ToString()
+                                ["width"] = width.ToString(),
+                                ["size"] = bookEntry.Length.ToString()
                             });
                         }
                     }
@@ -1086,7 +1099,8 @@ namespace epub2cbz
                         ["spread"] = dicPagesIdsSpread[i]["spread"] ?? string.Empty,
                         ["doublepage"] = "false",
                         ["height"] = string.Empty,
-                        ["width"] = string.Empty
+                        ["width"] = string.Empty,
+                        ["size"] = string.Empty
                     });
                 }
             }
@@ -1593,7 +1607,8 @@ namespace epub2cbz
                     ["spread"] = string.Empty,
                     ["doublepage"] = "false",
                     ["height"] = height.ToString(),
-                    ["width"] = width.ToString()
+                    ["width"] = width.ToString(),
+                    ["size"] = bookEntry.Length.ToString()
                 });
             }
 
@@ -1651,7 +1666,8 @@ namespace epub2cbz
                         ["spread"] = string.Empty,
                         ["doublepage"] = "false",
                         ["height"] = height.ToString(),
-                        ["width"] = width.ToString()
+                        ["width"] = width.ToString(),
+                        ["size"] = bookEntry.Length.ToString()
                     });
                 }
             }
@@ -1827,6 +1843,8 @@ namespace epub2cbz
                             MemoryStream encodedDataRight = new();
                             int width = 0;
                             int height = 0;
+                            long byteSizeFirst = 0;
+                            long byteSizeSecond = 0;
 
                             try
                             {
@@ -1858,11 +1876,13 @@ namespace epub2cbz
                             {
                                 using (Stream sourceStreamRight = encodedDataRight)
                                 {
+                                    byteSizeFirst = encodedDataRight.Length;
                                     using Stream destinationStream = destinationArchive.CreateEntry(fullEntryPathFirst, compressionLevel).Open();
                                     sourceStreamRight.CopyTo(destinationStream);
                                 }
                                 using (Stream sourceStreamLeft = encodedDataLeft)
                                 {
+                                    byteSizeSecond = encodedDataLeft.Length;
                                     using Stream destinationStream = destinationArchive.CreateEntry(fullEntryPathSecond, compressionLevel).Open();
                                     sourceStreamLeft.CopyTo(destinationStream);
                                 }
@@ -1871,11 +1891,13 @@ namespace epub2cbz
                             {
                                 using (Stream sourceStreamLeft = encodedDataLeft)
                                 {
+                                    byteSizeFirst = encodedDataLeft.Length;
                                     using Stream destinationStream = destinationArchive.CreateEntry(fullEntryPathFirst, compressionLevel).Open();
                                     sourceStreamLeft.CopyTo(destinationStream);
                                 }
                                 using (Stream sourceStreamRight = encodedDataRight)
                                 {
+                                    byteSizeSecond = encodedDataRight.Length;
                                     using Stream destinationStream = destinationArchive.CreateEntry(fullEntryPathSecond, compressionLevel).Open();
                                     sourceStreamRight.CopyTo(destinationStream);
                                 }
@@ -1886,6 +1908,7 @@ namespace epub2cbz
 
                             bookFull[i]["height"] = wideSingleHeight;
                             bookFull[i]["width"] = wideSingleWidth;
+                            bookFull[i]["size"] = byteSizeFirst.ToString();
 
                             bookFull.Insert(i + 1, new Dictionary<string, string>()
                             {
@@ -1894,7 +1917,8 @@ namespace epub2cbz
                                 ["spread"] = string.Empty,
                                 ["doublepage"] = "false",
                                 ["height"] = wideSingleHeight,
-                                ["width"] = wideSingleWidth
+                                ["width"] = wideSingleWidth,
+                                ["size"] = byteSizeSecond.ToString()
                             });
                             i++;
                         }
@@ -1915,6 +1939,7 @@ namespace epub2cbz
                                 {
                                     bookFull[i]["height"] = croppedHeight.ToString();
                                     bookFull[i]["width"] = croppedWidth.ToString();
+                                    bookFull[i]["size"] = croppedSourceStream.Length.ToString();
 
                                     if (PopupSettings.CheckboxStates.CheckboxResizeImagesState
                                         && PopupSettings.CheckboxStates.TextBoxResizeHeightValue > 0
@@ -1933,6 +1958,7 @@ namespace epub2cbz
                                         {
                                             bookFull[i]["height"] = resizedHeight.ToString();
                                             bookFull[i]["width"] = resizedWidth.ToString();
+                                            bookFull[i]["size"] = resizedSourceStream.Length.ToString();
                                         }
                                     }
                                     else croppedSourceStream.CopyTo(destinationStream);
@@ -1958,6 +1984,7 @@ namespace epub2cbz
                                         {
                                             bookFull[i]["height"] = resizedHeight.ToString();
                                             bookFull[i]["width"] = resizedWidth.ToString();
+                                            bookFull[i]["size"] = resizedSourceStream.Length.ToString();
                                         }
                                     }
                                     else bufferedSourceStream.CopyTo(destinationStream);
@@ -1980,6 +2007,7 @@ namespace epub2cbz
                                 {
                                     bookFull[i]["height"] = resizedHeight.ToString();
                                     bookFull[i]["width"] = resizedWidth.ToString();
+                                    bookFull[i]["size"] = resizedSourceStream.Length.ToString();
                                 }
                             }
                             else sourceStream.CopyTo(destinationStream);
@@ -2002,6 +2030,7 @@ namespace epub2cbz
                             {
                                 bookFull[i]["height"] = croppedHeight.ToString();
                                 bookFull[i]["width"] = croppedWidth.ToString();
+                                bookFull[i]["size"] = croppedSourceStream.Length.ToString();
 
                                 if (PopupSettings.CheckboxStates.CheckboxResizeImagesState
                                     && PopupSettings.CheckboxStates.TextBoxResizeHeightValue > 0
@@ -2020,6 +2049,7 @@ namespace epub2cbz
                                     {
                                         bookFull[i]["height"] = resizedHeight.ToString();
                                         bookFull[i]["width"] = resizedWidth.ToString();
+                                        bookFull[i]["size"] = resizedSourceStream.Length.ToString();
                                     }
                                 }
                                 else croppedSourceStream.CopyTo(destinationStream);
@@ -2045,6 +2075,7 @@ namespace epub2cbz
                                     {
                                         bookFull[i]["height"] = resizedHeight.ToString();
                                         bookFull[i]["width"] = resizedWidth.ToString();
+                                        bookFull[i]["size"] = resizedSourceStream.Length.ToString();
                                     }
                                 }
                                 else bufferedSourceStream.CopyTo(destinationStream);
@@ -2067,6 +2098,7 @@ namespace epub2cbz
                             {
                                 bookFull[i]["height"] = resizedHeight.ToString();
                                 bookFull[i]["width"] = resizedWidth.ToString();
+                                bookFull[i]["size"] = resizedSourceStream.Length.ToString();
                             }
                         }
                         else sourceStream.CopyTo(destinationStream);
@@ -2084,6 +2116,8 @@ namespace epub2cbz
                         using var memoryStream = new MemoryStream();
                         blankImage.SaveAsPng(memoryStream);
                         byte[] encodedData = memoryStream.ToArray();
+
+                        bookFull[i]["size"] = encodedData.Length.ToString();
 
                         ZipArchiveEntry destinationEntry = destinationArchive.CreateEntry($"{currentChapterFolder}{prefix + i.ToString().PadLeft((bookFull.Count + numberWideImages - 1).ToString().Length, '0') + ".png"}", compressionLevel);
 
@@ -2423,7 +2457,7 @@ namespace epub2cbz
 
                         if (string.IsNullOrEmpty(itemSrc))
                         {
-                            List<(string ImageSrc, int Width, int Height)> imageData = [];
+                            List<(string ImageSrc, int Width, int Height, long ByteSize)> imageData = [];
 
                             foreach (var itemSrcListFile in itemSrcList)
                             {
@@ -2434,13 +2468,14 @@ namespace epub2cbz
                                     return null;
                                 }
 
+                                long byteSize = bookEntry.Length;
                                 using var stream = bookEntry.Open();
                                 (int width, int height) = GetImageDimensions(stream);
 
-                                imageData.Add((itemSrcFile, width, height));
+                                imageData.Add((itemSrcFile, width, height, byteSize));
                             }
 
-                            var (ImageSrc, Width, Height) = imageData
+                            var (ImageSrc, Width, Height, ByteSize) = imageData
                                 .OrderByDescending(d => Math.Max(d.Width, d.Height))
                                 .ThenByDescending(d => Math.Min(d.Width, d.Height))
                                 .FirstOrDefault();
@@ -2725,6 +2760,9 @@ namespace epub2cbz
                     {
                         xmlWriter.WriteAttributeString("ImageWidth", bookFull[i]["width"]);
                         xmlWriter.WriteAttributeString("ImageHeight", bookFull[i]["height"]);
+#if DEBUG
+                        xmlWriter.WriteAttributeString("ImageSize", bookFull[i]["size"]);
+#endif
                     }
 
                     xmlWriter.WriteEndElement(); // Page
@@ -2849,7 +2887,8 @@ namespace epub2cbz
                             ["spread"] = string.Empty,
                             ["doublepage"] = "false",
                             ["height"] = string.Empty,
-                            ["width"] = string.Empty
+                            ["width"] = string.Empty,
+                            ["size"] = string.Empty
                         });
 
 #if DEBUG
@@ -2903,7 +2942,8 @@ namespace epub2cbz
                     ["spread"] = string.Empty,
                     ["doublepage"] = "false",
                     ["height"] = string.Empty,
-                    ["width"] = string.Empty
+                    ["width"] = string.Empty,
+                    ["size"] = string.Empty
                 });
             }
             // remove blank image to keep correct page spread
@@ -3137,7 +3177,8 @@ namespace epub2cbz
                     ["spread"] = string.Empty,
                     ["doublepage"] = "false",
                     ["height"] = string.Empty,
-                    ["width"] = string.Empty
+                    ["width"] = string.Empty,
+                    ["size"] = string.Empty
                 });
             }
 
