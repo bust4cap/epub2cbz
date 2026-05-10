@@ -2478,6 +2478,7 @@ namespace epub2cbz
                             var (ImageSrc, Width, Height, ByteSize) = imageData
                                 .OrderByDescending(d => Math.Max(d.Width, d.Height))
                                 .ThenByDescending(d => Math.Min(d.Width, d.Height))
+                                .ThenByDescending(d => d.ByteSize)
                                 .FirstOrDefault();
 
                             itemSrc = ImageSrc;
