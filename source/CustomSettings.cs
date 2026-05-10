@@ -4,6 +4,8 @@ namespace epub2cbz
 {
     internal class CustomSettings
     {
+        //private static readonly string configNamePortable = Path.Combine(AppContext.BaseDirectory, "epub2cbz.cfg");
+
         private static readonly string configName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), // AppData/Local
             "epub2cbz",
             "epub2cbz.cfg");
@@ -23,9 +25,9 @@ namespace epub2cbz
             public static string WindowLocation { get; set; } = string.Empty;
         }
 
-        public static void SaveSettings()
+        private static XDocument GenerateCurrentConfig()
         {
-            XDocument config = new(
+            return new XDocument(
                 new XDeclaration("1.0", "utf-8", null),
                 new XElement("epub2cbz_config",
                     new XElement("setting",
@@ -156,10 +158,38 @@ namespace epub2cbz
                         new XElement("value", PopupSettings.CheckboxStates.CheckboxFileModeState.ToString()))
                 )
             );
+        }
 
+        public static void WriteSettings(XDocument config)
+        {
             Directory.CreateDirectory(Path.GetDirectoryName(configName)!);
 
             config.Save(configName);
+        }
+
+        public static void SaveSettings()
+        {
+            XDocument currentConfig = GenerateCurrentConfig();
+
+            if (!File.Exists(configName))
+            {
+                WriteSettings(currentConfig);
+                return;
+            }
+
+            try
+            {
+                XDocument diskConfig = XDocument.Load(configName);
+
+                if (!XNode.DeepEquals(diskConfig, currentConfig))
+                {
+                    WriteSettings(currentConfig);
+                }
+            }
+            catch
+            {
+                WriteSettings(currentConfig);
+            }
         }
 
         public static void LoadSettings()
