@@ -14,6 +14,8 @@ namespace epub2cbz
             "epub2cbz-gui",
             "epub2cbz-gui.cfg");
 
+        private static XDocument? cachedConfig;
+
         public static class SettingStates
         {
             public static bool CheckboxComicInfoState { get; set; } = true;
@@ -179,9 +181,7 @@ namespace epub2cbz
 
             try
             {
-                XDocument diskConfig = XDocument.Load(configName);
-
-                if (!XNode.DeepEquals(diskConfig, currentConfig))
+                if (!XNode.DeepEquals(cachedConfig, currentConfig))
                 {
                     WriteSettings(currentConfig);
                 }
@@ -192,9 +192,8 @@ namespace epub2cbz
             }
         }
 
-        public static void LoadSettings()
+        public static void MigrateSettings()
         {
-            /// migrate old config to new location
             try
             {
                 if (!File.Exists(configName)
@@ -202,12 +201,12 @@ namespace epub2cbz
                 {
                     Directory.CreateDirectory(Path.GetDirectoryName(configName)!);
 
-                    XDocument doc = XDocument.Load(configNameOld);
-                    if (doc.Root != null && doc.Root.Name.LocalName == "epub2cbz-gui_config")
+                    cachedConfig = XDocument.Load(configNameOld);
+                    if (cachedConfig.Root != null && cachedConfig.Root.Name.LocalName == "epub2cbz-gui_config")
                     {
-                        doc.Root.Name = "epub2cbz_config";
+                        cachedConfig.Root.Name = "epub2cbz_config";
                     }
-                    doc.Save(configName);
+                    cachedConfig.Save(configName);
                 }
 
                 string oldFolder = Path.GetDirectoryName(configNameOld)!;
@@ -228,23 +227,31 @@ namespace epub2cbz
             {
 
             }
+        }
+
+        public static void LoadSettings()
+        {
+            /// migrate old config to new location
+            MigrateSettings();
             ///
 
             if (File.Exists(configName))
             {
                 Dictionary<string, string> loadedSettings = [];
-                XDocument config;
 
-                try
+                if (cachedConfig == null)
                 {
-                    config = XDocument.Load(configName);
-                }
-                catch
-                {
-                    return;
+                    try
+                    {
+                        cachedConfig = XDocument.Load(configName);
+                    }
+                    catch
+                    {
+                        return;
+                    }
                 }
 
-                XElement? settingsElement = config.Descendants("epub2cbz_config").FirstOrDefault();
+                XElement? settingsElement = cachedConfig.Descendants("epub2cbz_config").FirstOrDefault();
 
                 if (settingsElement != null)
                 {
