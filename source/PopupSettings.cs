@@ -27,6 +27,7 @@ namespace epub2cbz
             public static bool CheckboxIsbnAsinState { get; set; } = true;
             public static bool CheckboxChaptersState { get; set; } = true;
             public static bool CheckboxImageSizeState { get; set; } = true;
+            public static bool CheckboxFileSizeState { get; set; } = true;
 
             public static bool CheckboxDuplicateCoverState { get; set; } = true;
             public static bool CheckboxEveryPageIsChapterState { get; set; } = true;
@@ -94,6 +95,7 @@ namespace epub2cbz
             CheckboxStates.CheckboxIsbnAsinState = checkBoxSettingsComicInfoIsbnAsin.Checked;
             CheckboxStates.CheckboxChaptersState = checkBoxSettingsComicInfoChapters.Checked;
             CheckboxStates.CheckboxImageSizeState = checkBoxSettingsComicInfoImageSize.Checked;
+            CheckboxStates.CheckboxFileSizeState = checkBoxSettingsComicInfoFileSize.Checked;
 
             CheckboxStates.CheckboxDuplicateCoverState = checkBoxSettingsExperimentalRemoveDuplicateCovers.Checked;
             CheckboxStates.CheckboxEveryPageIsChapterState = checkBoxSettingsExperimentalEveryPageIsChapter.Checked;
@@ -222,6 +224,7 @@ namespace epub2cbz
             checkBoxSettingsComicInfoIsbnAsin.Checked = true;
             checkBoxSettingsComicInfoChapters.Checked = true;
             checkBoxSettingsComicInfoImageSize.Checked = true;
+            checkBoxSettingsComicInfoFileSize.Checked = true;
 
             checkBoxSettingsExperimentalRemoveDuplicateCovers.Checked = true;
             checkBoxSettingsExperimentalEveryPageIsChapter.Checked = true;
@@ -407,6 +410,7 @@ namespace epub2cbz
             checkBoxSettingsComicInfoIsbnAsin.Checked = CheckboxStates.CheckboxIsbnAsinState;
             checkBoxSettingsComicInfoChapters.Checked = CheckboxStates.CheckboxChaptersState;
             checkBoxSettingsComicInfoImageSize.Checked = CheckboxStates.CheckboxImageSizeState;
+            checkBoxSettingsComicInfoFileSize.Checked = CheckboxStates.CheckboxFileSizeState;
 
             checkBoxSettingsExperimentalRemoveDuplicateCovers.Checked = CheckboxStates.CheckboxDuplicateCoverState;
             checkBoxSettingsExperimentalEveryPageIsChapter.Checked = CheckboxStates.CheckboxEveryPageIsChapterState;
@@ -467,6 +471,7 @@ namespace epub2cbz
             checkBoxSettingsComicInfoProducers.Text = Resources.SettingsProducers;
             checkBoxSettingsComicInfoTranslators.Text = Resources.SettingsTranslators;
             checkBoxSettingsComicInfoImageSize.Text = Resources.SettingsImageSize;
+            checkBoxSettingsComicInfoFileSize.Text = Resources.SettingsFileSize;
             groupBoxComicInfo.Text = Resources.SettingsGroupComicInfo;
 
             groupBoxExperimental.Text = Resources.SettingsGroupExperimental;

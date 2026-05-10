@@ -395,7 +395,10 @@
     <value>Resizing:</value>
   </data>
   <data name="SettingsImageSize" xml:space="preserve">
-    <value>Image size</value>
+    <value>Resolution</value>
+  </data>
+  <data name="SettingsFileSize" xml:space="preserve">
+    <value>File Size</value>
   </data>
   <data name="SettingsLabelCompressionLevel" xml:space="preserve">
     <value>CBZ/ZIP Compression Level:</value>

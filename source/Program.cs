@@ -2713,7 +2713,8 @@ namespace epub2cbz
             }
 
             if (PopupSettings.CheckboxStates.CheckboxChaptersState
-                || PopupSettings.CheckboxStates.CheckboxImageSizeState)
+                || PopupSettings.CheckboxStates.CheckboxImageSizeState
+                || PopupSettings.CheckboxStates.CheckboxFileSizeState)
             {
                 xmlWriter.WriteStartElement("Pages");
 
@@ -2732,6 +2733,10 @@ namespace epub2cbz
                         || !MainForm.FormElements.CheckboxExtractImagesState))
                     {
                         xmlWriter.WriteAttributeString("DoublePage", "True");
+                    }
+                    if (PopupSettings.CheckboxStates.CheckboxFileSizeState)
+                    {
+                        xmlWriter.WriteAttributeString("ImageSize", bookFull[i]["size"]);
                     }
                     if (PopupSettings.CheckboxStates.CheckboxChaptersState)
                     {
@@ -2761,9 +2766,6 @@ namespace epub2cbz
                     {
                         xmlWriter.WriteAttributeString("ImageWidth", bookFull[i]["width"]);
                         xmlWriter.WriteAttributeString("ImageHeight", bookFull[i]["height"]);
-#if DEBUG
-                        xmlWriter.WriteAttributeString("ImageSize", bookFull[i]["size"]);
-#endif
                     }
 
                     xmlWriter.WriteEndElement(); // Page

@@ -367,7 +367,10 @@
     <value>Größenanpassung:</value>
   </data>
   <data name="SettingsImageSize" xml:space="preserve">
-    <value>Bildauflösung</value>
+    <value>Auflösung</value>
+  </data>
+  <data name="SettingsFileSize" xml:space="preserve">
+    <value>Dateigröße</value>
   </data>
   <data name="SettingsLabelCompressionLevel" xml:space="preserve">
     <value>CBZ/ZIP Komprimierungsgrad:</value>

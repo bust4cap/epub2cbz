@@ -862,6 +862,15 @@ namespace epub2cbz.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die File Size ähnelt.
+        /// </summary>
+        internal static string SettingsFileSize {
+            get {
+                return ResourceManager.GetString("SettingsFileSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Info to include in ComicInfo.xml: ähnelt.
         /// </summary>
         internal static string SettingsGroupComicInfo {
@@ -898,7 +907,7 @@ namespace epub2cbz.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Image size ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Resolution ähnelt.
         /// </summary>
         internal static string SettingsImageSize {
             get {

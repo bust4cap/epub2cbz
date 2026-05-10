@@ -48,6 +48,7 @@
             checkBoxSettingsComicInfoProducers = new CheckBox();
             checkBoxSettingsComicInfoChapters = new CheckBox();
             checkBoxSettingsComicInfoPageCount = new CheckBox();
+            checkBoxSettingsComicInfoFileSize = new CheckBox();
             groupBoxExperimental = new GroupBox();
             tableLayoutPanelExperimental = new TableLayoutPanel();
             checkBoxSettingsExperimentalSpreadInsertBlank = new CheckBox();
@@ -273,19 +274,20 @@
             tableLayoutPanelComicInfo.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableLayoutPanelComicInfo.Controls.Add(checkBoxSettingsComicInfoReadingDirection, 3, 2);
             tableLayoutPanelComicInfo.Controls.Add(checkBoxSettingsComicInfoTranslators, 3, 1);
-            tableLayoutPanelComicInfo.Controls.Add(checkBoxSettingsComicInfoImageSize, 2, 3);
             tableLayoutPanelComicInfo.Controls.Add(checkBoxSettingsComicInfoIsbnAsin, 0, 3);
             tableLayoutPanelComicInfo.Controls.Add(checkBoxSettingsComicInfoDescription, 3, 0);
             tableLayoutPanelComicInfo.Controls.Add(checkBoxSettingsComicInfoTitle, 0, 0);
             tableLayoutPanelComicInfo.Controls.Add(checkBoxSettingsComicInfoProducers, 2, 1);
             tableLayoutPanelComicInfo.Controls.Add(checkBoxSettingsComicInfoDate, 0, 1);
             tableLayoutPanelComicInfo.Controls.Add(checkBoxSettingsComicInfoLanguage, 2, 2);
-            tableLayoutPanelComicInfo.Controls.Add(checkBoxSettingsComicInfoChapters, 1, 3);
             tableLayoutPanelComicInfo.Controls.Add(checkBoxSettingsComicInfoPublisher, 0, 2);
             tableLayoutPanelComicInfo.Controls.Add(checkBoxSettingsComicInfoVolume, 2, 0);
             tableLayoutPanelComicInfo.Controls.Add(checkBoxSettingsComicInfoPageCount, 1, 2);
             tableLayoutPanelComicInfo.Controls.Add(checkBoxSettingsComicInfoSeries, 1, 0);
             tableLayoutPanelComicInfo.Controls.Add(checkBoxSettingsComicInfoAuthors, 1, 1);
+            tableLayoutPanelComicInfo.Controls.Add(checkBoxSettingsComicInfoFileSize, 1, 3);
+            tableLayoutPanelComicInfo.Controls.Add(checkBoxSettingsComicInfoChapters, 2, 3);
+            tableLayoutPanelComicInfo.Controls.Add(checkBoxSettingsComicInfoImageSize, 3, 3);
             tableLayoutPanelComicInfo.Dock = DockStyle.Fill;
             tableLayoutPanelComicInfo.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
             tableLayoutPanelComicInfo.Location = new Point(3, 19);
@@ -327,12 +329,12 @@
             // 
             checkBoxSettingsComicInfoImageSize.Anchor = AnchorStyles.Left;
             checkBoxSettingsComicInfoImageSize.AutoSize = true;
-            checkBoxSettingsComicInfoImageSize.Location = new Point(271, 67);
+            checkBoxSettingsComicInfoImageSize.Location = new Point(404, 67);
             checkBoxSettingsComicInfoImageSize.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsComicInfoImageSize.Name = "checkBoxSettingsComicInfoImageSize";
             checkBoxSettingsComicInfoImageSize.Size = new Size(82, 19);
-            checkBoxSettingsComicInfoImageSize.TabIndex = 15;
-            checkBoxSettingsComicInfoImageSize.Text = "Image Size";
+            checkBoxSettingsComicInfoImageSize.TabIndex = 16;
+            checkBoxSettingsComicInfoImageSize.Text = "Resolution";
             checkBoxSettingsComicInfoImageSize.UseVisualStyleBackColor = false;
             // 
             // checkBoxSettingsComicInfoIsbnAsin
@@ -363,11 +365,11 @@
             // 
             checkBoxSettingsComicInfoChapters.Anchor = AnchorStyles.Left;
             checkBoxSettingsComicInfoChapters.AutoSize = true;
-            checkBoxSettingsComicInfoChapters.Location = new Point(138, 67);
+            checkBoxSettingsComicInfoChapters.Location = new Point(271, 67);
             checkBoxSettingsComicInfoChapters.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsComicInfoChapters.Name = "checkBoxSettingsComicInfoChapters";
             checkBoxSettingsComicInfoChapters.Size = new Size(73, 19);
-            checkBoxSettingsComicInfoChapters.TabIndex = 14;
+            checkBoxSettingsComicInfoChapters.TabIndex = 15;
             checkBoxSettingsComicInfoChapters.Text = "Chapters";
             checkBoxSettingsComicInfoChapters.UseVisualStyleBackColor = false;
             // 
@@ -382,6 +384,18 @@
             checkBoxSettingsComicInfoPageCount.TabIndex = 10;
             checkBoxSettingsComicInfoPageCount.Text = "Page Count";
             checkBoxSettingsComicInfoPageCount.UseVisualStyleBackColor = false;
+            // 
+            // checkBoxSettingsComicInfoFileSize
+            // 
+            checkBoxSettingsComicInfoFileSize.Anchor = AnchorStyles.Left;
+            checkBoxSettingsComicInfoFileSize.AutoSize = true;
+            checkBoxSettingsComicInfoFileSize.Location = new Point(138, 67);
+            checkBoxSettingsComicInfoFileSize.Margin = new Padding(2, 1, 2, 1);
+            checkBoxSettingsComicInfoFileSize.Name = "checkBoxSettingsComicInfoFileSize";
+            checkBoxSettingsComicInfoFileSize.Size = new Size(67, 19);
+            checkBoxSettingsComicInfoFileSize.TabIndex = 14;
+            checkBoxSettingsComicInfoFileSize.Text = "File Size";
+            checkBoxSettingsComicInfoFileSize.UseVisualStyleBackColor = false;
             // 
             // groupBoxExperimental
             // 
@@ -1278,5 +1292,6 @@
         private TableLayoutPanel tableLayoutPanel1;
         private CheckBox checkBoxSettingsExperimentalRemoveFirstPage;
         private CheckBox checkBoxSettingsExperimentalOffsetChapters;
+        private CheckBox checkBoxSettingsComicInfoFileSize;
     }
 }

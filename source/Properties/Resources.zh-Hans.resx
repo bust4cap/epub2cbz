@@ -367,7 +367,10 @@
     <value>调整大小：</value>
   </data>
   <data name="SettingsImageSize" xml:space="preserve">
-    <value>图像大小</value>
+    <value>分辨率</value>
+  </data>
+  <data name="SettingsFileSize" xml:space="preserve">
+    <value>文件大小</value>
   </data>
   <data name="SettingsLabelCompressionLevel" xml:space="preserve">
     <value>CBZ/ZIP 压缩级别：</value>
