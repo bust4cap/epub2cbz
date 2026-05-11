@@ -78,7 +78,7 @@ namespace epub2cbz
                         new XAttribute("name", "CheckboxImageSizeState"),
                         new XElement("value", PopupSettings.CheckboxStates.CheckboxImageSizeState.ToString())),
                     new XElement("setting",
-                        new XAttribute("name", "CheckboxImageSizeInBytesState"),
+                        new XAttribute("name", "CheckboxFileSizeState"),
                         new XElement("value", PopupSettings.CheckboxStates.CheckboxFileSizeState.ToString())),
                     new XElement("setting",
                         new XAttribute("name", "CheckboxDuplicateCoverState"),
@@ -362,10 +362,10 @@ namespace epub2cbz
                         PopupSettings.CheckboxStates.CheckboxImageSizeState = parsedValueCheckboxImageSizeState;
                     }
 
-                    if (loadedSettings.TryGetValue("CheckboxImageSizeInBytesState", out string? valueCheckboxImageSizeInBytesState)
-                        && bool.TryParse(valueCheckboxImageSizeInBytesState, out bool parsedValueCheckboxImageSizeInBytesState))
+                    if (loadedSettings.TryGetValue("CheckboxFileSizeState", out string? valueCheckboxFileSizeState)
+                        && bool.TryParse(valueCheckboxFileSizeState, out bool parsedValueCheckboxFileSizeState))
                     {
-                        PopupSettings.CheckboxStates.CheckboxFileSizeState = parsedValueCheckboxImageSizeInBytesState;
+                        PopupSettings.CheckboxStates.CheckboxFileSizeState = parsedValueCheckboxFileSizeState;
                     }
 
                     if (loadedSettings.TryGetValue("CheckboxDuplicateCoverState", out string? valueCheckboxDuplicateCoverState)
