@@ -1,0 +1,16 @@
+﻿namespace epub2cbz
+{
+    internal class BookInfo
+    {
+        public record EpubPage(
+            string Page = "",
+            string Image = "",
+            string Spread = "",
+            bool Doublepage = false,
+            int Width = 0,
+            int Height = 0,
+            long Size = 0,
+            string Bookmark = ""
+        );
+    }
+}
