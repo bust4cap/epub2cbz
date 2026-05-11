@@ -10,6 +10,7 @@ using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Formats.Webp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
+using System.Buffers.Binary;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO.Compression;
@@ -523,75 +524,54 @@ namespace epub2cbz
 
         private static bool CheckEPUB(string epubFile)
         {
-            byte[] buffer = new byte[4];
-
             using FileStream fs = new(epubFile, FileMode.Open, FileAccess.Read);
+            if (fs.Length < 4) return false;
 
-            if (fs.Length < 4)
-            {
-                return false;
-            }
+            Span<byte> buffer = stackalloc byte[4];
+            fs.ReadExactly(buffer);
 
-            fs.ReadExactly(buffer, 0, 4);
-            string hexValues = string.Empty;
-
-            foreach (var element in buffer)
-            {
-                hexValues += element.ToString("X2");
-            }
-            if (hexValues != "504B0304")    // EPUB
-            {
-                return false;
-            }
-
-            return true;
+            return BinaryPrimitives.ReadUInt32BigEndian(buffer) == 0x504B0304;  // EPUB
         }
 
         private static bool CheckDRMProtection(Dictionary<string, ZipArchiveEntry> entryMap,
             string filename)
         {
-            bool isDRMProtected = true;
-
-            if (!entryMap.TryGetValue(filename, out var fileEntry))
+            if (string.IsNullOrEmpty(filename) ||
+                !entryMap.TryGetValue(filename, out var fileEntry))
             {
-                return isDRMProtected;
+                return true;
             }
 
-            if (!string.IsNullOrEmpty(filename))
+
+            if (filename.EndsWith(".xhtml", StringComparison.InvariantCultureIgnoreCase) ||
+                filename.EndsWith(".html", StringComparison.InvariantCultureIgnoreCase) ||
+                filename.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))      // Walter Isaacson - Steve Jobs
             {
-                if (filename.EndsWith(".xhtml", StringComparison.InvariantCultureIgnoreCase) ||
-                    filename.EndsWith(".html", StringComparison.InvariantCultureIgnoreCase) ||
-                    filename.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))      // Walter Isaacson - Steve Jobs
+                using StreamReader reader = new(fileEntry.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+                string fileContent = reader.ReadToEnd();
+                if (fileContent.Contains("html", StringComparison.InvariantCultureIgnoreCase)) return false;
+            }
+            else if (imageExtensions.Any(ext => filename.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                using Stream fs = fileEntry.Open();
+                if (fs.Length < 4) return false;
+
+                Span<byte> buffer = stackalloc byte[4];
+                fs.ReadExactly(buffer);
+
+                uint hexValue = BinaryPrimitives.ReadUInt32BigEndian(buffer);
+
+                if (hexValue == 0xFFD8FFE0 ||  // JPEG
+                    hexValue == 0xFFD8FFE1 ||  // JPEG
+                    hexValue == 0x89504E47 ||  // PNG
+                    hexValue == 0x52494646 ||  // WEBP
+                    hexValue == 0x47494638)    // GIF
                 {
-                    using StreamReader reader = new(fileEntry.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
-                    string fileContent = reader.ReadToEnd();
-                    if (fileContent.Contains("html", StringComparison.InvariantCultureIgnoreCase)) isDRMProtected = false;
-                }
-                else if (imageExtensions.Any(ext => filename.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase)))
-                {
-                    byte[] buffer = new byte[4];
-
-                    using Stream fileStream = fileEntry.Open();
-
-                    fileStream.ReadExactly(buffer, 0, 4);
-                    string hexValues = string.Empty;
-
-                    foreach (var element in buffer)
-                    {
-                        hexValues += element.ToString("X2");
-                    }
-                    if (hexValues == "FFD8FFE0" ||  // JPEG
-                        hexValues == "FFD8FFE1" ||  // JPEG
-                        hexValues == "89504E47" ||  // PNG
-                        hexValues == "52494646" ||  // WEBP
-                        hexValues == "47494638")    // GIF
-                    {
-                        isDRMProtected = false;
-                    }
+                    return false;
                 }
             }
 
-            return isDRMProtected;
+            return true;
         }
 
         private static (MemoryStream, MemoryStream, int, int) SplitImageSharp(ZipArchiveEntry bookEntry,
@@ -2459,7 +2439,6 @@ namespace epub2cbz
                                 if (!itemSrcListFile.Value.EndsWith(".png", StringComparison.InvariantCultureIgnoreCase))
                                 {
                                     itemSrc = ResolveRootPath(actualFilename, itemSrcListFile.Value);
-                                    //break;
                                 }
                             }
                         }
