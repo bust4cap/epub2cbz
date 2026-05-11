@@ -657,25 +657,34 @@ namespace epub2cbz
         {
             try
             {
-                ZipArchiveEntry bookEntry = entryMap.GetValueOrDefault(bookImage)!;
+                ZipArchiveEntry? bookEntry = entryMap.GetValueOrDefault(bookImage);
 
-                if (bookEntry != null)
+                if (bookEntry == null) return false;
+
+                using Stream imageStream = bookEntry.Open();
+                using Image<Rgba32> image = SixLabors.ImageSharp.Image.Load<Rgba32>(imageStream);
+
+                bool isBlank = true;
+
+                image.ProcessPixelRows(accessor =>
                 {
-                    using Stream imageStream = bookEntry.Open();
-                    using Image<Rgba32> image = SixLabors.ImageSharp.Image.Load<Rgba32>(imageStream);
-
                     // Ignore 2 outermost pixels
-                    for (int y = 2; y < (image.Height - 2); y++)
+                    for (int y = 2; y < (accessor.Height - 2); y++)
                     {
-                        for (int x = 2; x < (image.Width - 2); x++)
+                        Span<Rgba32> pixelRow = accessor.GetRowSpan(y);
+                        for (int x = 2; x < (pixelRow.Length - 2); x++)
                         {
-                            Rgba32 pixel = image[x, y];
-                            if (pixel.A < 250 || pixel.R < 250 || pixel.G < 250 || pixel.B < 250) return false; // Image isn't blank
+                            ref Rgba32 pixel = ref pixelRow[x];
+                            if (pixel.A < 250 || pixel.R < 250 || pixel.G < 250 || pixel.B < 250)
+                            {
+                                isBlank = false;
+                                return;
+                            }
                         }
                     }
-                    return true; // Image is blank
-                }
-                else return false;
+                });
+
+                return isBlank;
             }
             catch (Exception)
             {
