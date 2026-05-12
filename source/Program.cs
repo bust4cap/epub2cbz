@@ -32,6 +32,8 @@ namespace epub2cbz
 
     static class Program
     {
+        private static MainForm? _mainForm;
+
         private static int numberEpubs = 0;
         private static int numberCurrentEpub = 0;
         public static CancellationTokenSource cts = new();
@@ -44,32 +46,29 @@ namespace epub2cbz
 
         private static void ProgressBarStep()
         {
-            MainForm mainForm = Application.OpenForms.OfType<MainForm>().FirstOrDefault()!;
-            mainForm.Invoke(new Action(mainForm.toolStripProgressBar.PerformStep));
+            _mainForm?.BeginInvoke(_mainForm.toolStripProgressBar.PerformStep);
         }
 
         public static void ClearAndFocusConsole()
         {
-            MainForm mainForm = Application.OpenForms.OfType<MainForm>().FirstOrDefault()!;
-            mainForm.Invoke(new Action(() =>
+            _mainForm?.Invoke(() =>
             {
-                mainForm.outputBoxConsole.Clear();
-                mainForm.outputBoxConsole.Focus();
-            }));
+                _mainForm.outputBoxConsole.Clear();
+                _mainForm.outputBoxConsole.Focus();
+            });
         }
 
         public static void AppendColoredText(string text,
             System.Drawing.Color color)
         {
-            MainForm mainForm = Application.OpenForms.OfType<MainForm>().FirstOrDefault()!;
-            mainForm.Invoke(new Action(() =>
+            _mainForm?.BeginInvoke(() =>
             {
-                mainForm.outputBoxConsole.SelectionStart = mainForm.outputBoxConsole.TextLength;
-                mainForm.outputBoxConsole.SelectionLength = 0;
-                mainForm.outputBoxConsole.SelectionColor = color;
-                mainForm.outputBoxConsole.AppendText(text);
-                mainForm.outputBoxConsole.SelectionColor = mainForm.outputBoxConsole.ForeColor;
-            }));
+                _mainForm.outputBoxConsole.SelectionStart = _mainForm.outputBoxConsole.TextLength;
+                _mainForm.outputBoxConsole.SelectionLength = 0;
+                _mainForm.outputBoxConsole.SelectionColor = color;
+                _mainForm.outputBoxConsole.AppendText(text);
+                _mainForm.outputBoxConsole.SelectionColor = _mainForm.outputBoxConsole.ForeColor;
+            });
         }
 
         private static CompressionLevel GetCompressionLevel()
@@ -3272,36 +3271,41 @@ namespace epub2cbz
             return mangaList;
         }
 
-        private static void DisableControls(MainForm mainForm)
+        private static void DisableControls()
         {
-            mainForm.checkBoxComicInfo.Enabled = false;
-            mainForm.checkBoxImages.Enabled = false;
-            mainForm.buttonPath.Enabled = false;
-            mainForm.buttonPathClear.Enabled = false;
-            mainForm.buttonSwitchModes.Enabled = false;
-            mainForm.buttonFileModeFileList.Enabled = false;
-            mainForm.buttonStart.Text = Resources.AbortButtonText;
-            mainForm.comboBoxLanguage.Enabled = false;
-            mainForm.buttonOpenSettings.Enabled = false;
+            _mainForm?.Invoke(() =>
+            {
+                _mainForm.checkBoxComicInfo.Enabled = false;
+                _mainForm.checkBoxImages.Enabled = false;
+                _mainForm.buttonPath.Enabled = false;
+                _mainForm.buttonPathClear.Enabled = false;
+                _mainForm.buttonSwitchModes.Enabled = false;
+                _mainForm.buttonFileModeFileList.Enabled = false;
+                _mainForm.buttonStart.Text = Resources.AbortButtonText;
+                _mainForm.comboBoxLanguage.Enabled = false;
+                _mainForm.buttonOpenSettings.Enabled = false;
+            });
         }
 
-        private static void EnableControls(MainForm mainForm)
+        private static void EnableControls()
         {
-            mainForm.checkBoxComicInfo.Enabled = true;
-            mainForm.checkBoxImages.Enabled = true;
-            mainForm.buttonPath.Enabled = true;
-            mainForm.buttonPathClear.Enabled = true;
-            mainForm.buttonSwitchModes.Enabled = true;
-            mainForm.buttonFileModeFileList.Enabled = true;
-            mainForm.buttonStart.Enabled = true;
-            mainForm.buttonStart.Text = Resources.StartButtonText;
-            mainForm.comboBoxLanguage.Enabled = true;
-            mainForm.buttonOpenSettings.Enabled = true;
+            _mainForm?.Invoke(() =>
+            {
+                _mainForm.checkBoxComicInfo.Enabled = true;
+                _mainForm.checkBoxImages.Enabled = true;
+                _mainForm.buttonPath.Enabled = true;
+                _mainForm.buttonPathClear.Enabled = true;
+                _mainForm.buttonSwitchModes.Enabled = true;
+                _mainForm.buttonFileModeFileList.Enabled = true;
+                _mainForm.buttonStart.Enabled = true;
+                _mainForm.buttonStart.Text = Resources.StartButtonText;
+                _mainForm.comboBoxLanguage.Enabled = true;
+                _mainForm.buttonOpenSettings.Enabled = true;
+            });
         }
 
         private static void HandleCompletion(TimeSpan ts,
-            bool wasAborted,
-            MainForm mainForm)
+            bool wasAborted)
         {
             AppendColoredText(Environment.NewLine + string.Format(Resources.Timer, Math.Floor(ts.TotalMinutes), ts.Seconds, ts.Milliseconds), System.Drawing.Color.White);
 
@@ -3310,7 +3314,7 @@ namespace epub2cbz
                 AppendColoredText(Environment.NewLine + Environment.NewLine + Resources.AbortedMessage, System.Drawing.Color.Red);
             }
 
-            EnableControls(mainForm);
+            EnableControls();
 
             _processedCbzFiles.Clear();
 
@@ -3319,7 +3323,7 @@ namespace epub2cbz
 
             if (PopupSettings.CheckboxStates.CheckboxFileModeState)
             {
-                mainForm.fileListForm.fileListDataTable.Clear();
+                _mainForm?.Invoke(_mainForm.fileListForm.fileListDataTable.Clear);
                 MainForm.FileNameClass.FileNames.Clear();
             }
         }
@@ -3342,8 +3346,6 @@ namespace epub2cbz
             Stopwatch stopwatch = new();
             stopwatch.Start();
 
-            MainForm mainForm = Application.OpenForms.OfType<MainForm>().FirstOrDefault()!;
-
             string rootDir = string.Empty;
             if (!PopupSettings.CheckboxStates.CheckboxFileModeState)
             {
@@ -3354,15 +3356,18 @@ namespace epub2cbz
                 using PopupInfoError popupInfoError = new();
                 popupInfoError.ShowInfoError(Resources.NoEpubsFoundMessageBox, Resources.ErrorMessageBox);
 
-                EnableControls(mainForm);
+                EnableControls();
                 stopwatch.Stop();
                 return;
             }
 
-            mainForm.outputBoxConsole.Text = string.Empty;
-            mainForm.toolStripProgressBar.Value = 0;
+            _mainForm?.Invoke(() =>
+            {
+                _mainForm.outputBoxConsole.Text = string.Empty;
+                _mainForm.toolStripProgressBar.Value = 0;
+            });
 
-            DisableControls(mainForm);
+            DisableControls();
             numberCurrentEpub = 0;
             bool wasAborted = false;
 
@@ -3374,7 +3379,7 @@ namespace epub2cbz
                 using PopupInfoError popupInfoError = new();
                 popupInfoError.ShowInfoError(Resources.NoPathMessageBox, Resources.ErrorMessageBox);
 
-                EnableControls(mainForm);
+                EnableControls();
                 stopwatch.Stop();
                 return;
             }
@@ -3391,7 +3396,7 @@ namespace epub2cbz
                     using PopupInfoError popupInfoError = new();
                     popupInfoError.ShowInfoError(Resources.NoMangalistMessageBox, Resources.ErrorMessageBox);
 
-                    EnableControls(mainForm);
+                    EnableControls();
                     stopwatch.Stop();
                     return;
                 }
@@ -3487,7 +3492,7 @@ namespace epub2cbz
             {
                 wasAborted = true;
                 stopwatch.Stop();
-                HandleCompletion(stopwatch.Elapsed, wasAborted, mainForm);
+                HandleCompletion(stopwatch.Elapsed, wasAborted);
                 return;
             }
             catch (Exception ex)
@@ -3495,7 +3500,7 @@ namespace epub2cbz
                 using PopupInfoError popupInfoError = new();
                 popupInfoError.ShowInfoError($"{ex.Message}", Resources.ErrorMessageBox);
 
-                EnableControls(mainForm);
+                EnableControls();
                 stopwatch.Stop();
                 return;
             }
@@ -3505,7 +3510,7 @@ namespace epub2cbz
                 using PopupInfoError popupInfoError = new();
                 popupInfoError.ShowInfoError(Resources.NoEpubsFoundMessageBox, Resources.ErrorMessageBox);
 
-                EnableControls(mainForm);
+                EnableControls();
                 stopwatch.Stop();
                 return;
             }
@@ -3513,7 +3518,7 @@ namespace epub2cbz
 
             numberEpubs = epubPaths.Count;
 
-            mainForm.toolStripProgressBar.Maximum = numberEpubs;
+            _mainForm?.Invoke(() => _mainForm.toolStripProgressBar.Maximum = numberEpubs);
 
             using PopupSettings popup = new();
             int? nullableDegree = popup.dropDownThreads.Items[PopupSettings.CheckboxStates.DropDownParallelismDegreeState] as int?;
@@ -3553,7 +3558,7 @@ namespace epub2cbz
             finally
             {
                 stopwatch.Stop();
-                HandleCompletion(stopwatch.Elapsed, wasAborted, mainForm);
+                HandleCompletion(stopwatch.Elapsed, wasAborted);
             }
         }
 
@@ -3583,7 +3588,9 @@ namespace epub2cbz
             HandleArguments(args);
 
             ApplicationConfiguration.Initialize();
-            Application.Run(new MainForm());
+
+            _mainForm = new MainForm();
+            Application.Run(_mainForm);
         }
     }
 }
