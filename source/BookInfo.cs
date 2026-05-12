@@ -12,5 +12,11 @@
             long Size = 0,
             string Bookmark = ""
         );
+
+        public record EpubChapter(
+            string Title = "",
+            string Page = "",
+            string Image = ""
+        );
     }
 }

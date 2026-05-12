@@ -134,40 +134,8 @@ namespace epub2cbz
             return resolvedUri.AbsolutePath.TrimStart('/');
         }
 
-        private static List<BookInfo.EpubPage> IntegrateBarnesAndNobleChapters(List<BookInfo.EpubPage> bookFull,
-            List<Dictionary<string, string>> chapters)
-        {
-            for (int i = 0; i < bookFull.Count; i++)
-            {
-                string bookmark = string.Empty;
-
-                foreach (var chapter in chapters)
-                {
-                    if (chapter["page"] == Path.GetFileName(bookFull[i].Page))
-                    {
-                        bookmark = chapter["title"].Trim();
-                        break;
-                    }
-                }
-
-                if (i == 0
-                    && string.IsNullOrEmpty(bookmark))
-                {
-                    bookmark = "Cover";
-                }
-                if (!string.IsNullOrEmpty(bookmark))
-                {
-                    bookFull[i] = bookFull[i] with {
-                        Bookmark = WebUtility.HtmlDecode(bookmark)
-                    };
-                }
-            }
-
-            return bookFull;
-        }
-
         private static List<BookInfo.EpubPage> IntegrateChapters(List<BookInfo.EpubPage> bookFull,
-            List<Dictionary<string, string>> chapters)
+            List<BookInfo.EpubChapter> chapters)
         {
             for (int i = 0; i < bookFull.Count; i++)
             {
@@ -175,9 +143,9 @@ namespace epub2cbz
 
                 foreach (var chapter in chapters)
                 {
-                    if (chapter["page"] == Path.GetFileName(bookFull[i].Page))
+                    if (chapter.Page == Path.GetFileName(bookFull[i].Page))
                     {
-                        bookmark = chapter["title"].Trim();
+                        bookmark = chapter.Title.Trim();
                         break;
                     }
                 }
@@ -476,7 +444,7 @@ namespace epub2cbz
             return outputStream;
         }
 
-        private static (List<BookInfo.EpubPage> bookFull, bool? correctSpread) CheckDuplicateCover(List<Dictionary<string, string>> chapters,
+        private static (List<BookInfo.EpubPage> bookFull, bool? correctSpread) CheckDuplicateCover(List<BookInfo.EpubChapter> chapters,
             List<BookInfo.EpubPage> bookFull,
             Dictionary<string, ZipArchiveEntry> entryMap,
             XDocument opfDoc,
@@ -485,10 +453,10 @@ namespace epub2cbz
             string epubFile)
         {
             if (chapters.Count > 0
-                && chapters[0]["page"] == Path.GetFileName(bookFull[1].Page)
-                && (chapters[0]["title"].Contains("Cover")
-                || chapters[0]["title"] == "カバー"
-                || chapters[0]["title"] == "表紙"))
+                && chapters[0].Page == Path.GetFileName(bookFull[1].Page)
+                && (chapters[0].Title.Contains("Cover")
+                || chapters[0].Title == "カバー"
+                || chapters[0].Title == "表紙"))
             {
                 (bookFull, correctSpread) = RemoveDuplicateCover(entryMap, bookFull, epubFilename, correctSpread);
             }
@@ -1445,12 +1413,12 @@ namespace epub2cbz
 			}
         }
 
-        private static List<Dictionary<string, string>> GetTocFile(Dictionary<string, ZipArchiveEntry> entryMap,
-            List<Dictionary<string, string>> newChapters,
+        private static List<BookInfo.EpubChapter> GetTocFile(Dictionary<string, ZipArchiveEntry> entryMap,
+            List<BookInfo.EpubChapter> newChapters,
             List<BookInfo.EpubPage> bookFull,
             int number)
         {
-            List<Dictionary<string, string>> newToc = [];
+            List<BookInfo.EpubChapter> newToc = [];
             List<string> toc = [];
 
             int i = 0;
@@ -1482,11 +1450,11 @@ namespace epub2cbz
                         {
                             if (Path.GetFileName(book.Page) == Path.GetFileName(entry.Split('#')[0]))
                             {
-                                newChapters.Add(new Dictionary<string, string>()
+                                newChapters.Add(new()
                                 {
-                                    ["title"] = $"Page {bookFull.IndexOf(book) + 1}",
-                                    ["page"] = Path.GetFileName(entry.Split('#')[0]),
-                                    ["image"] = string.Empty
+                                    Title = $"Page {bookFull.IndexOf(book) + 1}",
+                                    Page = Path.GetFileName(entry.Split('#')[0]),
+                                    Image = string.Empty
                                 });
                                 break;
                             }
@@ -1513,7 +1481,7 @@ namespace epub2cbz
 
             foreach (var newChapter in newChapters)
             {
-                string fileName = newChapter["page"];
+                string fileName = newChapter.Page;
 
                 if (seen.Contains(fileName)) continue;
 
@@ -1524,13 +1492,13 @@ namespace epub2cbz
             return newToc;
         }
 
-        private static List<Dictionary<string, string>> ParseAlternativeToc(Dictionary<string, ZipArchiveEntry> entryMap,
+        private static List<BookInfo.EpubChapter> ParseAlternativeToc(Dictionary<string, ZipArchiveEntry> entryMap,
             XDocument opfDoc,
-            List<Dictionary<string, string>> chapters,
+            List<BookInfo.EpubChapter> chapters,
             List<BookInfo.EpubPage> bookFull,
             string opfPath)
         {
-            List<Dictionary<string, string>> newToc = [];
+            List<BookInfo.EpubChapter> newToc = [];
             string altTocFile = string.Empty;
 
             XNamespace opf = "http://www.idpf.org/2007/opf";
@@ -2141,10 +2109,10 @@ namespace epub2cbz
             return bookFull;
         }
 
-        private static List<Dictionary<string, string>> ParseBarnesAndNobleToc(List<BookInfo.EpubPage> bookFull,
+        private static List<BookInfo.EpubChapter> ParseBarnesAndNobleToc(List<BookInfo.EpubPage> bookFull,
             XDocument replicaMapDoc)
         {
-            List<Dictionary<string, string>> chapters = [];
+            List<BookInfo.EpubChapter> chapters = [];
 
             XNamespace xmlns = replicaMapDoc.Root!.Name.Namespace;
 
@@ -2158,30 +2126,30 @@ namespace epub2cbz
 
             foreach (var page in tocItems)
             {
-                chapters.Add(new Dictionary<string, string>()
+                chapters.Add(new()
                 {
-                    ["title"] = page.Title!,
-                    ["page"] = page.PageNumber!,
-                    ["image"] = bookFull.FirstOrDefault(d => d.Page == page.PageNumber)?.Image ?? string.Empty
+                    Title = page.Title!,
+                    Page = page.PageNumber!,
+                    Image = bookFull.FirstOrDefault(d => d.Page == page.PageNumber)?.Image ?? string.Empty
                 });
             }
 
             return chapters;
         }
 
-        private static List<Dictionary<string, string>> ParseEpubToc(Dictionary<string, ZipArchiveEntry> entryMap,
+        private static List<BookInfo.EpubChapter> ParseEpubToc(Dictionary<string, ZipArchiveEntry> entryMap,
             string epubFile,
             XDocument opfDoc,
             string opfPath,
             Dictionary<string, string?> metadata)
         {
-            List<Dictionary<string, string>> chapters = [];
+            List<BookInfo.EpubChapter> chapters = [];
             List<string> navPaths = GetNcxFile(opfDoc, opfPath);
 
             if (navPaths.Count > 0)
             {
-                List<Dictionary<string, string>> xhtmlChapters = [];
-                List<Dictionary<string, string>> ncxChapters = [];
+                List<BookInfo.EpubChapter> xhtmlChapters = [];
+                List<BookInfo.EpubChapter> ncxChapters = [];
 
                 foreach (string navPath in navPaths)
                 {
@@ -2223,11 +2191,11 @@ namespace epub2cbz
                                     }
                                 }
 
-                                xhtmlChapters.Add(new Dictionary<string, string>()
+                                xhtmlChapters.Add(new()
                                 {
-                                    ["title"] = title,
-                                    ["page"] = Path.GetFileName(page),
-                                    ["image"] = imagePath ?? string.Empty
+                                    Title = title,
+                                    Page = Path.GetFileName(page),
+                                    Image = imagePath ?? string.Empty
                                 });
                             }
                         }
@@ -2249,11 +2217,11 @@ namespace epub2cbz
                                     imagePath = null;
                                 }
                             }
-                            ncxChapters.Add(new Dictionary<string, string>()
+                            ncxChapters.Add(new()
                             {
-                                ["title"] = title,
-                                ["page"] = Path.GetFileName(page),
-                                ["image"] = imagePath ?? string.Empty
+                                Title = title,
+                                Page = Path.GetFileName(page),
+                                Image = imagePath ?? string.Empty
                             });
                         }
                     }
@@ -2269,9 +2237,12 @@ namespace epub2cbz
 
             for (int i = chapters.Count - 2; i >= 0; i--)
             {
-                if (chapters[i]["page"] == chapters[i + 1]["page"])
+                if (chapters[i].Page == chapters[i + 1].Page)
                 {
-                    chapters[i]["title"] = chapters[i]["title"] + " - " + chapters[i + 1]["title"];
+                    chapters[i] = chapters[i] with
+                    {
+                        Title = chapters[i].Title + " - " + chapters[i + 1].Title
+                    };
                     chapters.RemoveAt(i + 1);
                 }
             }
@@ -3132,7 +3103,7 @@ namespace epub2cbz
                 bookFull = FixPageAlignmentPost(bookFull, readingDirection);
             }
 
-            List<Dictionary<string, string>> chapters = [];
+            List<BookInfo.EpubChapter> chapters = [];
             if (barnesAndNobleBook)
             {
                 chapters = ParseBarnesAndNobleToc(bookFull, replicaMapDoc);
@@ -3198,14 +3169,7 @@ namespace epub2cbz
                 }
             }
 
-            if (barnesAndNobleBook)
-            {
-                bookFull = IntegrateBarnesAndNobleChapters(bookFull, chapters);
-            }
-            else
-            {
-                bookFull = IntegrateChapters(bookFull, chapters);
-            }
+            bookFull = IntegrateChapters(bookFull, chapters);
 
             ///
             if (token.IsCancellationRequested) token.ThrowIfCancellationRequested();
