@@ -137,29 +137,22 @@ namespace epub2cbz
         private static List<BookInfo.EpubPage> IntegrateChapters(List<BookInfo.EpubPage> bookFull,
             List<BookInfo.EpubChapter> chapters)
         {
+            var chapterMap = chapters.ToDictionary(c => c.Page, c => c.Title.Trim());
+
             for (int i = 0; i < bookFull.Count; i++)
             {
-                string bookmark = string.Empty;
-
-                foreach (var chapter in chapters)
-                {
-                    if (chapter.Page == Path.GetFileName(bookFull[i].Page))
-                    {
-                        bookmark = chapter.Title.Trim();
-                        break;
-                    }
-                }
-
-                if (i == 0
-                    && string.IsNullOrEmpty(bookmark))
-                {
-                    bookmark = "Cover";
-                }
-                if (!string.IsNullOrEmpty(bookmark))
+                if (chapterMap.TryGetValue(Path.GetFileName(bookFull[i].Page), out var title))
                 {
                     bookFull[i] = bookFull[i] with
                     {
-                        Bookmark = WebUtility.HtmlDecode(bookmark)
+                        Bookmark = WebUtility.HtmlDecode(title)
+                    };
+                }
+                else if (i == 0)
+                {
+                    bookFull[i] = bookFull[i] with
+                    {
+                        Bookmark = "Cover"
                     };
                 }
             }
