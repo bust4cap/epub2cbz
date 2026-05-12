@@ -905,14 +905,14 @@ namespace epub2cbz
         }
 
         private static List<BookInfo.EpubPage> ParseBarnesAndNobleReplicaMapPagesXml(Dictionary<string, ZipArchiveEntry> entryMap,
-            List<Dictionary<string, string>> dicPagesIdsSpread)
+            List<BookInfo.EpubPagesIdsSpread> dicPagesIdsSpread)
         {
             List<BookInfo.EpubPage> bookFull = [];
             const double wideImageRatio = 1.125; // Images have to be at least 12.5% wider than tall to be considered "wide"
 
             for (int i = 0; i < dicPagesIdsSpread.Count; i++)
             {
-                string? imagePath = dicPagesIdsSpread[i]["pages"];
+                string? imagePath = dicPagesIdsSpread[i].Pages;
                 if (!string.IsNullOrEmpty(imagePath))
                 {
                     if (!entryMap.TryGetValue(imagePath, out var bookEntry))
@@ -939,7 +939,7 @@ namespace epub2cbz
 
                         bookFull.Add(new()
                         {
-                            Page = dicPagesIdsSpread[i]["ids"],
+                            Page = dicPagesIdsSpread[i].Ids,
                             Image = imagePath,
                             Spread = string.Empty,
                             Doublepage = isDoublePage,
@@ -959,7 +959,7 @@ namespace epub2cbz
             string epubFile,
             string opfPath,
             XDocument opfDoc,
-            List<Dictionary<string, string>> dicPagesIdsSpread,
+            List<BookInfo.EpubPagesIdsSpread> dicPagesIdsSpread,
             Dictionary<string, string?> metadata)
         {
             List<BookInfo.EpubPage> bookFull = [];
@@ -968,7 +968,7 @@ namespace epub2cbz
 
             for (int i = 0; i < dicPagesIdsSpread.Count; i++)
             {
-                string? imagePath = FindImagePathInFile(entryMap, epubFile, dicPagesIdsSpread[i]["pages"].Split('#')[0], metadata, opfPath);
+                string? imagePath = FindImagePathInFile(entryMap, epubFile, dicPagesIdsSpread[i].Pages.Split('#')[0], metadata, opfPath);
                 if (!string.IsNullOrEmpty(imagePath))
                 {
                     if (!entryMap.TryGetValue(imagePath, out var bookEntry))
@@ -995,9 +995,9 @@ namespace epub2cbz
 
                         bookFull.Add(new()
                         {
-                            Page = dicPagesIdsSpread[i]["pages"].Split('#')[0],
+                            Page = dicPagesIdsSpread[i].Pages.Split('#')[0],
                             Image = imagePath,
-                            Spread = dicPagesIdsSpread[i]["spread"] ?? string.Empty,
+                            Spread = dicPagesIdsSpread[i].Spread ?? string.Empty,
                             Doublepage = isDoublePage,
                             Height = height,
                             Width = width,
@@ -1009,7 +1009,7 @@ namespace epub2cbz
                 //  If image paths are only found in a css file (e.g. The Hobbit)
                 else if (dicPagesIdsSpread.Count > i)
                 {
-                    string cssImage = FindImagePathInCss(entryMap, cssPath, dicPagesIdsSpread[i]["pages"].Split('#')[0]);
+                    string cssImage = FindImagePathInCss(entryMap, cssPath, dicPagesIdsSpread[i].Pages.Split('#')[0]);
 
                     if (!string.IsNullOrEmpty(cssImage))
                     {
@@ -1039,9 +1039,9 @@ namespace epub2cbz
 
                             bookFull.Add(new BookInfo.EpubPage()
                             {
-                                Page = dicPagesIdsSpread[i]["pages"].Split('#')[0],
+                                Page = dicPagesIdsSpread[i].Pages.Split('#')[0],
                                 Image = cssImage,
-                                Spread = dicPagesIdsSpread[i]["spread"] ?? string.Empty,
+                                Spread = dicPagesIdsSpread[i].Spread ?? string.Empty,
                                 Doublepage = isDoublePage,
                                 Height = height,
                                 Width = width,
@@ -1052,13 +1052,13 @@ namespace epub2cbz
                 }
 
                 //  Add blank page if image source is not linked
-                if (!bookFull.Any(b => b.Page == dicPagesIdsSpread[i]["pages"]))
+                if (!bookFull.Any(b => b.Page == dicPagesIdsSpread[i].Pages))
                 {
                     bookFull.Add(new BookInfo.EpubPage()
                     {
-                        Page = dicPagesIdsSpread[i]["pages"].Split('#')[0],
+                        Page = dicPagesIdsSpread[i].Pages.Split('#')[0],
                         Image = string.Empty,
-                        Spread = dicPagesIdsSpread[i]["spread"] ?? string.Empty,
+                        Spread = dicPagesIdsSpread[i].Spread ?? string.Empty,
                         Doublepage = false,
                         Height = 0,
                         Width = 0,
@@ -1109,11 +1109,11 @@ namespace epub2cbz
             return opfDoc;
         }
 
-        private static List<Dictionary<string, string>> ParseBarnesAndNobleReplicaMapPages(XDocument replicaMapDoc,
+        private static List<BookInfo.EpubPagesIdsSpread> ParseBarnesAndNobleReplicaMapPages(XDocument replicaMapDoc,
             string replicaMapPath)
         {
             Dictionary<string, string?> pages = [];
-            List<Dictionary<string, string>> dicPagesIdsSpread = [];
+            List<BookInfo.EpubPagesIdsSpread> dicPagesIdsSpread = [];
 
             XNamespace xmlns = replicaMapDoc.Root!.Name.Namespace;
 
@@ -1134,22 +1134,22 @@ namespace epub2cbz
                     pageFile = ResolveRootPath(replicaMapPath, page.Value);
                 }
 
-                dicPagesIdsSpread.Add(new Dictionary<string, string>()
+                dicPagesIdsSpread.Add(new()
                 {
-                    ["pages"] = pageFile ?? string.Empty,
-                    ["ids"] = page.Key,
-                    ["spread"] = string.Empty
+                    Pages = pageFile ?? string.Empty,
+                    Ids = page.Key,
+                    Spread = string.Empty
                 });
             }
 
             return dicPagesIdsSpread;
         }
 
-        private static List<Dictionary<string, string>> ParseSpineXml(XDocument opfDoc,
+        private static List<BookInfo.EpubPagesIdsSpread> ParseSpineXml(XDocument opfDoc,
             string opfPath)
         {
             Dictionary<string, string?> pages = [];
-            List<Dictionary<string, string>> dicPagesIdsSpread = [];
+            List<BookInfo.EpubPagesIdsSpread> dicPagesIdsSpread = [];
 
             XNamespace opf = "http://www.idpf.org/2007/opf";
 
@@ -1170,11 +1170,11 @@ namespace epub2cbz
                     string? opfHref = (string?)opfManifest.Attribute("href");
                     if (!string.IsNullOrEmpty(opfHref)) opfHref = ResolveRootPath(opfPath, opfHref);
 
-                    dicPagesIdsSpread.Add(new Dictionary<string, string>()
+                    dicPagesIdsSpread.Add(new()
                     {
-                        ["pages"] = opfHref ?? string.Empty,
-                        ["ids"] = page.Key,
-                        ["spread"] = page.Value ?? string.Empty
+                        Pages = opfHref ?? string.Empty,
+                        Ids = page.Key,
+                        Spread = page.Value ?? string.Empty
                     });
                 }
             }
@@ -3031,7 +3031,7 @@ namespace epub2cbz
             bool barnesAndNobleBook = IsBarnesAndNobleBook(opfDoc);
             XDocument replicaMapDoc = new();
 
-            List<Dictionary<string, string>> pages = [];
+            List<BookInfo.EpubPagesIdsSpread> pages = [];
             if (barnesAndNobleBook)
             {
                 (replicaMapDoc, string replicaMapPath) = GetBarnesAndNobleReplicaMap(entryMap, opfDoc, opfPath);
@@ -3045,7 +3045,7 @@ namespace epub2cbz
             /// Try to check if Epub is still DRM protected
             /// 
 
-            if (PopupSettings.CheckboxStates.CheckboxDRMProtectionState && CheckDRMProtection(entryMap, pages[0]["pages"].Split('#')[0]))
+            if (PopupSettings.CheckboxStates.CheckboxDRMProtectionState && CheckDRMProtection(entryMap, pages[0].Pages.Split('#')[0]))
             {
                 Interlocked.Increment(ref numberCurrentEpub);
                 AppendColoredText($"({numberCurrentEpub.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "

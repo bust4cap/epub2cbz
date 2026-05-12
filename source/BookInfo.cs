@@ -18,5 +18,11 @@
             string Page = "",
             string Image = ""
         );
+
+        public record EpubPagesIdsSpread(
+            string Pages = "",
+            string Ids = "",
+            string Spread = ""
+        );
     }
 }
