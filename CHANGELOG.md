@@ -1,3 +1,9 @@
+## v2026.05.13-1
+- Only write to config if there are any actual changes
+- Reduced config file reads
+- Added File Size to ComicInfo
+- Various code optimizations
+
 ## v2026.05.03-1
 - Default to file mode when starting the program for the first time
 - Removed SixLabors.ImageSharp.Drawing dependency, resulting in a slighty reduced file size
