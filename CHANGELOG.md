@@ -1,3 +1,6 @@
+## v2026.05.15-1
+- Fixed regression related to DRM check of images
+
 ## v2026.05.13-1
 - Only write to config if there are any actual changes
 - Reduced config file reads
