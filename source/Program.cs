@@ -518,8 +518,9 @@ namespace epub2cbz
             }
             else if (imageExtensions.Any(ext => filename.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase)))
             {
+                if (fileEntry.Length < 4) return false;
+
                 using Stream fs = fileEntry.Open();
-                if (fs.Length < 4) return false;
 
                 Span<byte> buffer = stackalloc byte[4];
                 fs.ReadExactly(buffer);
@@ -2517,7 +2518,7 @@ namespace epub2cbz
             return (epubFilename.TrimEnd(), string.Empty, string.Empty);
         }
 
-        private static void WriteChaptersToXml(string targetCbz,
+        private static void WriteComicInfoXml(string targetCbz,
             string epubFilename,
             string readingDirection,
             List<BookInfo.EpubPage> bookFull,
@@ -2560,7 +2561,7 @@ namespace epub2cbz
             if (PopupSettings.CheckboxStates.CheckboxSeriesState)
             {
                 if (PopupSettings.CheckboxStates.CheckboxReplaceSeriesState
-                    && !string.IsNullOrEmpty(PopupSettings.CheckboxStates.TextboxReplaceSeriesState!.Trim()))
+                    && !string.IsNullOrWhiteSpace(PopupSettings.CheckboxStates.TextboxReplaceSeriesState))
                 {
                     xmlWriter.WriteElementString("Series", PopupSettings.CheckboxStates.TextboxReplaceSeriesState.Trim());
                 }
@@ -3238,7 +3239,7 @@ namespace epub2cbz
                     bookFull = FillBlankImageResolutions(width, height, bookFull);
                 }
 
-                WriteChaptersToXml(targetCbz, epubFilename, readingDirection, bookFull, metadata);
+                WriteComicInfoXml(targetCbz, epubFilename, readingDirection, bookFull, metadata);
             }
 
             Interlocked.Increment(ref numberCurrentEpub);
