@@ -908,10 +908,7 @@ namespace epub2cbz
                 string? imagePath = dicPagesIdsSpread[i].Pages;
                 if (!string.IsNullOrEmpty(imagePath))
                 {
-                    if (!entryMap.TryGetValue(imagePath, out var bookEntry))
-                    {
-
-                    }
+                    if (!entryMap.TryGetValue(imagePath, out var bookEntry)) { }
 
                     if (!string.IsNullOrEmpty(imagePath)
                         && bookEntry != null)
@@ -961,13 +958,10 @@ namespace epub2cbz
 
             for (int i = 0; i < dicPagesIdsSpread.Count; i++)
             {
-                string? imagePath = FindImagePathInFile(entryMap, epubFile, dicPagesIdsSpread[i].Pages.Split('#')[0], metadata, opfPath);
+                string? imagePath = FindImagePathInFile(entryMap, epubFile, dicPagesIdsSpread[i].Pages.Split('#')[0]);
                 if (!string.IsNullOrEmpty(imagePath))
                 {
-                    if (!entryMap.TryGetValue(imagePath, out var bookEntry))
-                    {
-
-                    }
+                    if (!entryMap.TryGetValue(imagePath, out var bookEntry)) { }
 
                     if (!string.IsNullOrEmpty(imagePath)
                         && bookEntry != null)
@@ -1008,10 +1002,7 @@ namespace epub2cbz
                     {
                         cssImage = ResolveRootPath(cssPath, cssImage);
 
-                        if (!entryMap.TryGetValue(cssImage, out var bookEntry))
-                        {
-
-                        }
+                        if (!entryMap.TryGetValue(cssImage, out var bookEntry)) { }
 
                         if (!string.IsNullOrEmpty(cssImage)
                             && bookEntry != null)
@@ -1422,10 +1413,8 @@ namespace epub2cbz
                 {
                     string altTocPath = bookFull[number + i].Page;
 
-                    if (!entryMap.TryGetValue(altTocPath, out var altTocEntry))
-                    {
+                    if (!entryMap.TryGetValue(altTocPath, out var altTocEntry)) { }
 
-                    }
                     using StreamReader reader = new(altTocEntry!.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
                     string altTocContent = reader.ReadToEnd();
 
@@ -1537,10 +1526,7 @@ namespace epub2cbz
 
             string filename = ResolveRootPath(opfPath, opfCover);
 
-            if (!entryMap.TryGetValue(filename, out var bookEntry))
-            {
-
-            }
+            if (!entryMap.TryGetValue(filename, out var bookEntry)) { }
 
             if (!string.IsNullOrEmpty(filename)
                 && bookEntry != null)
@@ -1595,10 +1581,7 @@ namespace epub2cbz
             {
                 string filename = ResolveRootPath(opfPath, coverPath);
 
-                if (!entryMap.TryGetValue(filename, out var bookEntry))
-                {
-
-                }
+                if (!entryMap.TryGetValue(filename, out var bookEntry)) { }
 
                 if (!string.IsNullOrEmpty(filename)
                     && filename != bookFull[0].Image
@@ -2175,7 +2158,7 @@ namespace epub2cbz
 
                                 page = ResolveRootPath(navPath, page);
 
-                                string? imagePath = FindImagePathInFile(entryMap, epubFile, page, metadata, opfPath);
+                                string? imagePath = FindImagePathInFile(entryMap, epubFile, page);
                                 if (!string.IsNullOrEmpty(imagePath))
                                 {
                                     if (!entryMap.TryGetValue(imagePath, out var fileEntry))
@@ -2202,7 +2185,7 @@ namespace epub2cbz
 
                             page = ResolveRootPath(navPath, page);
 
-                            string? imagePath = FindImagePathInFile(entryMap, epubFile, page, metadata, opfPath);
+                            string? imagePath = FindImagePathInFile(entryMap, epubFile, page);
                             if (!string.IsNullOrEmpty(imagePath))
                             {
                                 if (!entryMap.TryGetValue(imagePath, out var fileEntry))
@@ -2359,14 +2342,9 @@ namespace epub2cbz
 
         private static string? FindImagePathInFile(Dictionary<string, ZipArchiveEntry> entryMap,
             string epubFile,
-            string actualFilename,
-            Dictionary<string, string?> metadata,
-            string opfPath)
+            string actualFilename)
         {
             string imagePath = string.Empty;
-
-            string? authors = metadata.GetValueOrDefault("Authors", string.Empty);
-            string? publisher = metadata.GetValueOrDefault("Publisher", string.Empty);
 
             if (!string.IsNullOrEmpty(actualFilename))
             {
@@ -2411,21 +2389,9 @@ namespace epub2cbz
                     var itemSrcList = fileDoc.Descendants(ns + "body").Descendants(ns + "img").Attributes("src").ToList();
                     if (itemSrcList.Count > 1)
                     {
-                        if (authors == "Shigeru Mizuki"
-                            || publisher == "Drawn & Quarterly")
-                        {
-                            foreach (var itemSrcListFile in itemSrcList)
-                            {
-                                if (!itemSrcListFile.Value.EndsWith(".png", StringComparison.InvariantCultureIgnoreCase))
-                                {
-                                    itemSrc = ResolveRootPath(actualFilename, itemSrcListFile.Value);
-                                }
-                            }
-                        }
-
                         if (string.IsNullOrEmpty(itemSrc))
                         {
-                            List<(string ImageSrc, int Width, int Height, long ByteSize)> imageData = [];
+                            List<(string ImageSrc, long ByteSize)> imageData = [];
 
                             foreach (var itemSrcListFile in itemSrcList)
                             {
@@ -2436,17 +2402,11 @@ namespace epub2cbz
                                     return null;
                                 }
 
-                                long byteSize = bookEntry.Length;
-                                using var stream = bookEntry.Open();
-                                (int width, int height) = GetImageDimensions(stream);
-
-                                imageData.Add((itemSrcFile, width, height, byteSize));
+                                imageData.Add((itemSrcFile, bookEntry.Length));
                             }
 
-                            var (ImageSrc, Width, Height, ByteSize) = imageData
-                                .OrderByDescending(d => Math.Max(d.Width, d.Height))
-                                .ThenByDescending(d => Math.Min(d.Width, d.Height))
-                                .ThenByDescending(d => d.ByteSize)
+                            var (ImageSrc, ByteSize) = imageData
+                                .OrderByDescending(d => d.ByteSize)
                                 .FirstOrDefault();
 
                             itemSrc = ImageSrc;
