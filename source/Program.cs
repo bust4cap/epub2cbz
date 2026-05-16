@@ -2044,51 +2044,74 @@ namespace epub2cbz
         {
             string imagePath = string.Empty;
 
-            if (!string.IsNullOrEmpty(xhtmlPage))
+            if (string.IsNullOrEmpty(xhtmlPage)) return string.Empty;
+
+            if (xhtmlPage.EndsWith(".xhtml", StringComparison.InvariantCultureIgnoreCase) ||
+                xhtmlPage.EndsWith(".html", StringComparison.InvariantCultureIgnoreCase) ||
+                xhtmlPage.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))
             {
-                if (xhtmlPage.EndsWith(".xhtml", StringComparison.InvariantCultureIgnoreCase) ||
-                    xhtmlPage.EndsWith(".html", StringComparison.InvariantCultureIgnoreCase) ||
-                    xhtmlPage.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))
+                if (!entryMap.TryGetValue(xhtmlPage, out var xhtmlSource))
                 {
-                    if (!entryMap.TryGetValue(xhtmlPage, out var xhtmlSource))
+                    return string.Empty;
+                }
+
+                using StreamReader xhtmlReader = new(xhtmlSource.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+                string xhtmlFileContent = xhtmlReader.ReadToEnd();
+
+                if (!entryMap.TryGetValue(cssPath, out var cssSource))
+                {
+                    return string.Empty;
+                }
+
+                using StreamReader reader = new(cssSource.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+                string fileContent = reader.ReadToEnd();
+
+                var parser = new StylesheetParser();
+                var stylesheet = parser.Parse(fileContent);
+
+                XDocument fileDoc;
+                try
+                {
+                    fileDoc = XDocument.Parse(xhtmlFileContent);
+                }
+                catch
+                {
+                    return string.Empty;
+                }
+
+                XNamespace ns = fileDoc.Root!.Name.Namespace;
+
+                var divInfo = fileDoc.Descendants(ns + "body").Descendants(ns + "div").FirstOrDefault();
+                var divId = divInfo?.Attribute("id");
+                var divClass = divInfo?.Attribute("class");
+
+                if (divId != null && !string.IsNullOrWhiteSpace(divId.Value))
+                {
+                    string selector = "#" + divId.Value;
+                    var rule = stylesheet.StyleRules.FirstOrDefault(r => r.SelectorText.ToString() == selector);
+
+                    if (rule != null)
                     {
-                        return string.Empty;
+                        string backgroundImageValue = rule.Style.BackgroundImage.ToString();
+
+                        if (!string.IsNullOrWhiteSpace(backgroundImageValue)
+                            && backgroundImageValue.StartsWith("url(", StringComparison.InvariantCultureIgnoreCase)
+                            && backgroundImageValue.EndsWith(")", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            string innerValue = backgroundImageValue[4..^1];
+                            imagePath = innerValue.Trim('\'', '\"');
+                        }
                     }
+                }
 
-                    using StreamReader xhtmlReader = new(xhtmlSource.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
-                    string xhtmlFileContent = xhtmlReader.ReadToEnd();
+                if (string.IsNullOrEmpty(imagePath)
+                    && divClass != null && !string.IsNullOrWhiteSpace(divClass.Value))
+                {
+                    string[] classNames = divClass.Value.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-                    if (!entryMap.TryGetValue(cssPath, out var cssSource))
+                    foreach (var className in classNames)
                     {
-                        return string.Empty;
-                    }
-
-                    using StreamReader reader = new(cssSource.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
-                    string fileContent = reader.ReadToEnd();
-
-                    var parser = new StylesheetParser();
-                    var stylesheet = parser.Parse(fileContent);
-
-                    XDocument fileDoc;
-                    try
-                    {
-                        fileDoc = XDocument.Parse(xhtmlFileContent);
-                    }
-                    catch
-                    {
-                        return string.Empty;
-                    }
-
-                    XNamespace ns = fileDoc.Root!.Name.Namespace;
-
-                    var divInfo = fileDoc.Descendants(ns + "body").Descendants(ns + "div").FirstOrDefault();
-                    var divId = divInfo?.Attribute("id");
-                    var divClass = divInfo?.Attribute("class");
-
-                    if (divId != null && !string.IsNullOrWhiteSpace(divId.Value))
-                    {
-                        string selector = "#" + divId.Value;
-                        var rule = stylesheet.StyleRules.FirstOrDefault(r => r.SelectorText.ToString() == selector);
+                        var rule = stylesheet.StyleRules.FirstOrDefault(r => r.SelectorText.ToString() == $"div.{className}");
 
                         if (rule != null)
                         {
@@ -2100,18 +2123,12 @@ namespace epub2cbz
                             {
                                 string innerValue = backgroundImageValue[4..^1];
                                 imagePath = innerValue.Trim('\'', '\"');
+                                break;
                             }
                         }
-                    }
-                    
-                    if (string.IsNullOrEmpty(imagePath)
-                        && divClass != null && !string.IsNullOrWhiteSpace(divClass.Value))
-                    {
-                        string[] classNames = divClass.Value.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-
-                        foreach (var className in classNames)
+                        else
                         {
-                            var rule = stylesheet.StyleRules.FirstOrDefault(r => r.SelectorText.ToString() == $"div.{className}");
+                            rule = stylesheet.StyleRules.FirstOrDefault(r => r.SelectorText.ToString() == $".{className}");
 
                             if (rule != null)
                             {
@@ -2124,24 +2141,6 @@ namespace epub2cbz
                                     string innerValue = backgroundImageValue[4..^1];
                                     imagePath = innerValue.Trim('\'', '\"');
                                     break;
-                                }
-                            }
-                            else
-                            {
-                                rule = stylesheet.StyleRules.FirstOrDefault(r => r.SelectorText.ToString() == $".{className}");
-
-                                if (rule != null)
-                                {
-                                    string backgroundImageValue = rule.Style.BackgroundImage.ToString();
-
-                                    if (!string.IsNullOrWhiteSpace(backgroundImageValue)
-                                        && backgroundImageValue.StartsWith("url(", StringComparison.InvariantCultureIgnoreCase)
-                                        && backgroundImageValue.EndsWith(")", StringComparison.InvariantCultureIgnoreCase))
-                                    {
-                                        string innerValue = backgroundImageValue[4..^1];
-                                        imagePath = innerValue.Trim('\'', '\"');
-                                        break;
-                                    }
                                 }
                             }
                         }
@@ -2158,91 +2157,87 @@ namespace epub2cbz
         {
             string imagePath = string.Empty;
 
-            if (!string.IsNullOrEmpty(actualFilename))
-            {
-                if (actualFilename.EndsWith(".xhtml", StringComparison.InvariantCultureIgnoreCase) ||
-                    actualFilename.EndsWith(".html", StringComparison.InvariantCultureIgnoreCase) ||
-                    actualFilename.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    if (!entryMap.TryGetValue(actualFilename, out var fileEntry))
-                    {
-                        return null;
-                    }
+            if (string.IsNullOrEmpty(actualFilename)) return string.Empty;
 
-                    using StreamReader reader = new(fileEntry.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
-                    string fileContent = reader.ReadToEnd();
+            if (actualFilename.EndsWith(".xhtml", StringComparison.InvariantCultureIgnoreCase) ||
+                actualFilename.EndsWith(".html", StringComparison.InvariantCultureIgnoreCase) ||
+                actualFilename.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))
+            {
+                if (!entryMap.TryGetValue(actualFilename, out var fileEntry))
+                {
+                    return null;
+                }
+
+                using StreamReader reader = new(fileEntry.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+                string fileContent = reader.ReadToEnd();
 
 #if DEBUG
-                    /// Likely the last page of samples
-                    if (fileContent.StartsWith("<HTML>"))
-                    {
-                        AppendColoredText($"HTML DETECTED: '{epubFile}'" + Environment.NewLine, System.Drawing.Color.Purple);
-                        return null;
-                    }
+                /// Likely the last page of samples
+                if (fileContent.StartsWith("<HTML>"))
+                {
+                    AppendColoredText($"HTML DETECTED: '{epubFile}'" + Environment.NewLine, System.Drawing.Color.Purple);
+                    return null;
+                }
 #endif
 
-                    XDocument fileDoc;
-                    try
-                    {
-                        fileDoc = XDocument.Parse(fileContent);
-                    }
-                    catch
-                    {
-                        return null;
-                    }
-
-                    XNamespace svg = "http://www.w3.org/2000/svg";
-                    XNamespace xlink = "http://www.w3.org/1999/xlink";
-
-                    XNamespace ns = fileDoc.Root!.Name.Namespace;
-
-                    string itemSrc = string.Empty;
-
-                    var itemSrcList = fileDoc.Descendants(ns + "body").Descendants(ns + "img").Attributes("src").ToList();
-                    if (itemSrcList.Count > 1)
-                    {
-                        if (string.IsNullOrEmpty(itemSrc))
-                        {
-                            List<(string ImageSrc, long ByteSize)> imageData = [];
-
-                            foreach (var itemSrcListFile in itemSrcList)
-                            {
-                                string itemSrcFile = ResolveRootPath(actualFilename, itemSrcListFile.Value);
-
-                                if (!entryMap.TryGetValue(itemSrcFile, out var bookEntry))
-                                {
-                                    return null;
-                                }
-
-                                imageData.Add((itemSrcFile, bookEntry.Length));
-                            }
-
-                            var (ImageSrc, ByteSize) = imageData
-                                .OrderByDescending(d => d.ByteSize)
-                                .FirstOrDefault();
-
-                            itemSrc = ImageSrc;
-                        }
-                    }
-                    else if (itemSrcList.Count == 1)
-                    {
-                        itemSrc = ResolveRootPath(actualFilename, (string)itemSrcList[0].Value);
-                    }
-
-                    if (string.IsNullOrEmpty(itemSrc))
-                    {
-                        var itemXlink = fileDoc.Descendants(ns + "body").Descendants(svg + "image").FirstOrDefault();
-                        if (itemXlink != null)
-                        {
-                            imagePath = ResolveRootPath(actualFilename, (string)itemXlink.Attribute(xlink + "href")!);
-                        }
-                    }
-                    else imagePath = itemSrc;
-                }
-                else if (imageExtensions.Any(ext => actualFilename.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase)))
+                XDocument fileDoc;
+                try
                 {
-                    imagePath = actualFilename;
+                    fileDoc = XDocument.Parse(fileContent);
                 }
+                catch
+                {
+                    return null;
+                }
+
+                XNamespace svg = "http://www.w3.org/2000/svg";
+                XNamespace xlink = "http://www.w3.org/1999/xlink";
+
+                XNamespace ns = fileDoc.Root!.Name.Namespace;
+
+                string itemSrc = string.Empty;
+
+                var itemSrcList = fileDoc.Descendants(ns + "body").Descendants(ns + "img").Attributes("src").ToList();
+                if (itemSrcList.Count > 1)
+                {
+                    List<(string ImageSrc, long ByteSize)> imageData = [];
+
+                    foreach (var itemSrcListFile in itemSrcList)
+                    {
+                        string itemSrcFile = ResolveRootPath(actualFilename, itemSrcListFile.Value);
+
+                        if (!entryMap.TryGetValue(itemSrcFile, out var bookEntry))
+                        {
+                            return null;
+                        }
+
+                        imageData.Add((itemSrcFile, bookEntry.Length));
+                    }
+
+                    var (ImageSrc, ByteSize) = imageData
+                        .OrderByDescending(d => d.ByteSize)
+                        .FirstOrDefault();
+
+                    itemSrc = ImageSrc;
+                }
+                else if (itemSrcList.Count == 1)
+                {
+                    itemSrc = ResolveRootPath(actualFilename, itemSrcList[0].Value);
+                }
+
+                if (string.IsNullOrEmpty(itemSrc))
+                {
+                    var itemXlink = fileDoc.Descendants(ns + "body").Descendants(svg + "image").FirstOrDefault();
+                    if (itemXlink != null)
+                    {
+                        imagePath = ResolveRootPath(actualFilename, (string)itemXlink.Attribute(xlink + "href")!);
+                    }
+                }
+                else imagePath = itemSrc;
+            }
+            else if (imageExtensions.Any(ext => actualFilename.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                imagePath = actualFilename;
             }
 
             return imagePath;
