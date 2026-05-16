@@ -199,11 +199,6 @@ namespace epub2cbz
             }
         }
 
-        private static bool IsBarnesAndNobleBook(XDocument opfDoc)
-        {
-            return opfDoc.Descendants("meta").Any(a => (string?)a.Attribute("name") == "BNContentKind");
-        }
-
         private static bool IsDifferentColor(Rgba32 pixel, Rgba32 compareColor, byte tolerance)
         {
             return Math.Abs(pixel.R - compareColor.R) > tolerance
@@ -897,60 +892,11 @@ namespace epub2cbz
             return bookFull;
         }
 
-        private static List<BookInfo.EpubPage> ParseBarnesAndNobleReplicaMapPagesXml(Dictionary<string, ZipArchiveEntry> entryMap,
-            List<BookInfo.EpubPagesIdsSpread> dicPagesIdsSpread)
-        {
-            List<BookInfo.EpubPage> bookFull = [];
-            const double wideImageRatio = 1.125; // Images have to be at least 12.5% wider than tall to be considered "wide"
-
-            for (int i = 0; i < dicPagesIdsSpread.Count; i++)
-            {
-                string? imagePath = dicPagesIdsSpread[i].Pages;
-                if (!string.IsNullOrEmpty(imagePath))
-                {
-                    if (!entryMap.TryGetValue(imagePath, out var bookEntry)) { }
-
-                    if (!string.IsNullOrEmpty(imagePath)
-                        && bookEntry != null)
-                    {
-                        // Handle wide images first
-                        using var streamDimensions = bookEntry.Open();
-
-                        int width = 0;
-                        int height = 0;
-
-                        (width, height) = GetImageDimensions(streamDimensions);
-
-                        bool isDoublePage = false;
-
-                        ///
-                        if (width >= (height * wideImageRatio)) isDoublePage = true;
-                        ///
-
-                        bookFull.Add(new()
-                        {
-                            Page = dicPagesIdsSpread[i].Ids,
-                            Image = imagePath,
-                            Spread = string.Empty,
-                            Doublepage = isDoublePage,
-                            Height = height,
-                            Width = width,
-                            Size = bookEntry.Length
-                        });
-                        continue;
-                    }
-                }
-            }
-
-            return bookFull;
-        }
-
         private static List<BookInfo.EpubPage> ParseOpfPagesXml(Dictionary<string, ZipArchiveEntry> entryMap,
             string epubFile,
             string opfPath,
             XDocument opfDoc,
-            List<BookInfo.EpubPagesIdsSpread> dicPagesIdsSpread,
-            Dictionary<string, string?> metadata)
+            List<BookInfo.EpubPagesIdsSpread> dicPagesIdsSpread)
         {
             List<BookInfo.EpubPage> bookFull = [];
             string cssPath = GetCssFile(opfPath, opfDoc);
@@ -1054,29 +1000,6 @@ namespace epub2cbz
             return bookFull;
         }
 
-        private static (XDocument, string) GetBarnesAndNobleReplicaMap(Dictionary<string, ZipArchiveEntry> entryMap,
-            XDocument opfDoc,
-            string opfPath)
-        {
-            XNamespace opf = "http://www.idpf.org/2007/opf";
-
-            string opfReplicaMap = opfDoc.Descendants(opf + "manifest")
-                .Descendants(opf + "item")
-                .FirstOrDefault(i => (string?)i.Attribute("id") == "replicaMap")!
-                .Attribute("href")!
-                .Value;
-
-            opfReplicaMap = ResolveRootPath(opfPath, opfReplicaMap);
-
-            ZipArchiveEntry fileEntry = entryMap.GetValueOrDefault(opfReplicaMap)!;
-            using StreamReader reader = new(fileEntry.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
-            string opfContent = reader.ReadToEnd();
-
-            XDocument replicaMapDoc = XDocument.Parse(opfContent);
-
-            return (replicaMapDoc, opfReplicaMap);
-        }
-
         private static XDocument GetOpfDocument(Dictionary<string, ZipArchiveEntry> entryMap,
             string opfPath)
         {
@@ -1091,42 +1014,6 @@ namespace epub2cbz
             XDocument opfDoc = XDocument.Parse(opfContent);
 
             return opfDoc;
-        }
-
-        private static List<BookInfo.EpubPagesIdsSpread> ParseBarnesAndNobleReplicaMapPages(XDocument replicaMapDoc,
-            string replicaMapPath)
-        {
-            Dictionary<string, string?> pages = [];
-            List<BookInfo.EpubPagesIdsSpread> dicPagesIdsSpread = [];
-
-            XNamespace xmlns = replicaMapDoc.Root!.Name.Namespace;
-
-            var opfMetadata = replicaMapDoc.Descendants(xmlns + "Pages").Descendants(xmlns + "Page");
-            if (opfMetadata != null)
-            {
-                foreach (XElement e in opfMetadata)
-                {
-                    pages.Add(e.Attribute("pageNum")!.Value, e.Attribute("file")?.Value);
-                }
-            }
-
-            foreach (KeyValuePair<string, string?> page in pages)
-            {
-                string pageFile = string.Empty;
-                if (!string.IsNullOrEmpty(page.Value))
-                {
-                    pageFile = ResolveRootPath(replicaMapPath, page.Value);
-                }
-
-                dicPagesIdsSpread.Add(new()
-                {
-                    Pages = pageFile ?? string.Empty,
-                    Ids = page.Key,
-                    Spread = string.Empty
-                });
-            }
-
-            return dicPagesIdsSpread;
         }
 
         private static List<BookInfo.EpubPagesIdsSpread> ParseSpineXml(XDocument opfDoc,
@@ -1384,7 +1271,7 @@ namespace epub2cbz
             return (metadata, readingDirection);
         }
 
-        private static (int width, int height) GetImageDimensions(Stream zipEntryStream)
+        public static (int width, int height) GetImageDimensions(Stream zipEntryStream)
         {
             try
             {
@@ -1508,52 +1395,6 @@ namespace epub2cbz
             }
 
             return newToc;
-        }
-
-        private static List<BookInfo.EpubPage> ParseBarnesAndNobleCover(Dictionary<string, ZipArchiveEntry> entryMap,
-            string epubFile,
-            XDocument opfDoc,
-            List<BookInfo.EpubPage> bookFull,
-            string opfPath)
-        {
-            XNamespace opf = "http://www.idpf.org/2007/opf";
-
-            string opfCover = opfDoc.Descendants(opf + "manifest")
-                .Descendants(opf + "item")
-                .FirstOrDefault(i => (string?)i.Attribute("id") == "cover")!
-                .Attribute("href")!
-                .Value;
-
-            string filename = ResolveRootPath(opfPath, opfCover);
-
-            if (!entryMap.TryGetValue(filename, out var bookEntry)) { }
-
-            if (!string.IsNullOrEmpty(filename)
-                && bookEntry != null)
-            {
-#if DEBUG
-                AppendColoredText($"DEBUG: '{Path.GetFileNameWithoutExtension(epubFile)}' - Alternative Cover" + Environment.NewLine, System.Drawing.Color.DarkOrange);
-#endif
-                using var streamDimensions = bookEntry.Open();
-
-                int width = 0;
-                int height = 0;
-
-                (width, height) = GetImageDimensions(streamDimensions);
-
-                bookFull.Insert(0, new()
-                {
-                    Page = "Cover",
-                    Image = filename,
-                    Spread = string.Empty,
-                    Doublepage = false,
-                    Height = height,
-                    Width = width,
-                    Size = bookEntry.Length
-                });
-            }
-
-            return bookFull;
         }
 
         private static List<BookInfo.EpubPage> ParseAlternativeCover(Dictionary<string, ZipArchiveEntry> entryMap,
@@ -2085,39 +1926,10 @@ namespace epub2cbz
             return bookFull;
         }
 
-        private static List<BookInfo.EpubChapter> ParseBarnesAndNobleToc(List<BookInfo.EpubPage> bookFull,
-            XDocument replicaMapDoc)
-        {
-            List<BookInfo.EpubChapter> chapters = [];
-
-            XNamespace xmlns = replicaMapDoc.Root!.Name.Namespace;
-
-            var tocItems = replicaMapDoc.Descendants(xmlns + "TOC").Descendants(xmlns + "TocEntry")
-                .Select(entry => new
-                {
-                    Title = (string?)entry.Attribute("title"),
-                    PageNumber = (string?)entry.Element(xmlns + "Page")?.Attribute("pagenum")
-                })
-                .ToList();
-
-            foreach (var page in tocItems)
-            {
-                chapters.Add(new()
-                {
-                    Title = page.Title!,
-                    Page = page.PageNumber!,
-                    Image = bookFull.FirstOrDefault(d => d.Page == page.PageNumber)?.Image ?? string.Empty
-                });
-            }
-
-            return chapters;
-        }
-
         private static List<BookInfo.EpubChapter> ParseEpubToc(Dictionary<string, ZipArchiveEntry> entryMap,
             string epubFile,
             XDocument opfDoc,
-            string opfPath,
-            Dictionary<string, string?> metadata)
+            string opfPath)
         {
             List<BookInfo.EpubChapter> chapters = [];
             List<string> navPaths = GetNcxFile(opfDoc, opfPath);
@@ -2981,14 +2793,14 @@ namespace epub2cbz
 
             XDocument opfDoc = GetOpfDocument(entryMap, opfPath);
 
-            bool barnesAndNobleBook = IsBarnesAndNobleBook(opfDoc);
+            bool barnesAndNobleBook = BarnesAndNoble.IsBarnesAndNobleBook(opfDoc);
             XDocument replicaMapDoc = new();
 
             List<BookInfo.EpubPagesIdsSpread> pages = [];
             if (barnesAndNobleBook)
             {
-                (replicaMapDoc, string replicaMapPath) = GetBarnesAndNobleReplicaMap(entryMap, opfDoc, opfPath);
-                pages = ParseBarnesAndNobleReplicaMapPages(replicaMapDoc, replicaMapPath);
+                (replicaMapDoc, string replicaMapPath) = BarnesAndNoble.GetReplicaMap(entryMap, opfDoc, opfPath);
+                pages = BarnesAndNoble.ParseReplicaMapPages(replicaMapDoc, replicaMapPath);
             }
             else
             {
@@ -3042,12 +2854,12 @@ namespace epub2cbz
             List<BookInfo.EpubPage> bookFull = [];
             if (barnesAndNobleBook)
             {
-                bookFull = ParseBarnesAndNobleReplicaMapPagesXml(entryMap, pages);
-                bookFull = ParseBarnesAndNobleCover(entryMap, epubFile, opfDoc, bookFull, opfPath);
+                bookFull = BarnesAndNoble.ParseReplicaMapPagesXml(entryMap, pages);
+                bookFull = BarnesAndNoble.ParseCover(entryMap, epubFile, opfDoc, bookFull, opfPath);
             }
             else
             {
-                bookFull = ParseOpfPagesXml(entryMap, epubFile, opfPath, opfDoc, pages, metadata);
+                bookFull = ParseOpfPagesXml(entryMap, epubFile, opfPath, opfDoc, pages);
                 bookFull = ParseAlternativeCover(entryMap, epubFile, opfDoc, bookFull, opfPath);
             }
 
@@ -3059,11 +2871,11 @@ namespace epub2cbz
             List<BookInfo.EpubChapter> chapters = [];
             if (barnesAndNobleBook)
             {
-                chapters = ParseBarnesAndNobleToc(bookFull, replicaMapDoc);
+                chapters = BarnesAndNoble.ParseToc(bookFull, replicaMapDoc);
             }
             else
             {
-                chapters = ParseEpubToc(entryMap, epubFile, opfDoc, opfPath, metadata);
+                chapters = ParseEpubToc(entryMap, epubFile, opfDoc, opfPath);
                 chapters = ParseAlternativeToc(entryMap, opfDoc, chapters, bookFull, opfPath);
             }
 
