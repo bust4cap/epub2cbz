@@ -169,8 +169,11 @@ namespace epub2cbz
 
             try
             {
-                ZipArchiveEntry firstCoverEntry = entryMap.GetValueOrDefault(firstImage)!;
-                ZipArchiveEntry secondCoverEntry = entryMap.GetValueOrDefault(secondImage)!;
+                ZipArchiveEntry? firstCoverEntry = entryMap.GetValueOrDefault(firstImage);
+                ZipArchiveEntry? secondCoverEntry = entryMap.GetValueOrDefault(secondImage);
+
+                if (firstCoverEntry is null || secondCoverEntry is null) return false;
+
                 using var firstCoverStream = firstCoverEntry.Open();
                 using var secondCoverStream = secondCoverEntry.Open();
 
@@ -453,7 +456,7 @@ namespace epub2cbz
                 XNamespace opf = "http://www.idpf.org/2007/opf";
 
                 var item = opfDoc.Descendants(opf + "guide").Descendants(opf + "reference").FirstOrDefault(i => (string?)i.Attribute("type") == "cover");
-                if (item != null)
+                if (item is not null)
                 {
                     string coverPath = (string)item.Attribute("href")!;
 
@@ -552,7 +555,7 @@ namespace epub2cbz
                 bufferedSourceStream.Position = 0;
 
                 using MemoryStream? croppedSourceStream = CalculateCroppingBorder(bufferedSourceStream, out int croppedWidth, out int croppedHeight);
-                if (croppedSourceStream != null)
+                if (croppedSourceStream is not null)
                 {
                     imageToProcess = SixLabors.ImageSharp.Image.Load<Rgba32>(croppedSourceStream);
                     imageWidth = croppedWidth;
@@ -908,10 +911,8 @@ namespace epub2cbz
                 string? imagePath = FindImagePathInFile(entryMap, epubFile, dicPagesIdsSpread[i].Pages.Split('#')[0]);
                 if (!string.IsNullOrEmpty(imagePath))
                 {
-                    if (!entryMap.TryGetValue(imagePath, out var bookEntry)) { }
-
-                    if (!string.IsNullOrEmpty(imagePath)
-                        && bookEntry != null)
+                    if (entryMap.TryGetValue(imagePath, out var bookEntry)
+                        && bookEntry is not null)
                     {
                         // Handle wide images first
                         using var streamDimensions = bookEntry.Open();
@@ -921,11 +922,7 @@ namespace epub2cbz
 
                         (width, height) = GetImageDimensions(streamDimensions);
 
-                        bool isDoublePage = false;
-
-                        ///
-                        if (width >= (height * wideImageRatio)) isDoublePage = true;
-                        ///
+                        bool isDoublePage = width >= (height * wideImageRatio);
 
                         bookFull.Add(new()
                         {
@@ -952,7 +949,7 @@ namespace epub2cbz
                         if (!entryMap.TryGetValue(cssImage, out var bookEntry)) { }
 
                         if (!string.IsNullOrEmpty(cssImage)
-                            && bookEntry != null)
+                            && bookEntry is not null)
                         {
                             // Handle wide images first
                             using var streamDimensions = bookEntry.Open();
@@ -1026,7 +1023,7 @@ namespace epub2cbz
             XNamespace opf = "http://www.idpf.org/2007/opf";
 
             var opfMetadata = opfDoc.Descendants(opf + "spine").Descendants(opf + "itemref");
-            if (opfMetadata != null)
+            if (opfMetadata is not null)
             {
                 foreach (XElement e in opfMetadata)
                 {
@@ -1037,7 +1034,7 @@ namespace epub2cbz
             foreach (KeyValuePair<string, string?> page in pages)
             {
                 var opfManifest = opfDoc.Descendants(opf + "manifest").Descendants(opf + "item").FirstOrDefault(i => (string?)i.Attribute("id") == page.Key);
-                if (opfManifest != null)
+                if (opfManifest is not null)
                 {
                     string? opfHref = (string?)opfManifest.Attribute("href");
                     if (!string.IsNullOrEmpty(opfHref)) opfHref = ResolveRootPath(opfPath, opfHref);
@@ -1191,7 +1188,7 @@ namespace epub2cbz
             XNamespace dc = "http://purl.org/dc/elements/1.1/";
 
             XElement? xmlMetadata = xmlDoc.Descendants(opf + "metadata").FirstOrDefault();
-            if (xmlMetadata != null && MainForm.FormElements.CheckboxComicInfoState)
+            if (xmlMetadata is not null && MainForm.FormElements.CheckboxComicInfoState)
             {
                 if (PopupSettings.CheckboxStates.CheckboxTranslatorState) metadata["Translators"] = ReturnMetadataContributors("trl", xmlMetadata, opf, dc);
                 if (PopupSettings.CheckboxStates.CheckboxProducerState) metadata["Producers"] = ReturnMetadataContributors("pro", xmlMetadata, opf, dc);
@@ -1262,7 +1259,7 @@ namespace epub2cbz
             string readingDirection;
             XElement? xmlReadingDirection = xmlDoc.Descendants(opf + "spine").FirstOrDefault();
 
-            if (xmlReadingDirection != null
+            if (xmlReadingDirection is not null
                 && xmlReadingDirection.Attribute("page-progression-direction")?.Value == "rtl")
             {
                 readingDirection = "YesAndRightToLeft";
@@ -1373,7 +1370,7 @@ namespace epub2cbz
             XNamespace opf = "http://www.idpf.org/2007/opf";
 
             var item = opfDoc.Descendants(opf + "guide").Descendants(opf + "reference").FirstOrDefault(i => (string?)i.Attribute("type") == "toc");
-            if (item != null) altTocFile = (string)item.Attribute("href")!;
+            if (item is not null) altTocFile = (string)item.Attribute("href")!;
 
             if (!string.IsNullOrEmpty(altTocFile))
             {
@@ -1410,12 +1407,12 @@ namespace epub2cbz
             var item = opfDoc.Descendants(opf + "metadata")
                 .Descendants(opf + "meta")
                 .FirstOrDefault(i => (string?)i.Attribute("name") == "cover");
-            if (item != null) coverPath = (string)item.Attribute("content")!;
+            if (item is not null) coverPath = (string)item.Attribute("content")!;
 
             var coverId = opfDoc.Descendants(opf + "manifest")
                 .Descendants(opf + "item")
                 .FirstOrDefault(i => (string?)i.Attribute("id") == coverPath);
-            if (coverId != null) coverPath = (string)coverId.Attribute("href")!;
+            if (coverId is not null) coverPath = (string)coverId.Attribute("href")!;
 
             if (!string.IsNullOrEmpty(coverPath) &&
                 imageExtensions.Any(ext => coverPath.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase)))
@@ -1426,7 +1423,7 @@ namespace epub2cbz
 
                 if (!string.IsNullOrEmpty(filename)
                     && filename != bookFull[0].Image
-                    && bookEntry != null)
+                    && bookEntry is not null)
                 {
 #if DEBUG
                     AppendColoredText($"DEBUG: '{Path.GetFileNameWithoutExtension(epubFile)}' - Alternative Cover" + Environment.NewLine, System.Drawing.Color.DarkOrange);
@@ -1495,11 +1492,9 @@ namespace epub2cbz
                     using var stream = bookEntry.Open();
                     if (imageExtensions.Any(ext => bookFull[i].Image.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase)))
                     {
-                        var (width, height) = GetImageDimensions(stream);
-                        dimensionX = width;
-                        dimensionY = height;
+                        (dimensionX, dimensionY) = GetImageDimensions(stream);
 
-                        if (height > width) break;
+                        if (dimensionY > dimensionX) break;
                     }
                 }
                 /// If all images are wide, create dimension for a single blank page
@@ -1718,7 +1713,7 @@ namespace epub2cbz
                                 bufferedSourceStream.Position = 0;
 
                                 using MemoryStream? croppedSourceStream = CalculateCroppingBorder(bufferedSourceStream, out int croppedWidth, out int croppedHeight);
-                                if (croppedSourceStream != null)
+                                if (croppedSourceStream is not null)
                                 {
                                     bookFull[i] = bookFull[i] with
                                     {
@@ -1812,7 +1807,7 @@ namespace epub2cbz
                             bufferedSourceStream.Position = 0;
 
                             using MemoryStream? croppedSourceStream = CalculateCroppingBorder(bufferedSourceStream, out int croppedWidth, out int croppedHeight);
-                            if (croppedSourceStream != null)
+                            if (croppedSourceStream is not null)
                             {
                                 bookFull[i] = bookFull[i] with
                                 {
@@ -1961,7 +1956,7 @@ namespace epub2cbz
                             .Descendants(xhtml + "a")
                             .Select(a => new { Href = a.Attribute("href")!.Value, Name = a.Value })
                             .ToLookup(item => item.Href, item => item.Name);
-                        if (opfMetadata != null)
+                        if (opfMetadata is not null)
                         {
                             foreach (var e in opfMetadata)
                             {
@@ -2066,12 +2061,12 @@ namespace epub2cbz
                 var divId = divInfo?.Attribute("id");
                 var divClass = divInfo?.Attribute("class");
 
-                if (divId != null && !string.IsNullOrWhiteSpace(divId.Value))
+                if (divId is not null && !string.IsNullOrWhiteSpace(divId.Value))
                 {
                     string selector = "#" + divId.Value;
                     var rule = stylesheet.StyleRules.FirstOrDefault(r => r.SelectorText.ToString() == selector);
 
-                    if (rule != null)
+                    if (rule is not null)
                     {
                         string backgroundImageValue = rule.Style.BackgroundImage.ToString();
 
@@ -2086,7 +2081,7 @@ namespace epub2cbz
                 }
 
                 if (string.IsNullOrEmpty(imagePath)
-                    && divClass != null && !string.IsNullOrWhiteSpace(divClass.Value))
+                    && divClass is not null && !string.IsNullOrWhiteSpace(divClass.Value))
                 {
                     string[] classNames = divClass.Value.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
@@ -2094,7 +2089,7 @@ namespace epub2cbz
                     {
                         var rule = stylesheet.StyleRules.FirstOrDefault(r => r.SelectorText.ToString() == $"div.{className}");
 
-                        if (rule != null)
+                        if (rule is not null)
                         {
                             string backgroundImageValue = rule.Style.BackgroundImage.ToString();
 
@@ -2111,7 +2106,7 @@ namespace epub2cbz
                         {
                             rule = stylesheet.StyleRules.FirstOrDefault(r => r.SelectorText.ToString() == $".{className}");
 
-                            if (rule != null)
+                            if (rule is not null)
                             {
                                 string backgroundImageValue = rule.Style.BackgroundImage.ToString();
 
@@ -2187,25 +2182,17 @@ namespace epub2cbz
                     }
                     else
                     {
-                        List<(string ImageSrc, long ByteSize)> imageData = [];
-
-                        foreach (var itemSrcListFile in itemSrcList)
+                        var largestImage = itemSrcList
+                            .Select(attr => ResolveRootPath(actualFilename, attr.Value))
+                            .Where(entryMap.ContainsKey)
+                            .Select(path => (Path: path, Size: entryMap[path].Length))
+                            .MaxBy(img => img.Size);
+                        if (largestImage.Path is null)
                         {
-                            string itemSrcFile = ResolveRootPath(actualFilename, itemSrcListFile.Value);
-
-                            if (!entryMap.TryGetValue(itemSrcFile, out var bookEntry))
-                            {
-                                return null;
-                            }
-
-                            imageData.Add((itemSrcFile, bookEntry.Length));
+                            return null;
                         }
 
-                        var (ImageSrc, ByteSize) = imageData
-                            .OrderByDescending(d => d.ByteSize)
-                            .FirstOrDefault();
-
-                        itemSrc = ImageSrc;
+                        itemSrc = largestImage.Path;
                     }
                 }
                 else if (itemSrcList.Count == 1)
@@ -2216,7 +2203,7 @@ namespace epub2cbz
                 if (string.IsNullOrEmpty(itemSrc))
                 {
                     var itemXlink = fileDoc.Descendants(ns + "body").Descendants(svg + "image").FirstOrDefault();
-                    if (itemXlink != null)
+                    if (itemXlink is not null)
                     {
                         imagePath = ResolveRootPath(actualFilename, (string)itemXlink.Attribute(xlink + "href")!);
                     }
@@ -2536,7 +2523,7 @@ namespace epub2cbz
             var item = xmlDoc.Descendants(xmlns + "rootfiles").Descendants(xmlns + "rootfile").FirstOrDefault();
             string opfFile = string.Empty;
 
-            if (item != null) opfFile = item.Attribute("full-path")?.Value ?? string.Empty;
+            if (item is not null) opfFile = item.Attribute("full-path")?.Value ?? string.Empty;
 
             if (!string.IsNullOrEmpty(opfFile)) return opfFile;
             else throw new Exception(Resources.OPFFileNotFound);
@@ -2548,7 +2535,7 @@ namespace epub2cbz
             XNamespace opf = "http://www.idpf.org/2007/opf";
 
             var item = opfDoc.Descendants(opf + "manifest").Descendants(opf + "item").FirstOrDefault(i => (string)i.Attribute("media-type")! == "text/css");
-            if (item != null)
+            if (item is not null)
             {
                 opfPath = ResolveRootPath(opfPath, (string)item.Attribute("href")!);
             }
@@ -3033,7 +3020,7 @@ namespace epub2cbz
             {
                 string? line = string.Empty;
 
-                while ((line = reader.ReadLine()) != null)
+                while ((line = reader.ReadLine()) is not null)
                 {
                     if (line.EndsWith(".cbz"))
                     {
@@ -3206,7 +3193,7 @@ namespace epub2cbz
 
                             if (File.Exists(epubPath)
                                 && (!MainForm.FormElements.CheckboxMangaListState
-                                    || (mangaList != null && mangaList.Contains(Path.GetFileName(epubPath)))))
+                                    || (mangaList is not null && mangaList.Contains(Path.GetFileName(epubPath)))))
                             {
                                 if (!PopupSettings.CheckboxStates.CheckboxMetadataTitleState)
                                 {
