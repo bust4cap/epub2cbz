@@ -184,8 +184,7 @@ namespace epub2cbz
                 chapters.Add(new()
                 {
                     Title = page.Title!,
-                    Page = page.PageNumber!,
-                    Image = bookFull.FirstOrDefault(d => d.Page == page.PageNumber)?.Image ?? string.Empty
+                    Page = page.PageNumber!
                 });
             }
 

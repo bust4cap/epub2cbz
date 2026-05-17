@@ -15,6 +15,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO.Compression;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -1322,8 +1323,7 @@ namespace epub2cbz
                                 newChapters.Add(new()
                                 {
                                     Title = $"Page {bookFull.IndexOf(book) + 1}",
-                                    Page = Path.GetFileName(entry.Split('#')[0]),
-                                    Image = string.Empty
+                                    Page = Path.GetFileName(entry.Split('#')[0])
                                 });
                                 break;
                             }
@@ -1970,20 +1970,10 @@ namespace epub2cbz
 
                                 page = ResolveRootPath(navPath, page);
 
-                                string? imagePath = FindImagePathInFile(entryMap, epubFile, page);
-                                if (!string.IsNullOrEmpty(imagePath))
-                                {
-                                    if (!entryMap.TryGetValue(imagePath, out var fileEntry))
-                                    {
-                                        imagePath = null;
-                                    }
-                                }
-
                                 xhtmlChapters.Add(new()
                                 {
                                     Title = title,
-                                    Page = Path.GetFileName(page),
-                                    Image = imagePath ?? string.Empty
+                                    Page = Path.GetFileName(page)
                                 });
                             }
                         }
@@ -1997,19 +1987,10 @@ namespace epub2cbz
 
                             page = ResolveRootPath(navPath, page);
 
-                            string? imagePath = FindImagePathInFile(entryMap, epubFile, page);
-                            if (!string.IsNullOrEmpty(imagePath))
-                            {
-                                if (!entryMap.TryGetValue(imagePath, out var fileEntry))
-                                {
-                                    imagePath = null;
-                                }
-                            }
                             ncxChapters.Add(new()
                             {
                                 Title = title,
-                                Page = Path.GetFileName(page),
-                                Image = imagePath ?? string.Empty
+                                Page = Path.GetFileName(page)
                             });
                         }
                     }
@@ -2200,25 +2181,32 @@ namespace epub2cbz
                 var itemSrcList = fileDoc.Descendants(ns + "body").Descendants(ns + "img").Attributes("src").ToList();
                 if (itemSrcList.Count > 1)
                 {
-                    List<(string ImageSrc, long ByteSize)> imageData = [];
-
-                    foreach (var itemSrcListFile in itemSrcList)
+                    if (CheckXAtrributeListUniformity(itemSrcList, out string uniformValue))
                     {
-                        string itemSrcFile = ResolveRootPath(actualFilename, itemSrcListFile.Value);
+                        itemSrc = ResolveRootPath(actualFilename, uniformValue);
+                    }
+                    else
+                    {
+                        List<(string ImageSrc, long ByteSize)> imageData = [];
 
-                        if (!entryMap.TryGetValue(itemSrcFile, out var bookEntry))
+                        foreach (var itemSrcListFile in itemSrcList)
                         {
-                            return null;
+                            string itemSrcFile = ResolveRootPath(actualFilename, itemSrcListFile.Value);
+
+                            if (!entryMap.TryGetValue(itemSrcFile, out var bookEntry))
+                            {
+                                return null;
+                            }
+
+                            imageData.Add((itemSrcFile, bookEntry.Length));
                         }
 
-                        imageData.Add((itemSrcFile, bookEntry.Length));
+                        var (ImageSrc, ByteSize) = imageData
+                            .OrderByDescending(d => d.ByteSize)
+                            .FirstOrDefault();
+
+                        itemSrc = ImageSrc;
                     }
-
-                    var (ImageSrc, ByteSize) = imageData
-                        .OrderByDescending(d => d.ByteSize)
-                        .FirstOrDefault();
-
-                    itemSrc = ImageSrc;
                 }
                 else if (itemSrcList.Count == 1)
                 {
@@ -2241,6 +2229,25 @@ namespace epub2cbz
             }
 
             return imagePath;
+        }
+
+        private static bool CheckXAtrributeListUniformity(List<XAttribute> list, out string value)
+        {
+            value = string.Empty;
+
+            ReadOnlySpan<XAttribute> span = CollectionsMarshal.AsSpan(list);
+            string firstValue = span[0].Value;
+
+            for (int i = 1; i < span.Length; i++)
+            {
+                if (span[i].Value != firstValue)
+                {
+                    return false;
+                }
+            }
+
+            value = firstValue;
+            return true;
         }
 
         private static (string seriesName, string volumeNumber, string isVolumeOrChapter) GetVolumeAndChapterNumber(string epubFilename)

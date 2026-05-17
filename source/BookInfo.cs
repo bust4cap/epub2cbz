@@ -15,8 +15,7 @@
 
         public record EpubChapter(
             string Title = "",
-            string Page = "",
-            string Image = ""
+            string Page = ""
         );
 
         public record EpubPagesIdsSpread(
