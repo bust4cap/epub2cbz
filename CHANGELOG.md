@@ -1,3 +1,7 @@
+## v2026.05.19-1
+- Sped up image splitting, resizing and cropping by around 30-40%
+- If multiple images are referenced in one page, use the largest one by file size
+
 ## v2026.05.15-1
 - Fixed regression related to DRM check of images
 
