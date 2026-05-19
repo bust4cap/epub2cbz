@@ -124,6 +124,34 @@ namespace epub2cbz
             Split
         }
 
+        private sealed class CountingStream(Stream baseStream) : Stream
+        {
+            private readonly Stream _baseStream = baseStream;
+            public long BytesWritten { get; private set; }
+
+            public override void Write(byte[] buffer, int offset, int count)
+            {
+                _baseStream.Write(buffer, offset, count);
+                BytesWritten += count;
+            }
+
+            public override void Write(ReadOnlySpan<byte> buffer)
+            {
+                _baseStream.Write(buffer);
+                BytesWritten += buffer.Length;
+            }
+
+            public override void Flush() => _baseStream.Flush();
+            public override bool CanRead => false;
+            public override bool CanSeek => false;
+            public override bool CanWrite => true;
+            public override long Length => BytesWritten;
+            public override long Position { get => BytesWritten; set => throw new NotSupportedException(); }
+            public override int Read(byte[] buffer, int offset, int count) => throw new NotSupportedException();
+            public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
+            public override void SetLength(long value) => throw new NotSupportedException();
+        }
+
         public static string ResolveRootPath(string rootFile, string relativeFile)
         {
             string decodedPath = WebUtility.UrlDecode(relativeFile);
@@ -223,19 +251,13 @@ namespace epub2cbz
             return averageColor;
         }
 
-        private static MemoryStream? CalculateCroppingBorder(Stream imageStream, out int cropWidth, out int cropHeight)
+        private static bool ApplyCropping(Image<Rgba32> originalImage)
         {
-            cropWidth = 0;
-            cropHeight = 0;
-
-            using Image<Rgba32> originalImage = SixLabors.ImageSharp.Image.Load<Rgba32>(imageStream);
-            if (originalImage == null) return null;
-
             using Image<Rgba32> image = originalImage.Clone();
 
             // Determine border color from middle pixel
             Rgba32 topLeft = image[0, 0];
-            Rgba32 topRight = image[image.Width -1, 0];
+            Rgba32 topRight = image[image.Width - 1, 0];
             Rgba32 bottomLeft = image[0, image.Height - 1];
             Rgba32 bottomRight = image[image.Width - 1, image.Height - 1];
 
@@ -322,7 +344,7 @@ namespace epub2cbz
 
             // Find Left
             if (!IsDifferentColor(borderColorLeft, white, colorTolerance)
-                    || !IsDifferentColor(borderColorLeft, black, colorTolerance))
+                || !IsDifferentColor(borderColorLeft, black, colorTolerance))
             {
                 for (int x = 0; x < image.Width; x++)
                 {
@@ -349,7 +371,7 @@ namespace epub2cbz
 
             // Find Right
             if (!IsDifferentColor(borderColorRight, white, colorTolerance)
-                    || !IsDifferentColor(borderColorRight, black, colorTolerance))
+                || !IsDifferentColor(borderColorRight, black, colorTolerance))
             {
                 for (int x = image.Width - 1; x >= left; x--)
                 {
@@ -379,24 +401,19 @@ namespace epub2cbz
             int paddedLeft = Math.Max(0, left - pixelPadding);
             int paddedRight = Math.Min(image.Width - 1, right + pixelPadding);
 
-            cropWidth = paddedRight - paddedLeft + 1;
-            cropHeight = paddedBottom - paddedTop + 1;
+            int cropWidth = paddedRight - paddedLeft + 1;
+            int cropHeight = paddedBottom - paddedTop + 1;
 
             if (cropWidth <= 0 ||
                 cropHeight <= 0 ||
                 (cropWidth == image.Width && cropHeight == image.Height))
             {
-                return null;
+                return false;
             }
 
-            SixLabors.ImageSharp.Rectangle cropRectangle = new(paddedLeft, paddedTop, cropWidth, cropHeight);
-            originalImage.Mutate(ctx => ctx.Crop(cropRectangle));
+            originalImage.Mutate(ctx => ctx.Crop(new SixLabors.ImageSharp.Rectangle(paddedLeft, paddedTop, cropWidth, cropHeight)));
 
-            var outputStream = new MemoryStream();
-            originalImage.Save(outputStream, originalImage.Metadata.DecodedImageFormat!);
-            outputStream.Position = 0;
-
-            return outputStream;
+            return true;
         }
 
         private static (int, int) CalculateScaling(int originalWidth, int originalHeight)
@@ -412,12 +429,12 @@ namespace epub2cbz
             return (newWidth, newHeight);
         }
 
-        private static MemoryStream ResizeImage(Stream imageStream)
+        private static bool ApplyResizing(SixLabors.ImageSharp.Image image)
         {
-            using SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(imageStream);
-
             int maxWidth = PopupSettings.CheckboxStates.TextBoxResizeWidthValue;
             int maxHeight = PopupSettings.CheckboxStates.TextBoxResizeHeightValue;
+
+            if (image.Width == maxWidth && image.Height == maxHeight) return false;
 
             ResizeOptions options = new()
             {
@@ -428,11 +445,7 @@ namespace epub2cbz
 
             image.Mutate(x => x.Resize(options));
 
-            var outputStream = new MemoryStream();
-            image.Save(outputStream, image.Metadata.DecodedImageFormat!);
-            outputStream.Position = 0;
-
-            return outputStream;
+            return true;
         }
 
         private static (List<BookInfo.EpubPage> bookFull, bool? correctSpread) CheckDuplicateCover(List<BookInfo.EpubChapter> chapters,
@@ -537,64 +550,6 @@ namespace epub2cbz
             }
 
             return true;
-        }
-
-        private static (MemoryStream, MemoryStream, int, int) SplitImageSharp(ZipArchiveEntry bookEntry,
-            string fileExtension)
-        {
-            using var sourceStream = bookEntry.Open();
-
-            Image<Rgba32> imageToProcess;
-            int imageWidth;
-            int imageHeight;
-
-            if (PopupSettings.CheckboxStates.CheckboxCropImagesState)
-            {
-                using MemoryStream bufferedSourceStream = new();
-                sourceStream.CopyTo(bufferedSourceStream);
-                bufferedSourceStream.Position = 0;
-
-                using MemoryStream? croppedSourceStream = CalculateCroppingBorder(bufferedSourceStream, out int croppedWidth, out int croppedHeight);
-                if (croppedSourceStream is not null)
-                {
-                    imageToProcess = SixLabors.ImageSharp.Image.Load<Rgba32>(croppedSourceStream);
-                    imageWidth = croppedWidth;
-                    imageHeight = croppedHeight;
-                }
-                else
-                {
-                    bufferedSourceStream.Position = 0;
-                    imageToProcess = SixLabors.ImageSharp.Image.Load<Rgba32>(bufferedSourceStream);
-                    imageWidth = imageToProcess.Width;
-                    imageHeight = imageToProcess.Height;
-                }
-            }
-            else
-            {
-                imageToProcess = SixLabors.ImageSharp.Image.Load<Rgba32>(sourceStream);
-                imageWidth = imageToProcess.Width;
-                imageHeight = imageToProcess.Height;
-            }
-
-            int halfWidth = imageWidth / 2;
-
-            IImageEncoder encoder = ImageSharpFormatToEncoding[fileExtension];
-
-            // Process left half
-            using var outputImageLeft = imageToProcess.Clone(context => context.Crop(new SixLabors.ImageSharp.Rectangle(0, 0, halfWidth, imageHeight)));
-            var encodedDataLeft = new MemoryStream();
-            outputImageLeft.Save(encodedDataLeft, encoder);
-            encodedDataLeft.Position = 0; // Reset stream position to the beginning
-
-            // Process right half
-            using var outputImageRight = imageToProcess.Clone(context => context.Crop(new SixLabors.ImageSharp.Rectangle(halfWidth, 0, imageWidth - halfWidth, imageHeight)));
-            var encodedDataRight = new MemoryStream();
-            outputImageRight.Save(encodedDataRight, encoder);
-            encodedDataRight.Position = 0; // Reset stream position to the beginning
-
-            imageToProcess.Dispose();
-
-            return (encodedDataLeft, encodedDataRight, halfWidth, imageHeight);
         }
 
         private static bool IsImageBlankWhite(Dictionary<string, ZipArchiveEntry> entryMap,
@@ -1563,352 +1518,175 @@ namespace epub2cbz
 
             (int singleWidth, int singleHeight) = GetSinglePageResolution(entryMap, bookFull);
 
-            // Handle wide images first
-            int numberWideImages = 0;
-            if (PopupSettings.CheckboxStates.CheckboxSplitPageSpreadState)
-            {
-                numberWideImages = bookFull.Count(page => page.Doublepage == true);
-            }
+            bool doSplit = PopupSettings.CheckboxStates.CheckboxSplitPageSpreadState;
+            int numberWideImages = doSplit ? bookFull.Count(page => page.Doublepage == true) : 0;
 
             string currentChapterFolder = string.Empty;
             int totalChapters = bookFull.Count(page => !string.IsNullOrEmpty(page.Bookmark));
             int currentChapterIndex = 0;
 
+            var compressionLevel = GetCompressionLevel();
+            bool doCrop = PopupSettings.CheckboxStates.CheckboxCropImagesState;
+            bool doResize = PopupSettings.CheckboxStates.CheckboxResizeImagesState
+                            && PopupSettings.CheckboxStates.TextBoxResizeHeightValue > 0
+                            && PopupSettings.CheckboxStates.TextBoxResizeWidthValue > 0;
+
+            int padLength = (bookFull.Count + numberWideImages - 1).ToString().Length;
+            byte[]? cachedBlankImageData = null;
+
             for (int i = 0; i < bookFull.Count; i++)
             {
-                string prefix = string.Empty;
-                if (i == 0) prefix = "cover_";
-                else prefix = "p_";
+                string prefix = (i == 0) ? "cover_" : "p_";
 
-                var compressionLevel = GetCompressionLevel();
-
-                if (PopupSettings.CheckboxStates.CheckboxChapterFoldersState
-                    && totalChapters > 1
-                    && !string.IsNullOrEmpty(bookFull[i].Bookmark))
+                if (PopupSettings.CheckboxStates.CheckboxChapterFoldersState && totalChapters > 1 && !string.IsNullOrEmpty(bookFull[i].Bookmark))
                 {
                     string valueBookmark = bookFull[i].Bookmark;
-                    foreach (char c in invalidPathFileChars)
-                    {
-                        valueBookmark = valueBookmark.Replace(c, '_');
-                    }
-                    while (valueBookmark.Contains("__"))
-                    {
-                        valueBookmark = valueBookmark.Replace("__", "_");
-                    }
+                    foreach (char c in invalidPathFileChars) valueBookmark = valueBookmark.Replace(c, '_');
+                    while (valueBookmark.Contains("__")) valueBookmark = valueBookmark.Replace("__", "_");
 
-
-                    valueBookmark = $"{currentChapterIndex.ToString().PadLeft((totalChapters - 1).ToString().Length, '0')} - {valueBookmark}/";
-                    currentChapterFolder = valueBookmark;
-
+                    currentChapterFolder = $"{currentChapterIndex.ToString().PadLeft((totalChapters - 1).ToString().Length, '0')} - {valueBookmark}/";
                     currentChapterIndex++;
                 }
 
-                string baseFileNameFirst = prefix + i.ToString().PadLeft((bookFull.Count + numberWideImages - 1).ToString().Length, '0') + Path.GetExtension(bookFull[i].Image);
+                string baseFileNameFirst = $"{prefix}{i.ToString().PadLeft(padLength, '0')}{Path.GetExtension(bookFull[i].Image)}";
                 string fullEntryPathFirst = $"{currentChapterFolder}{baseFileNameFirst}";
-                string baseFileNameSecond = prefix + (i + 1).ToString().PadLeft((bookFull.Count + numberWideImages - 1).ToString().Length, '0') + Path.GetExtension(bookFull[i].Image);
-                string fullEntryPathSecond = $"{currentChapterFolder}{baseFileNameSecond}";
 
                 if (!string.IsNullOrEmpty(bookFull[i].Image) &&
                     imageExtensions.Any(ext => bookFull[i].Image.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     ZipArchiveEntry bookEntry = entryMap.GetValueOrDefault(bookFull[i].Image)!;
+                    bool isDoublePage = doSplit && i > 0 && bookFull[i].Doublepage == true;
+                    string extension = Path.GetExtension(bookFull[i].Image).ToLowerInvariant();
 
-                    if (numberWideImages > 0)
+                    if (isDoublePage)
                     {
-                        if (i > 0 && bookFull[i].Doublepage == true)
+                        string baseFileNameSecond = $"{prefix}{(i + 1).ToString().PadLeft(padLength, '0')}{extension}";
+                        string fullEntryPathSecond = $"{currentChapterFolder}{baseFileNameSecond}";
+
+                        try
                         {
-                            MemoryStream encodedDataLeft = new();
-                            MemoryStream encodedDataRight = new();
-                            int width = 0;
-                            int height = 0;
-                            long byteSizeFirst = 0;
-                            long byteSizeSecond = 0;
+                            using Stream sourceStream = bookEntry.Open();
+                            using Image<Rgba32> imageToProcess = SixLabors.ImageSharp.Image.Load<Rgba32>(sourceStream);
 
-                            try
+                            if (doCrop) ApplyCropping(imageToProcess);
+
+                            int halfWidth = imageToProcess.Width / 2;
+                            int imageHeight = imageToProcess.Height;
+                            IImageEncoder encoder = ImageSharpFormatToEncoding[extension];
+
+                            using Image<Rgba32> leftImage = imageToProcess.Clone(ctx => ctx.Crop(new SixLabors.ImageSharp.Rectangle(0, 0, halfWidth, imageHeight)));
+                            if (doResize) ApplyResizing(leftImage);
+
+                            using Image<Rgba32> rightImage = imageToProcess.Clone(ctx => ctx.Crop(new SixLabors.ImageSharp.Rectangle(halfWidth, 0, imageToProcess.Width - halfWidth, imageHeight)));
+                            if (doResize) ApplyResizing(rightImage);
+
+                            Image<Rgba32> firstImage = readingDirection == "YesAndRightToLeft" ? rightImage : leftImage;
+                            Image<Rgba32> secondImage = readingDirection == "YesAndRightToLeft" ? leftImage : rightImage;
+
+                            using (Stream destinationStream = destinationArchive.CreateEntry(fullEntryPathFirst, compressionLevel).Open())
+                            using (CountingStream countingStreamFirst = new(destinationStream))
                             {
-                                (encodedDataLeft, encodedDataRight, width, height) = SplitImageSharp(bookEntry, Path.GetExtension(bookFull[i].Image));
-
-                                if (PopupSettings.CheckboxStates.CheckboxResizeImagesState
-                                    && PopupSettings.CheckboxStates.TextBoxResizeHeightValue > 0
-                                    && PopupSettings.CheckboxStates.TextBoxResizeWidthValue > 0)
+                                firstImage.Save(countingStreamFirst, encoder);
+                                bookFull[i] = bookFull[i] with
                                 {
-                                    encodedDataLeft = ResizeImage(encodedDataLeft);
-                                    encodedDataRight = ResizeImage(encodedDataRight);
-
-                                    (int resizedWidth, int resizedHeight) = CalculateScaling(width, height);
-
-                                    if (resizedHeight > 0
-                                        && resizedWidth > 0)
-                                    {
-                                        width = resizedWidth;
-                                        height = resizedHeight;
-                                    }
-                                }
-                            }
-                            catch (Exception)
-                            {
-                                throw new Exception(Fail.Split.ToString());
+                                    Height = firstImage.Height,
+                                    Width = firstImage.Width,
+                                    Size = countingStreamFirst.BytesWritten
+                                };
                             }
 
-                            if (readingDirection == "YesAndRightToLeft")
+                            using (Stream destinationStream = destinationArchive.CreateEntry(fullEntryPathSecond, compressionLevel).Open())
+                            using (CountingStream countingStreamSecond = new(destinationStream))
                             {
-                                using (Stream sourceStreamRight = encodedDataRight)
+                                secondImage.Save(countingStreamSecond, encoder);
+                                bookFull.Insert(i + 1, new()
                                 {
-                                    byteSizeFirst = encodedDataRight.Length;
-                                    using Stream destinationStream = destinationArchive.CreateEntry(fullEntryPathFirst, compressionLevel).Open();
-                                    sourceStreamRight.CopyTo(destinationStream);
-                                }
-                                using (Stream sourceStreamLeft = encodedDataLeft)
-                                {
-                                    byteSizeSecond = encodedDataLeft.Length;
-                                    using Stream destinationStream = destinationArchive.CreateEntry(fullEntryPathSecond, compressionLevel).Open();
-                                    sourceStreamLeft.CopyTo(destinationStream);
-                                }
+                                    Page = "second spread page",
+                                    Image = string.Empty,
+                                    Spread = string.Empty,
+                                    Doublepage = false,
+                                    Height = secondImage.Height,
+                                    Width = secondImage.Width,
+                                    Size = countingStreamSecond.BytesWritten
+                                });
                             }
-                            else
-                            {
-                                using (Stream sourceStreamLeft = encodedDataLeft)
-                                {
-                                    byteSizeFirst = encodedDataLeft.Length;
-                                    using Stream destinationStream = destinationArchive.CreateEntry(fullEntryPathFirst, compressionLevel).Open();
-                                    sourceStreamLeft.CopyTo(destinationStream);
-                                }
-                                using (Stream sourceStreamRight = encodedDataRight)
-                                {
-                                    byteSizeSecond = encodedDataRight.Length;
-                                    using Stream destinationStream = destinationArchive.CreateEntry(fullEntryPathSecond, compressionLevel).Open();
-                                    sourceStreamRight.CopyTo(destinationStream);
-                                }
-                            }
-
-                            bookFull[i] = bookFull[i] with
-                            {
-                                Height = height,
-                                Width = width,
-                                Size = byteSizeFirst
-                            };
-
-                            bookFull.Insert(i + 1, new()
-                            {
-                                Page = "second spread page",
-                                Image = string.Empty,
-                                Spread= string.Empty,
-                                Doublepage = false,
-                                Height = height,
-                                Width = width,
-                                Size = byteSizeSecond
-                            });
                             i++;
                         }
-                        else
+                        catch (Exception)
                         {
-                            ZipArchiveEntry destinationEntry = destinationArchive.CreateEntry(fullEntryPathFirst, compressionLevel);
-                            using Stream sourceStream = bookEntry.Open();
-                            using Stream destinationStream = destinationEntry.Open();
-
-                            if (PopupSettings.CheckboxStates.CheckboxCropImagesState)
-                            {
-                                using MemoryStream bufferedSourceStream = new();
-                                sourceStream.CopyTo(bufferedSourceStream);
-                                bufferedSourceStream.Position = 0;
-
-                                using MemoryStream? croppedSourceStream = CalculateCroppingBorder(bufferedSourceStream, out int croppedWidth, out int croppedHeight);
-                                if (croppedSourceStream is not null)
-                                {
-                                    bookFull[i] = bookFull[i] with
-                                    {
-                                        Height = croppedHeight,
-                                        Width = croppedWidth,
-                                        Size = croppedSourceStream.Length
-                                    };
-
-                                    if (PopupSettings.CheckboxStates.CheckboxResizeImagesState
-                                        && PopupSettings.CheckboxStates.TextBoxResizeHeightValue > 0
-                                        && PopupSettings.CheckboxStates.TextBoxResizeWidthValue > 0)
-                                    {
-                                        using Stream resizedSourceStream = ResizeImage(croppedSourceStream);
-                                        resizedSourceStream.CopyTo(destinationStream);
-
-                                        (int resizedWidth, int resizedHeight) = CalculateScaling(bookFull[i].Width, bookFull[i].Height);
-
-                                        if (resizedHeight > 0
-                                            && resizedWidth > 0)
-                                        {
-                                            bookFull[i] = bookFull[i] with
-                                            {
-                                                Height = resizedHeight,
-                                                Width = resizedWidth,
-                                                Size = resizedSourceStream.Length
-                                            };
-                                        }
-                                    }
-                                    else croppedSourceStream.CopyTo(destinationStream);
-                                }
-                                else
-                                {
-                                    bufferedSourceStream.Position = 0;
-
-                                    if (PopupSettings.CheckboxStates.CheckboxResizeImagesState
-                                        && PopupSettings.CheckboxStates.TextBoxResizeHeightValue > 0
-                                        && PopupSettings.CheckboxStates.TextBoxResizeWidthValue > 0)
-                                    {
-                                        using Stream resizedSourceStream = ResizeImage(bufferedSourceStream);
-                                        resizedSourceStream.CopyTo(destinationStream);
-
-                                        (int resizedWidth, int resizedHeight) = CalculateScaling(bookFull[i].Width, bookFull[i].Height);
-
-                                        if (resizedHeight > 0
-                                            && resizedWidth > 0)
-                                        {
-                                            bookFull[i] = bookFull[i] with
-                                            {
-                                                Height = resizedHeight,
-                                                Width = resizedWidth,
-                                                Size = resizedSourceStream.Length
-                                            };
-                                        }
-                                    }
-                                    else bufferedSourceStream.CopyTo(destinationStream);
-                                }
-                            }
-                            else if (PopupSettings.CheckboxStates.CheckboxResizeImagesState
-                                && PopupSettings.CheckboxStates.TextBoxResizeHeightValue > 0
-                                && PopupSettings.CheckboxStates.TextBoxResizeWidthValue > 0)
-                            {
-                                using Stream resizedSourceStream = ResizeImage(sourceStream);
-                                resizedSourceStream.CopyTo(destinationStream);
-
-                                (int resizedWidth, int resizedHeight) = CalculateScaling(bookFull[i].Width, bookFull[i].Height);
-
-                                if (resizedHeight > 0
-                                    && resizedWidth > 0)
-                                {
-                                    bookFull[i] = bookFull[i] with
-                                    {
-                                        Height = resizedHeight,
-                                        Width = resizedWidth,
-                                        Size = resizedSourceStream.Length
-                                    };
-                                }
-                            }
-                            else sourceStream.CopyTo(destinationStream);
+                            throw new Exception(Fail.Split.ToString());
                         }
                     }
                     else
                     {
-                        ZipArchiveEntry destinationEntry = destinationArchive.CreateEntry($"{currentChapterFolder}{prefix + i.ToString().PadLeft((bookFull.Count - 1).ToString().Length, '0') + Path.GetExtension(bookFull[i].Image)}", compressionLevel);
-                        using Stream sourceStream = bookEntry.Open();
-                        using Stream destinationStream = destinationEntry.Open();
-
-                        if (PopupSettings.CheckboxStates.CheckboxCropImagesState)
+                        if (doCrop || doResize)
                         {
-                            using MemoryStream bufferedSourceStream = new();
-                            sourceStream.CopyTo(bufferedSourceStream);
-                            bufferedSourceStream.Position = 0;
+                            bool cropped, resized;
 
-                            using MemoryStream? croppedSourceStream = CalculateCroppingBorder(bufferedSourceStream, out int croppedWidth, out int croppedHeight);
-                            if (croppedSourceStream is not null)
+                            using (Stream sourceStream = bookEntry.Open())
+                            using (Image<Rgba32> imageToProcess = SixLabors.ImageSharp.Image.Load<Rgba32>(sourceStream))
                             {
-                                bookFull[i] = bookFull[i] with
+                                cropped = doCrop && ApplyCropping(imageToProcess);
+                                resized = doResize && ApplyResizing(imageToProcess);
+
+                                if (cropped || resized)
                                 {
-                                    Height = croppedHeight,
-                                    Width = croppedWidth,
-                                    Size = croppedSourceStream.Length
-                                };
+                                    IImageEncoder encoder = ImageSharpFormatToEncoding[extension];
 
-                                if (PopupSettings.CheckboxStates.CheckboxResizeImagesState
-                                    && PopupSettings.CheckboxStates.TextBoxResizeHeightValue > 0
-                                    && PopupSettings.CheckboxStates.TextBoxResizeWidthValue > 0)
-                                {
-                                    using Stream resizedSourceStream = ResizeImage(croppedSourceStream);
-                                    resizedSourceStream.CopyTo(destinationStream);
+                                    using Stream destinationStream = destinationArchive.CreateEntry(fullEntryPathFirst, compressionLevel).Open();
+                                    using CountingStream countingStream = new(destinationStream);
 
-                                    (int resizedWidth, int resizedHeight) = CalculateScaling(bookFull[i].Width, bookFull[i].Height);
+                                    imageToProcess.Save(countingStream, encoder);
 
-                                    if (resizedHeight > 0
-                                        && resizedWidth > 0)
+                                    bookFull[i] = bookFull[i] with
                                     {
-                                        bookFull[i] = bookFull[i] with
-                                        {
-                                            Height = resizedHeight,
-                                            Width = resizedWidth,
-                                            Size = resizedSourceStream.Length
-                                        };
-                                    }
+                                        Height = imageToProcess.Height,
+                                        Width = imageToProcess.Width,
+                                        Size = countingStream.BytesWritten
+                                    };
                                 }
-                                else croppedSourceStream.CopyTo(destinationStream);
                             }
-                            else
+
+                            if (!cropped && !resized)
                             {
-                                bufferedSourceStream.Position = 0;
+                                using Stream originalSourceStream = bookEntry.Open();
+                                using Stream destinationStream = destinationArchive.CreateEntry(fullEntryPathFirst, compressionLevel).Open();
+                                originalSourceStream.CopyTo(destinationStream);
 
-                                if (PopupSettings.CheckboxStates.CheckboxResizeImagesState
-                                    && PopupSettings.CheckboxStates.TextBoxResizeHeightValue > 0
-                                    && PopupSettings.CheckboxStates.TextBoxResizeWidthValue > 0)
-                                {
-                                    using Stream resizedSourceStream = ResizeImage(bufferedSourceStream);
-                                    resizedSourceStream.CopyTo(destinationStream);
-
-                                    (int resizedWidth, int resizedHeight) = CalculateScaling(bookFull[i].Width, bookFull[i].Height);
-
-                                    if (resizedHeight > 0
-                                        && resizedWidth > 0)
-                                    {
-                                        bookFull[i] = bookFull[i] with
-                                        {
-                                            Height = resizedHeight,
-                                            Width = resizedWidth,
-                                            Size = resizedSourceStream.Length
-                                        };
-                                    }
-                                }
-                                else bufferedSourceStream.CopyTo(destinationStream);
+                                bookFull[i] = bookFull[i] with { Size = bookEntry.Length };
                             }
                         }
-                        else if (PopupSettings.CheckboxStates.CheckboxResizeImagesState
-                            && PopupSettings.CheckboxStates.TextBoxResizeHeightValue > 0
-                            && PopupSettings.CheckboxStates.TextBoxResizeWidthValue > 0)
+                        else
                         {
-                            using Stream resizedSourceStream = ResizeImage(sourceStream);
-                            resizedSourceStream.CopyTo(destinationStream);
+                            using Stream sourceStream = bookEntry.Open();
+                            using Stream destinationStream = destinationArchive.CreateEntry(fullEntryPathFirst, compressionLevel).Open();
+                            sourceStream.CopyTo(destinationStream);
 
-                            (int resizedWidth, int resizedHeight) = CalculateScaling(bookFull[i].Width, bookFull[i].Height);
-
-                            if (resizedHeight > 0
-                                && resizedWidth > 0)
-                            {
-                                bookFull[i] = bookFull[i] with
-                                {
-                                    Height = resizedHeight,
-                                    Width = resizedWidth,
-                                    Size = resizedSourceStream.Length
-                                };
-                            }
+                            bookFull[i] = bookFull[i] with { Size = bookEntry.Length };
                         }
-                        else sourceStream.CopyTo(destinationStream);
                     }
                 }
                 else
                 {
                     try
                     {
-                        using var blankImage = CreateBlankImage(singleWidth, singleHeight);
-
-                        using var memoryStream = new MemoryStream();
-                        blankImage.SaveAsPng(memoryStream);
-                        byte[] encodedData = memoryStream.ToArray();
+                        if (cachedBlankImageData == null)
+                        {
+                            using var blankImage = CreateBlankImage(singleWidth, singleHeight);
+                            using var memoryStream = new MemoryStream();
+                            blankImage.SaveAsPng(memoryStream);
+                            cachedBlankImageData = memoryStream.ToArray();
+                        }
 
                         bookFull[i] = bookFull[i] with
                         {
                             Height = singleHeight,
                             Width = singleWidth,
-                            Size = encodedData.Length
+                            Size = cachedBlankImageData.Length
                         };
 
-                        ZipArchiveEntry destinationEntry = destinationArchive.CreateEntry($"{currentChapterFolder}{prefix + i.ToString().PadLeft((bookFull.Count + numberWideImages - 1).ToString().Length, '0') + ".png"}", compressionLevel);
-
-                        using Stream sourceStream = new MemoryStream(encodedData);
-                        using Stream destinationStream = destinationEntry.Open();
+                        using Stream sourceStream = new MemoryStream(cachedBlankImageData);
+                        using Stream destinationStream = destinationArchive.CreateEntry($"{currentChapterFolder}{prefix}{i.ToString().PadLeft(padLength, '0')}.png", compressionLevel).Open();
                         sourceStream.CopyTo(destinationStream);
                     }
                     catch (Exception)
@@ -3292,30 +3070,16 @@ namespace epub2cbz
 
             try
             {
-                await Task.Run(() =>
-                {
-                    try
+                await Parallel.ForEachAsync(epubPaths,
+                    new ParallelOptions { MaxDegreeOfParallelism = maxDegreeOfParallelism, CancellationToken = cts.Token },
+                    async (epubPath, token) =>
                     {
-                        Parallel.ForEach(epubPaths,
-                            new ParallelOptions { MaxDegreeOfParallelism = maxDegreeOfParallelism, CancellationToken = cts.Token },
-                            (epubPath, loopState) =>
-                            {
-                                try
-                                {
-                                    ProcessEpub(epubPath, cts.Token);
-                                }
-                                catch (OperationCanceledException)
-                                {
-                                    loopState.Stop();
-                                }
-                            });
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        wasAborted = true;
-                    }
-
-                }, cts.Token);
+                        ProcessEpub(epubPath, cts.Token);
+                    });
+            }
+            catch (OperationCanceledException)
+            {
+                wasAborted = true;
             }
             finally
             {
