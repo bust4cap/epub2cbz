@@ -3,6 +3,9 @@ C# program to extract .epub Manga and Comic ebooks into .cbz files, including a 
 
 ![Main view](img/epub2cbz-gui_1.png)
 
+## Download
+The latest release is available here: [Releases](https://github.com/bust4cap/epub2cbz/releases/latest)
+
 ## Prerequisites
 - Epubs must be DRM-free
 - They should ideally be in the format of "[Series] v[Volume].epub", for example "Two Pieces v69.epub" (both are optional, but are derived from the filename, if ComicInfo is enabled and calibre tags are not found)
@@ -31,8 +34,8 @@ Getting error messages or something isn't working as expected?<br/>
 Please don't hesitate to open an Issue or contact me directly.<br/>
 
 Twitter/X: [@af_Seb](https://x.com/af_Seb)<br/>
+Reddit: [u/bust4cap](https://www.reddit.com/user/bust4cap/)<br/>
 Bluesky: [@afseb.bsky.social](https://bsky.app/profile/afseb.bsky.social)<br/>
-Mastodon: [@af_Seb@social.cologne](https://social.cologne/@af_Seb)<br/>
 
 ## Licenses
 epub2cbz uses the following third party software libraries:
