@@ -118,7 +118,7 @@ namespace epub2cbz
             return bookFull;
         }
 
-        public static List<BookInfo.EpubPage> ParseCover(Dictionary<string, ZipArchiveEntry> entryMap,
+        public static void ParseCover(Dictionary<string, ZipArchiveEntry> entryMap,
             string epubFile,
             XDocument opfDoc,
             List<BookInfo.EpubPage> bookFull,
@@ -160,8 +160,6 @@ namespace epub2cbz
                     Size = bookEntry.Length
                 });
             }
-
-            return bookFull;
         }
 
         public static List<BookInfo.EpubChapter> ParseToc(List<BookInfo.EpubPage> bookFull,
