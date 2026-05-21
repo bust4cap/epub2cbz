@@ -446,7 +446,7 @@ namespace epub2cbz
             return true;
         }
 
-        private static void CheckDuplicateCover(List<BookInfo.EpubChapter> chapters,
+        private static bool? CheckDuplicateCover(List<BookInfo.EpubChapter> chapters,
             List<BookInfo.EpubPage> bookFull,
             Dictionary<string, ZipArchiveEntry> entryMap,
             XDocument opfDoc,
@@ -460,7 +460,7 @@ namespace epub2cbz
                 || chapters[0].Title == "カバー"
                 || chapters[0].Title == "表紙"))
             {
-                RemoveDuplicateCover(entryMap, bookFull, epubFilename, correctSpread);
+                correctSpread = RemoveDuplicateCover(entryMap, bookFull, epubFilename, correctSpread);
             }
             else
             {
@@ -473,11 +473,11 @@ namespace epub2cbz
 
                     if (Path.GetFileName(coverPath.Split('#')[0]) == Path.GetFileName(bookFull[1].Page))
                     {
-                        RemoveDuplicateCover(entryMap, bookFull, epubFilename, correctSpread);
+                        correctSpread = RemoveDuplicateCover(entryMap, bookFull, epubFilename, correctSpread);
                     }
                     else if (CompareImages(entryMap, bookFull[0].Image, bookFull[1].Image, epubFile))
                     {
-                        RemoveDuplicateCover(entryMap, bookFull, epubFilename, correctSpread);
+                        correctSpread = RemoveDuplicateCover(entryMap, bookFull, epubFilename, correctSpread);
                     }
                 }
 #if DEBUG
@@ -485,14 +485,16 @@ namespace epub2cbz
                 {
                     AppendColoredText($"DEBUG: '{epubFilename}' - Image 0 == Image 1" + Environment.NewLine, System.Drawing.Color.HotPink);
 
-                    RemoveDuplicateCover(entryMap, bookFull, epubFilename, correctSpread);
+                    correctSpread = RemoveDuplicateCover(entryMap, bookFull, epubFilename, correctSpread);
                 }
 #endif
                 else if (CompareImages(entryMap, bookFull[0].Image, bookFull[1].Image, epubFile))
                 {
-                    RemoveDuplicateCover(entryMap, bookFull, epubFilename, correctSpread);
+                    correctSpread = RemoveDuplicateCover(entryMap, bookFull, epubFilename, correctSpread);
                 }
             }
+
+            return correctSpread;
         }
 
         private static bool CheckEPUB(string epubFile)
@@ -2326,7 +2328,7 @@ namespace epub2cbz
             return navPaths;
         }
 
-        private static void RemoveDuplicateCover(Dictionary<string, ZipArchiveEntry> entryMap,
+        private static bool? RemoveDuplicateCover(Dictionary<string, ZipArchiveEntry> entryMap,
             List<BookInfo.EpubPage> bookFull,
             string epubFilename,
             bool? correctSpread)
@@ -2407,6 +2409,8 @@ namespace epub2cbz
 #if DEBUG
             AppendColoredText($"DEBUG: '{epubFilename}' - Removed Duplicate Cover" + debugMessage + Environment.NewLine, System.Drawing.Color.DarkOrange);
 #endif
+
+            return correctSpread;
         }
 
         private static void InsertBlankPage (Dictionary<string, ZipArchiveEntry> entryMap,
@@ -2652,7 +2656,7 @@ namespace epub2cbz
 
             if (PopupSettings.CheckboxStates.CheckboxDuplicateCoverState)
             {
-                CheckDuplicateCover(chapters, bookFull, entryMap, opfDoc, epubFilename, correctSpread, epubFile);
+                correctSpread = CheckDuplicateCover(chapters, bookFull, entryMap, opfDoc, epubFilename, correctSpread, epubFile);
             }
 
             if (correctSpread == false && PopupSettings.CheckboxStates.CheckboxPageSpreadState)
