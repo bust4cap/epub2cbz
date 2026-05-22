@@ -135,10 +135,10 @@
             buttonSettingsOK.Anchor = AnchorStyles.None;
             buttonSettingsOK.FlatAppearance.BorderColor = Color.DimGray;
             buttonSettingsOK.FlatStyle = FlatStyle.Flat;
-            buttonSettingsOK.Location = new Point(474, 3);
+            buttonSettingsOK.Location = new Point(470, 3);
             buttonSettingsOK.Margin = new Padding(2, 1, 2, 1);
             buttonSettingsOK.Name = "buttonSettingsOK";
-            buttonSettingsOK.Size = new Size(77, 25);
+            buttonSettingsOK.Size = new Size(81, 25);
             buttonSettingsOK.TabIndex = 202;
             buttonSettingsOK.Text = "OK";
             buttonSettingsOK.UseVisualStyleBackColor = true;
@@ -149,10 +149,10 @@
             buttonSettingsCancel.Anchor = AnchorStyles.None;
             buttonSettingsCancel.FlatAppearance.BorderColor = Color.DimGray;
             buttonSettingsCancel.FlatStyle = FlatStyle.Flat;
-            buttonSettingsCancel.Location = new Point(393, 3);
+            buttonSettingsCancel.Location = new Point(385, 3);
             buttonSettingsCancel.Margin = new Padding(2, 1, 2, 1);
             buttonSettingsCancel.Name = "buttonSettingsCancel";
-            buttonSettingsCancel.Size = new Size(77, 25);
+            buttonSettingsCancel.Size = new Size(81, 25);
             buttonSettingsCancel.TabIndex = 201;
             buttonSettingsCancel.Text = "Cancel";
             buttonSettingsCancel.UseVisualStyleBackColor = true;
@@ -725,9 +725,9 @@
             buttonSettingsResetToDefault.Anchor = AnchorStyles.None;
             buttonSettingsResetToDefault.FlatAppearance.BorderColor = Color.DimGray;
             buttonSettingsResetToDefault.FlatStyle = FlatStyle.Flat;
-            buttonSettingsResetToDefault.Location = new Point(192, 3);
+            buttonSettingsResetToDefault.Location = new Point(187, 3);
             buttonSettingsResetToDefault.Name = "buttonSettingsResetToDefault";
-            buttonSettingsResetToDefault.Size = new Size(93, 25);
+            buttonSettingsResetToDefault.Size = new Size(95, 25);
             buttonSettingsResetToDefault.TabIndex = 151;
             buttonSettingsResetToDefault.Text = "Reset Settings";
             buttonSettingsResetToDefault.UseVisualStyleBackColor = true;

@@ -59,7 +59,7 @@
             buttonFileModeClear.FlatStyle = FlatStyle.Flat;
             buttonFileModeClear.Location = new Point(12, 12);
             buttonFileModeClear.Name = "buttonFileModeClear";
-            buttonFileModeClear.Size = new Size(75, 23);
+            buttonFileModeClear.Size = new Size(81, 25);
             buttonFileModeClear.TabIndex = 1;
             buttonFileModeClear.Text = "Clear";
             buttonFileModeClear.UseVisualStyleBackColor = true;
@@ -75,12 +75,12 @@
             dataGridViewFileModeList.ClipboardCopyMode = DataGridViewClipboardCopyMode.Disable;
             dataGridViewFileModeList.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewFileModeList.Columns.AddRange(new DataGridViewColumn[] { ColumnFileNames });
-            dataGridViewFileModeList.Location = new Point(12, 41);
+            dataGridViewFileModeList.Location = new Point(12, 43);
             dataGridViewFileModeList.Name = "dataGridViewFileModeList";
             dataGridViewFileModeList.ReadOnly = true;
             dataGridViewFileModeList.RowHeadersVisible = false;
             dataGridViewFileModeList.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewFileModeList.Size = new Size(632, 308);
+            dataGridViewFileModeList.Size = new Size(632, 306);
             dataGridViewFileModeList.TabIndex = 2;
             dataGridViewFileModeList.CellFormatting += DataGridViewFileModeList_CellFormatting;
             dataGridViewFileModeList.UserDeletingRow += DataGridViewFileModeList_UserDeletingRow;
@@ -98,9 +98,9 @@
             buttonFileListOK.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonFileListOK.FlatAppearance.BorderColor = Color.DimGray;
             buttonFileListOK.FlatStyle = FlatStyle.Flat;
-            buttonFileListOK.Location = new Point(569, 12);
+            buttonFileListOK.Location = new Point(563, 12);
             buttonFileListOK.Name = "buttonFileListOK";
-            buttonFileListOK.Size = new Size(75, 23);
+            buttonFileListOK.Size = new Size(81, 25);
             buttonFileListOK.TabIndex = 3;
             buttonFileListOK.Text = "OK";
             buttonFileListOK.UseVisualStyleBackColor = true;
