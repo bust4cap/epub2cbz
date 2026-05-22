@@ -292,6 +292,7 @@ public partial class MainForm : Form
 
         ComboBoxDropDownWidth();
         ToolStripProgressbarWidth();
+        textBoxPath.Top = buttonPathClear.Top + (buttonPathClear.Height - textBoxPath.Height) / 2;
 
         CultureInfo currentUICulture = Thread.CurrentThread.CurrentUICulture;
 
