@@ -62,8 +62,7 @@ namespace epub2cbz
                 dicPagesIdsSpread.Add(new()
                 {
                     Pages = pageFile ?? string.Empty,
-                    Ids = page.Key,
-                    Spread = string.Empty
+                    Ids = page.Key
                 });
             }
 
@@ -104,7 +103,6 @@ namespace epub2cbz
                         {
                             Page = dicPagesIdsSpread[i].Ids,
                             Image = imagePath,
-                            Spread = string.Empty,
                             Doublepage = isDoublePage,
                             Height = height,
                             Width = width,
@@ -153,8 +151,6 @@ namespace epub2cbz
                 {
                     Page = "Cover",
                     Image = filename,
-                    Spread = string.Empty,
-                    Doublepage = false,
                     Height = height,
                     Width = width,
                     Size = bookEntry.Length

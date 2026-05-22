@@ -137,7 +137,7 @@ partial class MainForm
         outputBoxConsole.ReadOnly = true;
         outputBoxConsole.ScrollBars = RichTextBoxScrollBars.ForcedVertical;
         outputBoxConsole.Size = new Size(639, 267);
-        outputBoxConsole.TabIndex = 9;
+        outputBoxConsole.TabIndex = 0;
         outputBoxConsole.Text = "";
         outputBoxConsole.DragDrop += OutputBoxConsole_DragDrop;
         outputBoxConsole.DragEnter += OutputBoxConsole_DragEnter;

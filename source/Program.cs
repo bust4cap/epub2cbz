@@ -518,15 +518,15 @@ namespace epub2cbz
             }
 
 
-            if (filename.EndsWith(".xhtml", StringComparison.InvariantCultureIgnoreCase) ||
-                filename.EndsWith(".html", StringComparison.InvariantCultureIgnoreCase) ||
-                filename.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))      // Walter Isaacson - Steve Jobs
+            if (filename.EndsWith(".xhtml", StringComparison.OrdinalIgnoreCase) ||
+                filename.EndsWith(".html", StringComparison.OrdinalIgnoreCase) ||
+                filename.EndsWith(".xml", StringComparison.OrdinalIgnoreCase))      // Walter Isaacson - Steve Jobs
             {
                 using StreamReader reader = new(fileEntry.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
                 string fileContent = reader.ReadToEnd();
-                if (fileContent.Contains("html", StringComparison.InvariantCultureIgnoreCase)) return false;
+                if (fileContent.Contains("html", StringComparison.OrdinalIgnoreCase)) return false;
             }
-            else if (imageExtensions.Any(ext => filename.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase)))
+            else if (imageExtensions.Any(ext => filename.EndsWith(ext, StringComparison.OrdinalIgnoreCase)))
             {
                 if (fileEntry.Length < 4) return false;
 
@@ -628,13 +628,13 @@ namespace epub2cbz
 
                 foundSpreadInfo = true;
 
-                if (bookFull[i].Spread.Contains(firstPage, StringComparison.InvariantCultureIgnoreCase) && (i + pageSpreadCounter) % 2 != 0
-                    || bookFull[i].Spread.Contains(secondPage, StringComparison.InvariantCultureIgnoreCase) && (i + pageSpreadCounter) % 2 == 0)
+                if (bookFull[i].Spread.Contains(firstPage, StringComparison.OrdinalIgnoreCase) && (i + pageSpreadCounter) % 2 != 0
+                    || bookFull[i].Spread.Contains(secondPage, StringComparison.OrdinalIgnoreCase) && (i + pageSpreadCounter) % 2 == 0)
                 {
                     return true; // Spread seems to be correct
                 }
-                else if (bookFull[i].Spread.Contains(firstPage, StringComparison.InvariantCultureIgnoreCase) && (i + pageSpreadCounter) % 2 == 0
-                    || bookFull[i].Spread.Contains(secondPage, StringComparison.InvariantCultureIgnoreCase) && (i + pageSpreadCounter) % 2 != 0)
+                else if (bookFull[i].Spread.Contains(firstPage, StringComparison.OrdinalIgnoreCase) && (i + pageSpreadCounter) % 2 == 0
+                    || bookFull[i].Spread.Contains(secondPage, StringComparison.OrdinalIgnoreCase) && (i + pageSpreadCounter) % 2 != 0)
                 {
                     return false; // blank page needed
                 }
@@ -646,204 +646,91 @@ namespace epub2cbz
         private static void FixPageAlignmentPost(List<BookInfo.EpubPage> bookFull,
             string readingDirection)
         {
+            bool isRtl = readingDirection == "YesAndRightToLeft";
+
+            string wrongPrevSingleSpread = isRtl ? "right" : "left";
+            string blankBeforeDoubleSpread = isRtl ? "page-spread-left" : "page-spread-right";
+
+            string wrongPrevDoubleSpread = isRtl ? "left" : "right";
+            string blankAfterDoubleSpread = isRtl ? "page-spread-right" : "page-spread-left";
+
+            List<BookInfo.EpubPage> alignedPages = new(bookFull.Count)
+            {
+                bookFull[0]
+            };
+
             for (int i = 1; i < bookFull.Count; i++)
             {
-                //  Add blank page before double page if page alignment is incorrect
-                if (bookFull[i].Doublepage == true)
+                var current = bookFull[i];
+                var prev = alignedPages[^1];
+
+                bool insertBlank = false;
+                string blankSpread = string.Empty;
+
+                if (current.Doublepage)
                 {
-                    if (readingDirection == "No")
+                    if (alignedPages.Count > 1 && !prev.Doublepage)
                     {
-                        // For ltr books - if current page is wide and last page was a single left page
-                        if (i > 1
-                            && bookFull[i - 1].Spread.Contains("left", StringComparison.InvariantCultureIgnoreCase)
-                            && bookFull[i - 1].Doublepage == false)
-                        {
-                            bookFull.Insert(i, new()
-                            {
-                                Page = "blank",
-                                Image = string.Empty,
-                                Spread = "page-spread-right",
-                                Doublepage = false,
-                                Height = 0,
-                                Width = 0,
-                                Size = 0
-                            });
+                        bool isPrevPrevDoubleOrFirst = alignedPages.Count == 2 || alignedPages[^2].Doublepage;
 
-                            i++;
+                        if (prev.Spread.Contains(wrongPrevSingleSpread, StringComparison.OrdinalIgnoreCase))
+                        {
+                            insertBlank = true;
+                            blankSpread = blankBeforeDoubleSpread;
                         }
-                        else if (i > 1
-                            && bookFull[i - 1].Spread == string.Empty
-                            && bookFull[i - 1].Doublepage == false
-                            && (bookFull[i - 2].Doublepage == true || (i - 2) == 0))
+                        else if (string.IsNullOrEmpty(prev.Spread) && isPrevPrevDoubleOrFirst)
                         {
-                            bookFull.Insert(i, new()
-                            {
-                                Page = "blank",
-                                Image = string.Empty,
-                                Spread = "page-spread-right",
-                                Doublepage = false,
-                                Height = 0,
-                                Width = 0,
-                                Size = 0
-                            });
-
-                            i++;
-                        }
-                    }
-                    else if (readingDirection == "YesAndRightToLeft")
-                    {
-                        // For rtl books - if current page is wide and last page was a single right page
-                        if (i > 1
-                            && bookFull[i - 1].Spread.Contains("right", StringComparison.InvariantCultureIgnoreCase)
-                            && bookFull[i - 1].Doublepage == false)
-                        {
-                            bookFull.Insert(i, new()
-                            {
-                                Page = "blank",
-                                Image = string.Empty,
-                                Spread = "page-spread-left",
-                                Doublepage = false,
-                                Height = 0,
-                                Width = 0,
-                                Size = 0
-                            });
-
-                            i++;
-                        }
-                        else if (i > 1
-                            && bookFull[i - 1].Spread == string.Empty
-                            && bookFull[i - 1].Doublepage == false
-                            && (bookFull[i - 2].Doublepage == true || (i - 2) == 0))
-                        {
-                            bookFull.Insert(i, new()
-                            {
-                                Page = "blank",
-                                Image = string.Empty,
-                                Spread = "page-spread-left",
-                                Doublepage = false,
-                                Height = 0,
-                                Width = 0,
-                                Size = 0
-                            });
-
-                            i++;
+                            insertBlank = true;
+                            blankSpread = blankBeforeDoubleSpread;
                         }
                     }
                 }
-                //  Add blank page for single pages and after double pages if page alignment is incorrect
-                else
+                else if (alignedPages.Count > 1)
                 {
-                    if (readingDirection == "No")
+                    if (prev.Doublepage)
                     {
-                        if (i > 1
-                            && bookFull[i - 1].Doublepage == true
-                            && bookFull[i].Spread.Contains("right", StringComparison.InvariantCultureIgnoreCase))
+                        if (current.Spread.Contains(wrongPrevDoubleSpread, StringComparison.OrdinalIgnoreCase))
                         {
-                            bookFull.Insert(i, new()
-                            {
-                                Page = "blank",
-                                Image = string.Empty,
-                                Spread = "page-spread-left",
-                                Doublepage = false,
-                                Height = 0,
-                                Width = 0,
-                                Size = 0
-                            });
-
-                            i++;
-                        }
-                        else if (i > 1
-                            && bookFull[i - 1].Doublepage == false
-                            && bookFull[i - 1].Spread.Contains("left", StringComparison.InvariantCultureIgnoreCase)
-                            && bookFull[i].Spread.Contains("left", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            bookFull.Insert(i, new()
-                            {
-                                Page = "blank",
-                                Image = string.Empty,
-                                Spread= "page-spread-right",
-                                Doublepage = false,
-                                Height = 0,
-                                Width = 0,
-                                Size = 0
-                            });
-
-                            i++;
-                        }
-                        else if (i > 1
-                            && bookFull[i - 1].Spread.Contains("right", StringComparison.InvariantCultureIgnoreCase)
-                            && bookFull[i].Spread.Contains("right", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            bookFull.Insert(i, new()
-                            {
-                                Page = "blank",
-                                Image = string.Empty,
-                                Spread = "page-spread-left",
-                                Doublepage = false,
-                                Height = 0,
-                                Width = 0,
-                                Size = 0
-                            });
-
-                            i++;
+                            insertBlank = true;
+                            blankSpread = blankAfterDoubleSpread;
                         }
                     }
-                    else if (readingDirection == "YesAndRightToLeft")
+                    else
                     {
-                        if (i > 1
-                            && bookFull[i - 1].Doublepage == true
-                            && bookFull[i].Spread.Contains("left", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            bookFull.Insert(i, new()
-                            {
-                                Page = "blank",
-                                Image = string.Empty,
-                                Spread = "page-spread-right",
-                                Doublepage = false,
-                                Height= 0,
-                                Width = 0,
-                                Size = 0
-                            });
+                        bool prevIsLeft = prev.Spread.Contains("left", StringComparison.OrdinalIgnoreCase);
+                        bool currentIsLeft = current.Spread.Contains("left", StringComparison.OrdinalIgnoreCase);
+                        bool prevIsRight = prev.Spread.Contains("right", StringComparison.OrdinalIgnoreCase);
+                        bool currentIsRight = current.Spread.Contains("right", StringComparison.OrdinalIgnoreCase);
 
-                            i++;
+                        if (prevIsLeft && currentIsLeft)
+                        {
+                            insertBlank = true;
+                            blankSpread = "page-spread-right";
                         }
-                        else if (i > 1
-                            && bookFull[i - 1].Spread.Contains("left", StringComparison.InvariantCultureIgnoreCase)
-                            && bookFull[i].Spread.Contains("left", StringComparison.InvariantCultureIgnoreCase))
+                        else if (prevIsRight && currentIsRight)
                         {
-                            bookFull.Insert(i, new()
-                            {
-                                Page = "blank",
-                                Image= string.Empty,
-                                Spread = "page-spread-right",
-                                Doublepage = false,
-                                Height = 0,
-                                Width = 0,
-                                Size = 0
-                            });
-
-                            i++;
-                        }
-                        else if (i > 1
-                            && bookFull[i - 1].Doublepage == false
-                            && bookFull[i - 1].Spread.Contains("right", StringComparison.InvariantCultureIgnoreCase)
-                            && bookFull[i].Spread.Contains("right", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            bookFull.Insert(i, new()
-                            {
-                                Page= "blank",
-                                Image = string.Empty,
-                                Spread = "page-spread-left",
-                                Doublepage = false,
-                                Height = 0,
-                                Width = 0,
-                                Size = 0
-                            });
-
-                            i++;
+                            insertBlank = true;
+                            blankSpread = "page-spread-left";
                         }
                     }
                 }
+
+                if (insertBlank)
+                {
+                    alignedPages.Add(new()
+                    {
+                        Page = "blank",
+                        Spread = blankSpread
+                    });
+                }
+
+                alignedPages.Add(current);
+            }
+
+            if (alignedPages.Count > bookFull.Count)
+            {
+                bookFull.Clear();
+                bookFull.AddRange(alignedPages);
             }
         }
 
@@ -854,7 +741,7 @@ namespace epub2cbz
             List<BookInfo.EpubPagesIdsSpread> dicPagesIdsSpread)
         {
             List<BookInfo.EpubPage> bookFull = [];
-            string cssPath = GetCssFile(opfPath, opfDoc);
+            (string cssPath, var stylesheet) = GetCssFile(opfPath, opfDoc, entryMap);
             const double wideImageRatio = 1.125; // Images have to be at least 12.5% wider than tall to be considered "wide"
 
             for (int i = 0; i < dicPagesIdsSpread.Count; i++)
@@ -889,9 +776,9 @@ namespace epub2cbz
                     }
                 }
                 //  If image paths are only found in a css file (e.g. The Hobbit)
-                else if (dicPagesIdsSpread.Count > i)
+                else if (dicPagesIdsSpread.Count > i && !string.IsNullOrEmpty(cssPath))
                 {
-                    string cssImage = FindImagePathInCss(entryMap, cssPath, dicPagesIdsSpread[i].Pages.Split('#')[0]);
+                    string cssImage = FindImagePathInCss(entryMap, stylesheet, dicPagesIdsSpread[i].Pages.Split('#')[0]);
 
                     if (!string.IsNullOrEmpty(cssImage))
                     {
@@ -936,12 +823,7 @@ namespace epub2cbz
                     bookFull.Add(new BookInfo.EpubPage()
                     {
                         Page = dicPagesIdsSpread[i].Pages.Split('#')[0],
-                        Image = string.Empty,
-                        Spread = dicPagesIdsSpread[i].Spread ?? string.Empty,
-                        Doublepage = false,
-                        Height = 0,
-                        Width = 0,
-                        Size = 0
+                        Spread = dicPagesIdsSpread[i].Spread ?? string.Empty
                     });
                 }
             }
@@ -1089,7 +971,7 @@ namespace epub2cbz
                 return asinIdentifier.Trim();
             }
             else if (!string.IsNullOrEmpty(identifier)
-                && identifier.StartsWith("urn:asin:", StringComparison.InvariantCultureIgnoreCase)
+                && identifier.StartsWith("urn:asin:", StringComparison.OrdinalIgnoreCase)
                 && identifier.Length == 19)
             {
                 identifier = "ASIN: " + identifier[9..];
@@ -1097,14 +979,14 @@ namespace epub2cbz
             }
 
             if (!string.IsNullOrEmpty(identifier)
-                && !identifier.StartsWith("urn:uuid:", StringComparison.InvariantCultureIgnoreCase)
-                && !identifier.StartsWith("calibre:", StringComparison.InvariantCultureIgnoreCase))
+                && !identifier.StartsWith("urn:uuid:", StringComparison.OrdinalIgnoreCase)
+                && !identifier.StartsWith("calibre:", StringComparison.OrdinalIgnoreCase))
             {
                 return ReturnMetadataISBNCalculated(identifier);
             }
 
             string? source = xmlMetadata.Descendants(dc + "source").FirstOrDefault()?.Value;
-            if (!string.IsNullOrEmpty(source) && source.StartsWith("urn:isbn:", StringComparison.InvariantCultureIgnoreCase))
+            if (!string.IsNullOrEmpty(source) && source.StartsWith("urn:isbn:", StringComparison.OrdinalIgnoreCase))
             {
                 return ReturnMetadataISBNCalculated(source);
             }
@@ -1366,7 +1248,7 @@ namespace epub2cbz
             if (coverId is not null) coverPath = (string)coverId.Attribute("href")!;
 
             if (!string.IsNullOrEmpty(coverPath) &&
-                imageExtensions.Any(ext => coverPath.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase)))
+                imageExtensions.Any(ext => coverPath.EndsWith(ext, StringComparison.OrdinalIgnoreCase)))
             {
                 string filename = ResolveRootPath(opfPath, coverPath);
 
@@ -1437,7 +1319,7 @@ namespace epub2cbz
                 {
                     ZipArchiveEntry bookEntry = entryMap.GetValueOrDefault(bookFull[i].Image)!;
                     using var stream = bookEntry.Open();
-                    if (imageExtensions.Any(ext => bookFull[i].Image.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase)))
+                    if (imageExtensions.Any(ext => bookFull[i].Image.EndsWith(ext, StringComparison.OrdinalIgnoreCase)))
                     {
                         (dimensionX, dimensionY) = GetImageDimensions(stream);
 
@@ -1542,7 +1424,7 @@ namespace epub2cbz
                 string fullEntryPathFirst = $"{currentChapterFolder}{baseFileNameFirst}";
 
                 if (!string.IsNullOrEmpty(bookFull[i].Image) &&
-                    imageExtensions.Any(ext => bookFull[i].Image.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase)))
+                    imageExtensions.Any(ext => bookFull[i].Image.EndsWith(ext, StringComparison.OrdinalIgnoreCase)))
                 {
                     ZipArchiveEntry bookEntry = entryMap.GetValueOrDefault(bookFull[i].Image)!;
                     bool isDoublePage = doSplit && i > 0 && bookFull[i].Doublepage == true;
@@ -1715,7 +1597,7 @@ namespace epub2cbz
                     XNamespace xhtml = "http://www.w3.org/1999/xhtml";
                     XNamespace ncx = "http://www.daisy.org/z3986/2005/ncx/";
 
-                    if (navPath.EndsWith(".xhtml", StringComparison.InvariantCultureIgnoreCase))
+                    if (navPath.EndsWith(".xhtml", StringComparison.OrdinalIgnoreCase))
                     {
                         var opfMetadata = tocDoc.Descendants(xhtml + "nav")
                             .FirstOrDefault(i => (string?)i.Attribute(ops + "type") == "toc")?
@@ -1739,7 +1621,7 @@ namespace epub2cbz
                             }
                         }
                     }
-                    else if (navPath.EndsWith(".ncx", StringComparison.InvariantCultureIgnoreCase))
+                    else if (navPath.EndsWith(".ncx", StringComparison.OrdinalIgnoreCase))
                     {
                         foreach (var navPoint in tocDoc.Descendants(ncx + "navPoint"))
                         {
@@ -1780,117 +1662,90 @@ namespace epub2cbz
             return chapters;
         }
 
+        private static bool TryExtractUrl(string? value, out string path)
+        {
+            path = string.Empty;
+            if (!string.IsNullOrWhiteSpace(value) &&
+                value.StartsWith("url(", StringComparison.OrdinalIgnoreCase) &&
+                value.EndsWith(")", StringComparison.OrdinalIgnoreCase))
+            {
+                path = value[4..^1].Trim('\'', '\"');
+                return true;
+            }
+            return false;
+        }
+
         private static string FindImagePathInCss(Dictionary<string, ZipArchiveEntry> entryMap,
-            string cssPath,
+            Stylesheet? stylesheet,
             string xhtmlPage)
         {
-            string imagePath = string.Empty;
+            if (stylesheet is null) return string.Empty;
 
             if (string.IsNullOrEmpty(xhtmlPage)) return string.Empty;
 
-            if (xhtmlPage.EndsWith(".xhtml", StringComparison.InvariantCultureIgnoreCase) ||
-                xhtmlPage.EndsWith(".html", StringComparison.InvariantCultureIgnoreCase) ||
-                xhtmlPage.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))
+            if (!xhtmlPage.EndsWith(".xhtml", StringComparison.OrdinalIgnoreCase) &&
+                !xhtmlPage.EndsWith(".html", StringComparison.OrdinalIgnoreCase) &&
+                !xhtmlPage.EndsWith(".xml", StringComparison.OrdinalIgnoreCase))
             {
-                if (!entryMap.TryGetValue(xhtmlPage, out var xhtmlSource))
+                return string.Empty;
+            }
+
+            if (!entryMap.TryGetValue(xhtmlPage, out var xhtmlSource))
+            {
+                return string.Empty;
+            }
+
+            using StreamReader xhtmlReader = new(xhtmlSource.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+            string xhtmlFileContent = xhtmlReader.ReadToEnd();
+
+            XDocument fileDoc;
+            try
+            {
+                fileDoc = XDocument.Parse(xhtmlFileContent);
+            }
+            catch
+            {
+                return string.Empty;
+            }
+
+            XNamespace ns = fileDoc.Root!.Name.Namespace;
+
+            var divInfo = fileDoc.Descendants(ns + "body").Descendants(ns + "div").FirstOrDefault();
+            var divId = divInfo?.Attribute("id");
+            var divClass = divInfo?.Attribute("class");
+
+            if (divId is not null && !string.IsNullOrWhiteSpace(divId.Value))
+            {
+                string selector = "#" + divId.Value;
+                var rule = stylesheet.StyleRules.FirstOrDefault(r => r.SelectorText == selector);
+
+                if (TryExtractUrl(rule?.Style?.BackgroundImage, out var extractedPath))
                 {
-                    return string.Empty;
+                    return extractedPath;
                 }
+            }
 
-                using StreamReader xhtmlReader = new(xhtmlSource.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
-                string xhtmlFileContent = xhtmlReader.ReadToEnd();
+            if (divClass is not null && !string.IsNullOrWhiteSpace(divClass.Value))
+            {
+                string[] classNames = divClass.Value.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-                if (!entryMap.TryGetValue(cssPath, out var cssSource))
+                foreach (var className in classNames)
                 {
-                    return string.Empty;
-                }
-
-                using StreamReader reader = new(cssSource.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
-                string fileContent = reader.ReadToEnd();
-
-                var parser = new StylesheetParser();
-                var stylesheet = parser.Parse(fileContent);
-
-                XDocument fileDoc;
-                try
-                {
-                    fileDoc = XDocument.Parse(xhtmlFileContent);
-                }
-                catch
-                {
-                    return string.Empty;
-                }
-
-                XNamespace ns = fileDoc.Root!.Name.Namespace;
-
-                var divInfo = fileDoc.Descendants(ns + "body").Descendants(ns + "div").FirstOrDefault();
-                var divId = divInfo?.Attribute("id");
-                var divClass = divInfo?.Attribute("class");
-
-                if (divId is not null && !string.IsNullOrWhiteSpace(divId.Value))
-                {
-                    string selector = "#" + divId.Value;
-                    var rule = stylesheet.StyleRules.FirstOrDefault(r => r.SelectorText.ToString() == selector);
-
-                    if (rule is not null)
+                    var rule = stylesheet.StyleRules.FirstOrDefault(r => r.SelectorText == $"div.{className}");
+                    if (TryExtractUrl(rule?.Style?.BackgroundImage, out var extractedPathDiv))
                     {
-                        string backgroundImageValue = rule.Style.BackgroundImage.ToString();
-
-                        if (!string.IsNullOrWhiteSpace(backgroundImageValue)
-                            && backgroundImageValue.StartsWith("url(", StringComparison.InvariantCultureIgnoreCase)
-                            && backgroundImageValue.EndsWith(")", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            string innerValue = backgroundImageValue[4..^1];
-                            imagePath = innerValue.Trim('\'', '\"');
-                        }
+                        return extractedPathDiv;
                     }
-                }
 
-                if (string.IsNullOrEmpty(imagePath)
-                    && divClass is not null && !string.IsNullOrWhiteSpace(divClass.Value))
-                {
-                    string[] classNames = divClass.Value.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-
-                    foreach (var className in classNames)
+                    rule = stylesheet.StyleRules.FirstOrDefault(r => r.SelectorText == $".{className}");
+                    if (TryExtractUrl(rule?.Style?.BackgroundImage, out var extractedPath))
                     {
-                        var rule = stylesheet.StyleRules.FirstOrDefault(r => r.SelectorText.ToString() == $"div.{className}");
-
-                        if (rule is not null)
-                        {
-                            string backgroundImageValue = rule.Style.BackgroundImage.ToString();
-
-                            if (!string.IsNullOrWhiteSpace(backgroundImageValue)
-                                && backgroundImageValue.StartsWith("url(", StringComparison.InvariantCultureIgnoreCase)
-                                && backgroundImageValue.EndsWith(")", StringComparison.InvariantCultureIgnoreCase))
-                            {
-                                string innerValue = backgroundImageValue[4..^1];
-                                imagePath = innerValue.Trim('\'', '\"');
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            rule = stylesheet.StyleRules.FirstOrDefault(r => r.SelectorText.ToString() == $".{className}");
-
-                            if (rule is not null)
-                            {
-                                string backgroundImageValue = rule.Style.BackgroundImage.ToString();
-
-                                if (!string.IsNullOrWhiteSpace(backgroundImageValue)
-                                    && backgroundImageValue.StartsWith("url(", StringComparison.InvariantCultureIgnoreCase)
-                                    && backgroundImageValue.EndsWith(")", StringComparison.InvariantCultureIgnoreCase))
-                                {
-                                    string innerValue = backgroundImageValue[4..^1];
-                                    imagePath = innerValue.Trim('\'', '\"');
-                                    break;
-                                }
-                            }
-                        }
+                        return extractedPath;
                     }
                 }
             }
 
-            return imagePath;
+            return string.Empty;
         }
 
         private static string? FindImagePathInFile(Dictionary<string, ZipArchiveEntry> entryMap,
@@ -1901,9 +1756,9 @@ namespace epub2cbz
 
             if (string.IsNullOrEmpty(actualFilename)) return string.Empty;
 
-            if (actualFilename.EndsWith(".xhtml", StringComparison.InvariantCultureIgnoreCase) ||
-                actualFilename.EndsWith(".html", StringComparison.InvariantCultureIgnoreCase) ||
-                actualFilename.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))
+            if (actualFilename.EndsWith(".xhtml", StringComparison.OrdinalIgnoreCase) ||
+                actualFilename.EndsWith(".html", StringComparison.OrdinalIgnoreCase) ||
+                actualFilename.EndsWith(".xml", StringComparison.OrdinalIgnoreCase))
             {
                 if (!entryMap.TryGetValue(actualFilename, out var fileEntry))
                 {
@@ -1976,7 +1831,7 @@ namespace epub2cbz
                 }
                 else imagePath = itemSrc;
             }
-            else if (imageExtensions.Any(ext => actualFilename.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase)))
+            else if (imageExtensions.Any(ext => actualFilename.EndsWith(ext, StringComparison.OrdinalIgnoreCase)))
             {
                 imagePath = actualFilename;
             }
@@ -2005,7 +1860,7 @@ namespace epub2cbz
 
         private static (string seriesName, string volumeNumber, string isVolumeOrChapter) GetVolumeAndChapterNumber(string epubFilename)
         {
-            int vIndex = epubFilename.LastIndexOf("v", StringComparison.InvariantCultureIgnoreCase);
+            int vIndex = epubFilename.LastIndexOf("v", StringComparison.OrdinalIgnoreCase);
             if (vIndex > 0
                 && vIndex + 1 < epubFilename.Length
                 && epubFilename[vIndex - 1] == ' ')
@@ -2016,7 +1871,7 @@ namespace epub2cbz
                 }
             }
 
-            int cIndex = epubFilename.LastIndexOf("c", StringComparison.InvariantCultureIgnoreCase);
+            int cIndex = epubFilename.LastIndexOf("c", StringComparison.OrdinalIgnoreCase);
             if (cIndex > 0
                 && cIndex + 1 < epubFilename.Length
                 && epubFilename[cIndex - 1] == ' ')
@@ -2295,18 +2150,29 @@ namespace epub2cbz
             else throw new Exception(Resources.OPFFileNotFound);
         }
 
-        private static string GetCssFile(string opfPath,
-            XDocument opfDoc)
+        private static (string, Stylesheet?) GetCssFile(string opfPath,
+            XDocument opfDoc,
+            Dictionary<string, ZipArchiveEntry> entryMap)
         {
             XNamespace opf = "http://www.idpf.org/2007/opf";
 
             var item = opfDoc.Descendants(opf + "manifest").Descendants(opf + "item").FirstOrDefault(i => (string)i.Attribute("media-type")! == "text/css");
-            if (item is not null)
+            if (item is null) return (string.Empty, null);
+
+            string cssPath = ResolveRootPath(opfPath, (string)item.Attribute("href")!);
+
+            if (!entryMap.TryGetValue(cssPath, out var cssSource))
             {
-                opfPath = ResolveRootPath(opfPath, (string)item.Attribute("href")!);
+                return (string.Empty, null);
             }
 
-            return opfPath;
+            using StreamReader reader = new(cssSource.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+            string fileContent = reader.ReadToEnd();
+
+            var parser = new StylesheetParser();
+            var stylesheet = parser.Parse(fileContent);
+
+            return (cssPath, stylesheet);
         }
 
         private static List<string> GetNcxFile(XDocument opfDoc,
@@ -2527,7 +2393,7 @@ namespace epub2cbz
                 HashSet<string> imageExtensionsSimple = [".jpeg", ".jpg", ".png", ".webp", ".svg", ".gif"];
                 foreach (KeyValuePair<string, ZipArchiveEntry> pair in entryMap)
                 {
-                    if (imageExtensionsSimple.Any(suffix => pair.Key.EndsWith(suffix, StringComparison.InvariantCultureIgnoreCase)))
+                    if (imageExtensionsSimple.Any(suffix => pair.Key.EndsWith(suffix, StringComparison.OrdinalIgnoreCase)))
                     {
                         entryKeysNew.Add(pair.Key, pair.Value);
                     }
