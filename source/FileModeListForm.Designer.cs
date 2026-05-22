@@ -33,8 +33,8 @@
             toolStripMenuItemDelete = new ToolStripMenuItem();
             buttonFileModeClear = new Button();
             dataGridViewFileModeList = new DataGridView();
-            buttonFileListOK = new Button();
             ColumnFileNames = new DataGridViewTextBoxColumn();
+            buttonFileListOK = new Button();
             contextMenuStripListView.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewFileModeList).BeginInit();
             SuspendLayout();
@@ -55,6 +55,8 @@
             // 
             // buttonFileModeClear
             // 
+            buttonFileModeClear.FlatAppearance.BorderColor = Color.DimGray;
+            buttonFileModeClear.FlatStyle = FlatStyle.Flat;
             buttonFileModeClear.Location = new Point(12, 12);
             buttonFileModeClear.Name = "buttonFileModeClear";
             buttonFileModeClear.Size = new Size(75, 23);
@@ -84,9 +86,18 @@
             dataGridViewFileModeList.UserDeletingRow += DataGridViewFileModeList_UserDeletingRow;
             dataGridViewFileModeList.MouseClick += DataGridViewFileModeList_MouseClick;
             // 
+            // ColumnFileNames
+            // 
+            ColumnFileNames.DataPropertyName = "ColumnFileNames";
+            ColumnFileNames.HeaderText = "File Name";
+            ColumnFileNames.Name = "ColumnFileNames";
+            ColumnFileNames.ReadOnly = true;
+            // 
             // buttonFileListOK
             // 
             buttonFileListOK.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            buttonFileListOK.FlatAppearance.BorderColor = Color.DimGray;
+            buttonFileListOK.FlatStyle = FlatStyle.Flat;
             buttonFileListOK.Location = new Point(569, 12);
             buttonFileListOK.Name = "buttonFileListOK";
             buttonFileListOK.Size = new Size(75, 23);
@@ -94,13 +105,6 @@
             buttonFileListOK.Text = "OK";
             buttonFileListOK.UseVisualStyleBackColor = true;
             buttonFileListOK.Click += ButtonFileListOK_Click;
-            // 
-            // ColumnFileNames
-            // 
-            ColumnFileNames.DataPropertyName = "ColumnFileNames";
-            ColumnFileNames.HeaderText = "File Name";
-            ColumnFileNames.Name = "ColumnFileNames";
-            ColumnFileNames.ReadOnly = true;
             // 
             // FileModeListForm
             // 

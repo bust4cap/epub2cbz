@@ -43,12 +43,12 @@
             tableLayoutPanelComicInfo = new TableLayoutPanel();
             checkBoxSettingsComicInfoReadingDirection = new CheckBox();
             checkBoxSettingsComicInfoTranslators = new CheckBox();
-            checkBoxSettingsComicInfoImageSize = new CheckBox();
             checkBoxSettingsComicInfoIsbnAsin = new CheckBox();
             checkBoxSettingsComicInfoProducers = new CheckBox();
-            checkBoxSettingsComicInfoChapters = new CheckBox();
             checkBoxSettingsComicInfoPageCount = new CheckBox();
             checkBoxSettingsComicInfoFileSize = new CheckBox();
+            checkBoxSettingsComicInfoChapters = new CheckBox();
+            checkBoxSettingsComicInfoImageSize = new CheckBox();
             groupBoxExperimental = new GroupBox();
             tableLayoutPanelExperimental = new TableLayoutPanel();
             checkBoxSettingsExperimentalSpreadInsertBlank = new CheckBox();
@@ -105,7 +105,7 @@
             tableLayoutPanelSettingsCenter = new TableLayoutPanel();
             panelSettingsCbzZip = new Panel();
             tableLayoutPanelSettingsBottom = new TableLayoutPanel();
-            tableLayoutPanel1 = new TableLayoutPanel();
+            tableLayoutPanelSettingsTop = new TableLayoutPanel();
             groupBoxComicInfo.SuspendLayout();
             tableLayoutPanelComicInfo.SuspendLayout();
             groupBoxExperimental.SuspendLayout();
@@ -127,12 +127,14 @@
             tableLayoutPanelSettingsCenter.SuspendLayout();
             panelSettingsCbzZip.SuspendLayout();
             tableLayoutPanelSettingsBottom.SuspendLayout();
-            tableLayoutPanel1.SuspendLayout();
+            tableLayoutPanelSettingsTop.SuspendLayout();
             SuspendLayout();
             // 
             // buttonSettingsOK
             // 
             buttonSettingsOK.Anchor = AnchorStyles.None;
+            buttonSettingsOK.FlatAppearance.BorderColor = Color.DimGray;
+            buttonSettingsOK.FlatStyle = FlatStyle.Flat;
             buttonSettingsOK.Location = new Point(474, 3);
             buttonSettingsOK.Margin = new Padding(2, 1, 2, 1);
             buttonSettingsOK.Name = "buttonSettingsOK";
@@ -145,10 +147,12 @@
             // buttonSettingsCancel
             // 
             buttonSettingsCancel.Anchor = AnchorStyles.None;
-            buttonSettingsCancel.Location = new Point(395, 3);
+            buttonSettingsCancel.FlatAppearance.BorderColor = Color.DimGray;
+            buttonSettingsCancel.FlatStyle = FlatStyle.Flat;
+            buttonSettingsCancel.Location = new Point(393, 3);
             buttonSettingsCancel.Margin = new Padding(2, 1, 2, 1);
             buttonSettingsCancel.Name = "buttonSettingsCancel";
-            buttonSettingsCancel.Size = new Size(75, 25);
+            buttonSettingsCancel.Size = new Size(77, 25);
             buttonSettingsCancel.TabIndex = 201;
             buttonSettingsCancel.Text = "Cancel";
             buttonSettingsCancel.UseVisualStyleBackColor = true;
@@ -325,18 +329,6 @@
             checkBoxSettingsComicInfoTranslators.Text = "Translators";
             checkBoxSettingsComicInfoTranslators.UseVisualStyleBackColor = false;
             // 
-            // checkBoxSettingsComicInfoImageSize
-            // 
-            checkBoxSettingsComicInfoImageSize.Anchor = AnchorStyles.Left;
-            checkBoxSettingsComicInfoImageSize.AutoSize = true;
-            checkBoxSettingsComicInfoImageSize.Location = new Point(404, 67);
-            checkBoxSettingsComicInfoImageSize.Margin = new Padding(2, 1, 2, 1);
-            checkBoxSettingsComicInfoImageSize.Name = "checkBoxSettingsComicInfoImageSize";
-            checkBoxSettingsComicInfoImageSize.Size = new Size(82, 19);
-            checkBoxSettingsComicInfoImageSize.TabIndex = 16;
-            checkBoxSettingsComicInfoImageSize.Text = "Resolution";
-            checkBoxSettingsComicInfoImageSize.UseVisualStyleBackColor = false;
-            // 
             // checkBoxSettingsComicInfoIsbnAsin
             // 
             checkBoxSettingsComicInfoIsbnAsin.Anchor = AnchorStyles.Left;
@@ -361,18 +353,6 @@
             checkBoxSettingsComicInfoProducers.Text = "Producers";
             checkBoxSettingsComicInfoProducers.UseVisualStyleBackColor = false;
             // 
-            // checkBoxSettingsComicInfoChapters
-            // 
-            checkBoxSettingsComicInfoChapters.Anchor = AnchorStyles.Left;
-            checkBoxSettingsComicInfoChapters.AutoSize = true;
-            checkBoxSettingsComicInfoChapters.Location = new Point(271, 67);
-            checkBoxSettingsComicInfoChapters.Margin = new Padding(2, 1, 2, 1);
-            checkBoxSettingsComicInfoChapters.Name = "checkBoxSettingsComicInfoChapters";
-            checkBoxSettingsComicInfoChapters.Size = new Size(73, 19);
-            checkBoxSettingsComicInfoChapters.TabIndex = 15;
-            checkBoxSettingsComicInfoChapters.Text = "Chapters";
-            checkBoxSettingsComicInfoChapters.UseVisualStyleBackColor = false;
-            // 
             // checkBoxSettingsComicInfoPageCount
             // 
             checkBoxSettingsComicInfoPageCount.Anchor = AnchorStyles.Left;
@@ -396,6 +376,30 @@
             checkBoxSettingsComicInfoFileSize.TabIndex = 14;
             checkBoxSettingsComicInfoFileSize.Text = "File Size";
             checkBoxSettingsComicInfoFileSize.UseVisualStyleBackColor = false;
+            // 
+            // checkBoxSettingsComicInfoChapters
+            // 
+            checkBoxSettingsComicInfoChapters.Anchor = AnchorStyles.Left;
+            checkBoxSettingsComicInfoChapters.AutoSize = true;
+            checkBoxSettingsComicInfoChapters.Location = new Point(271, 67);
+            checkBoxSettingsComicInfoChapters.Margin = new Padding(2, 1, 2, 1);
+            checkBoxSettingsComicInfoChapters.Name = "checkBoxSettingsComicInfoChapters";
+            checkBoxSettingsComicInfoChapters.Size = new Size(73, 19);
+            checkBoxSettingsComicInfoChapters.TabIndex = 15;
+            checkBoxSettingsComicInfoChapters.Text = "Chapters";
+            checkBoxSettingsComicInfoChapters.UseVisualStyleBackColor = false;
+            // 
+            // checkBoxSettingsComicInfoImageSize
+            // 
+            checkBoxSettingsComicInfoImageSize.Anchor = AnchorStyles.Left;
+            checkBoxSettingsComicInfoImageSize.AutoSize = true;
+            checkBoxSettingsComicInfoImageSize.Location = new Point(404, 67);
+            checkBoxSettingsComicInfoImageSize.Margin = new Padding(2, 1, 2, 1);
+            checkBoxSettingsComicInfoImageSize.Name = "checkBoxSettingsComicInfoImageSize";
+            checkBoxSettingsComicInfoImageSize.Size = new Size(82, 19);
+            checkBoxSettingsComicInfoImageSize.TabIndex = 16;
+            checkBoxSettingsComicInfoImageSize.Text = "Resolution";
+            checkBoxSettingsComicInfoImageSize.UseVisualStyleBackColor = false;
             // 
             // groupBoxExperimental
             // 
@@ -655,6 +659,7 @@
             // 
             dropDownCompressionLevel.Dock = DockStyle.Fill;
             dropDownCompressionLevel.DropDownStyle = ComboBoxStyle.DropDownList;
+            dropDownCompressionLevel.FlatStyle = FlatStyle.Flat;
             dropDownCompressionLevel.FormattingEnabled = true;
             dropDownCompressionLevel.Items.AddRange(new object[] { "No Compression", "Fastest", "Optimal", "Smallest Size" });
             dropDownCompressionLevel.Location = new Point(3, 19);
@@ -695,6 +700,7 @@
             // 
             dropDownThreads.Dock = DockStyle.Fill;
             dropDownThreads.DropDownStyle = ComboBoxStyle.DropDownList;
+            dropDownThreads.FlatStyle = FlatStyle.Flat;
             dropDownThreads.FormattingEnabled = true;
             dropDownThreads.Location = new Point(3, 19);
             dropDownThreads.Name = "dropDownThreads";
@@ -704,6 +710,8 @@
             // buttonSettingsCheckForUpdate
             // 
             buttonSettingsCheckForUpdate.Anchor = AnchorStyles.None;
+            buttonSettingsCheckForUpdate.FlatAppearance.BorderColor = Color.DimGray;
+            buttonSettingsCheckForUpdate.FlatStyle = FlatStyle.Flat;
             buttonSettingsCheckForUpdate.Location = new Point(3, 3);
             buttonSettingsCheckForUpdate.Name = "buttonSettingsCheckForUpdate";
             buttonSettingsCheckForUpdate.Size = new Size(81, 25);
@@ -715,7 +723,9 @@
             // buttonSettingsResetToDefault
             // 
             buttonSettingsResetToDefault.Anchor = AnchorStyles.None;
-            buttonSettingsResetToDefault.Location = new Point(193, 3);
+            buttonSettingsResetToDefault.FlatAppearance.BorderColor = Color.DimGray;
+            buttonSettingsResetToDefault.FlatStyle = FlatStyle.Flat;
+            buttonSettingsResetToDefault.Location = new Point(192, 3);
             buttonSettingsResetToDefault.Name = "buttonSettingsResetToDefault";
             buttonSettingsResetToDefault.Size = new Size(93, 25);
             buttonSettingsResetToDefault.TabIndex = 151;
@@ -811,6 +821,7 @@
             // 
             dropDownKindle.Anchor = AnchorStyles.None;
             dropDownKindle.DropDownStyle = ComboBoxStyle.DropDownList;
+            dropDownKindle.FlatStyle = FlatStyle.Flat;
             dropDownKindle.FormattingEnabled = true;
             dropDownKindle.Location = new Point(107, 3);
             dropDownKindle.Name = "dropDownKindle";
@@ -846,6 +857,7 @@
             // 
             dropDownKobo.Anchor = AnchorStyles.None;
             dropDownKobo.DropDownStyle = ComboBoxStyle.DropDownList;
+            dropDownKobo.FlatStyle = FlatStyle.Flat;
             dropDownKobo.FormattingEnabled = true;
             dropDownKobo.Location = new Point(107, 3);
             dropDownKobo.Name = "dropDownKobo";
@@ -1061,7 +1073,7 @@
             tableLayoutPanelSettings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanelSettings.Controls.Add(tableLayoutPanelSettingsCenter, 0, 1);
             tableLayoutPanelSettings.Controls.Add(tableLayoutPanelSettingsBottom, 0, 2);
-            tableLayoutPanelSettings.Controls.Add(tableLayoutPanel1, 0, 0);
+            tableLayoutPanelSettings.Controls.Add(tableLayoutPanelSettingsTop, 0, 0);
             tableLayoutPanelSettings.Dock = DockStyle.Fill;
             tableLayoutPanelSettings.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
             tableLayoutPanelSettings.Location = new Point(0, 0);
@@ -1092,7 +1104,7 @@
             tableLayoutPanelSettingsCenter.RowCount = 1;
             tableLayoutPanelSettingsCenter.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanelSettingsCenter.Size = new Size(553, 56);
-            tableLayoutPanelSettingsCenter.TabIndex = 1;
+            tableLayoutPanelSettingsCenter.TabIndex = 50;
             // 
             // panelSettingsCbzZip
             // 
@@ -1126,29 +1138,29 @@
             tableLayoutPanelSettingsBottom.RowCount = 1;
             tableLayoutPanelSettingsBottom.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanelSettingsBottom.Size = new Size(553, 32);
-            tableLayoutPanelSettingsBottom.TabIndex = 2;
+            tableLayoutPanelSettingsBottom.TabIndex = 120;
             // 
-            // tableLayoutPanel1
+            // tableLayoutPanelSettingsTop
             // 
-            tableLayoutPanel1.AutoSize = true;
-            tableLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            tableLayoutPanel1.ColumnCount = 1;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Controls.Add(groupBoxCropping, 0, 3);
-            tableLayoutPanel1.Controls.Add(groupBoxResizing, 0, 2);
-            tableLayoutPanel1.Controls.Add(groupBoxExperimental, 0, 1);
-            tableLayoutPanel1.Controls.Add(groupBoxComicInfo, 0, 0);
-            tableLayoutPanel1.Dock = DockStyle.Fill;
-            tableLayoutPanel1.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
-            tableLayoutPanel1.Location = new Point(6, 6);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 4;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle());
-            tableLayoutPanel1.RowStyles.Add(new RowStyle());
-            tableLayoutPanel1.RowStyles.Add(new RowStyle());
-            tableLayoutPanel1.RowStyles.Add(new RowStyle());
-            tableLayoutPanel1.Size = new Size(553, 520);
-            tableLayoutPanel1.TabIndex = 3;
+            tableLayoutPanelSettingsTop.AutoSize = true;
+            tableLayoutPanelSettingsTop.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            tableLayoutPanelSettingsTop.ColumnCount = 1;
+            tableLayoutPanelSettingsTop.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanelSettingsTop.Controls.Add(groupBoxCropping, 0, 3);
+            tableLayoutPanelSettingsTop.Controls.Add(groupBoxResizing, 0, 2);
+            tableLayoutPanelSettingsTop.Controls.Add(groupBoxExperimental, 0, 1);
+            tableLayoutPanelSettingsTop.Controls.Add(groupBoxComicInfo, 0, 0);
+            tableLayoutPanelSettingsTop.Dock = DockStyle.Fill;
+            tableLayoutPanelSettingsTop.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
+            tableLayoutPanelSettingsTop.Location = new Point(6, 6);
+            tableLayoutPanelSettingsTop.Name = "tableLayoutPanelSettingsTop";
+            tableLayoutPanelSettingsTop.RowCount = 4;
+            tableLayoutPanelSettingsTop.RowStyles.Add(new RowStyle());
+            tableLayoutPanelSettingsTop.RowStyles.Add(new RowStyle());
+            tableLayoutPanelSettingsTop.RowStyles.Add(new RowStyle());
+            tableLayoutPanelSettingsTop.RowStyles.Add(new RowStyle());
+            tableLayoutPanelSettingsTop.Size = new Size(553, 520);
+            tableLayoutPanelSettingsTop.TabIndex = 1;
             // 
             // PopupSettings
             // 
@@ -1209,8 +1221,8 @@
             panelSettingsCbzZip.ResumeLayout(false);
             panelSettingsCbzZip.PerformLayout();
             tableLayoutPanelSettingsBottom.ResumeLayout(false);
-            tableLayoutPanel1.ResumeLayout(false);
-            tableLayoutPanel1.PerformLayout();
+            tableLayoutPanelSettingsTop.ResumeLayout(false);
+            tableLayoutPanelSettingsTop.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1289,7 +1301,7 @@
         private TableLayoutPanel tableLayoutPanelSettingsCenter;
         private TableLayoutPanel tableLayoutPanelSettingsBottom;
         private Panel panelSettingsCbzZip;
-        private TableLayoutPanel tableLayoutPanel1;
+        private TableLayoutPanel tableLayoutPanelSettingsTop;
         private CheckBox checkBoxSettingsExperimentalRemoveFirstPage;
         private CheckBox checkBoxSettingsExperimentalOffsetChapters;
         private CheckBox checkBoxSettingsComicInfoFileSize;

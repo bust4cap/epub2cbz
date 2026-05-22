@@ -39,6 +39,8 @@
             // 
             // buttonUpdateOK
             // 
+            buttonUpdateOK.FlatAppearance.BorderColor = Color.DimGray;
+            buttonUpdateOK.FlatStyle = FlatStyle.Flat;
             buttonUpdateOK.Location = new Point(152, 185);
             buttonUpdateOK.Name = "buttonUpdateOK";
             buttonUpdateOK.Size = new Size(81, 25);
@@ -88,7 +90,7 @@
             linkLabelUpdate.AutoSize = true;
             linkLabelUpdate.Location = new Point(69, 143);
             linkLabelUpdate.Name = "linkLabelUpdate";
-            linkLabelUpdate.Size = new Size(240, 15);
+            linkLabelUpdate.Size = new Size(218, 15);
             linkLabelUpdate.TabIndex = 5;
             linkLabelUpdate.TabStop = true;
             linkLabelUpdate.Text = "https://github.com/bust4cap/epub2cbz";

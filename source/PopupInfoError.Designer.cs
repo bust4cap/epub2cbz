@@ -57,6 +57,8 @@
             // buttonOK
             // 
             buttonOK.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            buttonOK.FlatAppearance.BorderColor = Color.DimGray;
+            buttonOK.FlatStyle = FlatStyle.Flat;
             buttonOK.Location = new Point(295, 143);
             buttonOK.Name = "buttonOK";
             buttonOK.Size = new Size(81, 25);
@@ -68,6 +70,8 @@
             // buttonCancel
             // 
             buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            buttonCancel.FlatAppearance.BorderColor = Color.DimGray;
+            buttonCancel.FlatStyle = FlatStyle.Flat;
             buttonCancel.Location = new Point(208, 143);
             buttonCancel.Name = "buttonCancel";
             buttonCancel.Size = new Size(81, 25);

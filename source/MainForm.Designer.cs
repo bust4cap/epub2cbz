@@ -57,6 +57,8 @@ partial class MainForm
         // 
         buttonPath.BackgroundImage = Resources.input_folder;
         buttonPath.BackgroundImageLayout = ImageLayout.Zoom;
+        buttonPath.FlatAppearance.BorderColor = Color.DimGray;
+        buttonPath.FlatStyle = FlatStyle.Flat;
         buttonPath.Location = new Point(12, 38);
         buttonPath.Margin = new Padding(2, 1, 2, 1);
         buttonPath.Name = "buttonPath";
@@ -70,11 +72,13 @@ partial class MainForm
         buttonOpenSettings.Anchor = AnchorStyles.Top | AnchorStyles.Right;
         buttonOpenSettings.BackgroundImage = Resources.cogwheel;
         buttonOpenSettings.BackgroundImageLayout = ImageLayout.Zoom;
+        buttonOpenSettings.FlatAppearance.BorderColor = Color.DimGray;
+        buttonOpenSettings.FlatStyle = FlatStyle.Flat;
         buttonOpenSettings.Location = new Point(439, 10);
         buttonOpenSettings.Margin = new Padding(2, 1, 2, 1);
         buttonOpenSettings.Name = "buttonOpenSettings";
         buttonOpenSettings.Size = new Size(25, 25);
-        buttonOpenSettings.TabIndex = 4;
+        buttonOpenSettings.TabIndex = 5;
         toolTip.SetToolTip(buttonOpenSettings, "Settings");
         buttonOpenSettings.UseVisualStyleBackColor = true;
         buttonOpenSettings.Click += BtnOpenSettings_Click;
@@ -82,6 +86,8 @@ partial class MainForm
         // buttonStart
         // 
         buttonStart.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        buttonStart.FlatAppearance.BorderColor = Color.DimGray;
+        buttonStart.FlatStyle = FlatStyle.Flat;
         buttonStart.Location = new Point(570, 10);
         buttonStart.Margin = new Padding(2, 1, 2, 1);
         buttonStart.Name = "buttonStart";
@@ -100,7 +106,7 @@ partial class MainForm
         checkBoxComicInfo.Margin = new Padding(2, 1, 2, 1);
         checkBoxComicInfo.Name = "checkBoxComicInfo";
         checkBoxComicInfo.Size = new Size(141, 19);
-        checkBoxComicInfo.TabIndex = 2;
+        checkBoxComicInfo.TabIndex = 3;
         checkBoxComicInfo.Text = Resources.ComicInfoCheckboxText;
         checkBoxComicInfo.UseVisualStyleBackColor = true;
         checkBoxComicInfo.CheckedChanged += CheckBoxComicInfo_CheckedChanged;
@@ -114,7 +120,7 @@ partial class MainForm
         checkBoxImages.Margin = new Padding(2, 1, 2, 1);
         checkBoxImages.Name = "checkBoxImages";
         checkBoxImages.Size = new Size(102, 19);
-        checkBoxImages.TabIndex = 3;
+        checkBoxImages.TabIndex = 4;
         checkBoxImages.Text = Resources.ImagesCheckboxText;
         checkBoxImages.UseVisualStyleBackColor = true;
         checkBoxImages.CheckedChanged += CheckBoxImages_CheckedChanged;
@@ -140,22 +146,25 @@ partial class MainForm
         // 
         comboBoxLanguage.Anchor = AnchorStyles.Top | AnchorStyles.Right;
         comboBoxLanguage.DropDownStyle = ComboBoxStyle.DropDownList;
+        comboBoxLanguage.FlatStyle = FlatStyle.Flat;
         comboBoxLanguage.FormattingEnabled = true;
         comboBoxLanguage.Items.AddRange(new object[] { "English", "Deutsch", "日本語", "繁體中文", "简体中文" });
         comboBoxLanguage.Location = new Point(478, 12);
         comboBoxLanguage.Name = "comboBoxLanguage";
         comboBoxLanguage.RightToLeft = RightToLeft.No;
         comboBoxLanguage.Size = new Size(78, 23);
-        comboBoxLanguage.TabIndex = 5;
+        comboBoxLanguage.TabIndex = 6;
         comboBoxLanguage.SelectedIndexChanged += ComboBoxLanguage_SelectedIndexChanged;
         // 
         // buttonFileModeFileList
         // 
+        buttonFileModeFileList.FlatAppearance.BorderColor = Color.DimGray;
+        buttonFileModeFileList.FlatStyle = FlatStyle.Flat;
         buttonFileModeFileList.Location = new Point(41, 10);
         buttonFileModeFileList.Margin = new Padding(2, 1, 2, 1);
         buttonFileModeFileList.Name = "buttonFileModeFileList";
         buttonFileModeFileList.Size = new Size(74, 25);
-        buttonFileModeFileList.TabIndex = 11;
+        buttonFileModeFileList.TabIndex = 2;
         buttonFileModeFileList.Text = "File List";
         buttonFileModeFileList.UseVisualStyleBackColor = true;
         buttonFileModeFileList.Visible = false;
@@ -169,18 +178,20 @@ partial class MainForm
         textBoxPath.Name = "textBoxPath";
         textBoxPath.ReadOnly = true;
         textBoxPath.Size = new Size(575, 23);
-        textBoxPath.TabIndex = 99;
+        textBoxPath.TabIndex = 10;
         textBoxPath.TextChanged += TextBoxPath_TextChanged;
         // 
         // buttonPathClear
         // 
         buttonPathClear.BackgroundImage = Resources.empty;
         buttonPathClear.BackgroundImageLayout = ImageLayout.Zoom;
+        buttonPathClear.FlatAppearance.BorderColor = Color.DimGray;
+        buttonPathClear.FlatStyle = FlatStyle.Flat;
         buttonPathClear.Location = new Point(41, 38);
         buttonPathClear.Margin = new Padding(2, 1, 2, 1);
         buttonPathClear.Name = "buttonPathClear";
         buttonPathClear.Size = new Size(25, 25);
-        buttonPathClear.TabIndex = 11;
+        buttonPathClear.TabIndex = 9;
         buttonPathClear.UseVisualStyleBackColor = true;
         buttonPathClear.Click += ButtonPathClear_Click;
         // 
@@ -188,11 +199,13 @@ partial class MainForm
         // 
         buttonSwitchModes.BackgroundImage = Resources.arrows;
         buttonSwitchModes.BackgroundImageLayout = ImageLayout.Zoom;
+        buttonSwitchModes.FlatAppearance.BorderColor = Color.DimGray;
+        buttonSwitchModes.FlatStyle = FlatStyle.Flat;
         buttonSwitchModes.Location = new Point(12, 10);
         buttonSwitchModes.Margin = new Padding(2, 1, 2, 1);
         buttonSwitchModes.Name = "buttonSwitchModes";
         buttonSwitchModes.Size = new Size(25, 25);
-        buttonSwitchModes.TabIndex = 12;
+        buttonSwitchModes.TabIndex = 1;
         buttonSwitchModes.UseVisualStyleBackColor = true;
         buttonSwitchModes.Click += ButtonSwitchModes_Click;
         // 
