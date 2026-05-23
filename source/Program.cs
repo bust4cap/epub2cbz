@@ -2573,7 +2573,7 @@ namespace epub2cbz
                     FillBlankImageResolutions(width, height, bookFull);
                 }
 
-                //WriteComicInfoXml(targetCbz, epubFilename, readingDirection, bookFull, metadata);
+                WriteComicInfoXml(targetCbz, epubFilename, readingDirection, bookFull, metadata);
             }
 
             Interlocked.Increment(ref numberCurrentEpub);
