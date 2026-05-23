@@ -19,7 +19,6 @@ namespace epub2cbz
         public static class SettingStates
         {
             public static bool CheckboxComicInfoState { get; set; } = true;
-            public static bool CheckboxExtractImagesState { get; set; } = true;
 
             public static string InputFolderName { get; set; } = string.Empty;
             public static string OutputFolderName { get; set; } = string.Empty;
@@ -143,9 +142,6 @@ namespace epub2cbz
                     new XElement("setting",
                         new XAttribute("name", "CheckboxComicInfoState"),
                         new XElement("value", MainForm.FormElements.CheckboxComicInfoState.ToString())),
-                    new XElement("setting",
-                        new XAttribute("name", "CheckboxExtractImagesState"),
-                        new XElement("value", MainForm.FormElements.CheckboxExtractImagesState.ToString())),
                     new XElement("setting",
                         new XAttribute("name", "FolderName"),
                         new XElement("value", MainForm.FolderNameClass.InputFolderName ?? string.Empty)),
@@ -510,12 +506,6 @@ namespace epub2cbz
                         && bool.TryParse(valueCheckboxComicInfoState, out bool parsedValueCheckboxComicInfoState))
                     {
                         SettingStates.CheckboxComicInfoState = parsedValueCheckboxComicInfoState;
-                    }
-
-                    if (loadedSettings.TryGetValue("CheckboxExtractImagesState", out string? valueCheckboxExtractImagesState)
-                        && bool.TryParse(valueCheckboxExtractImagesState, out bool parsedValueCheckboxExtractImagesState))
-                    {
-                        SettingStates.CheckboxExtractImagesState = parsedValueCheckboxExtractImagesState;
                     }
 
                     if (string.IsNullOrEmpty(SettingStates.InputFolderName)

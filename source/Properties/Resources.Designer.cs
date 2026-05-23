@@ -366,24 +366,6 @@ namespace epub2cbz.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Use mangalist.txt ähnelt.
-        /// </summary>
-        internal static string MangalistCheckboxText {
-            get {
-                return ResourceManager.GetString("MangalistCheckboxText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Will only process EPUBs listed in a mangalist.txt file located in the selected folder. ähnelt.
-        /// </summary>
-        internal static string MangalistCheckboxTooltip {
-            get {
-                return ResourceManager.GetString("MangalistCheckboxTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Couldn&apos;t find a .ncx or .nav file in the .opf of {0} ähnelt.
         /// </summary>
         internal static string NcxOrNavNotInOpf {

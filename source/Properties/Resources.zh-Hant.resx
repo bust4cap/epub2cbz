@@ -138,9 +138,6 @@
   <data name="CbzAlreadyExists" xml:space="preserve">
     <value>已存在同名檔案。請刪除 「{0}」</value>
   </data>
-  <data name="ComicInfoCheckboxText" xml:space="preserve">
-    <value>建立 ComicInfo.xml</value>
-  </data>
   <data name="ConfirmationMessageBox" xml:space="preserve">
     <value>確認</value>
   </data>
@@ -191,12 +188,6 @@
   </data>
   <data name="IsDRMProtected" xml:space="preserve">
     <value>「{0}」 似乎受 DRM 保護。</value>
-  </data>
-  <data name="MangalistCheckboxText" xml:space="preserve">
-    <value>使用 mangalist.txt</value>
-  </data>
-  <data name="MangalistCheckboxTooltip" xml:space="preserve">
-    <value>只會處理所選文件夾中 mangalist.txt 檔案所列的 EPUB。</value>
   </data>
   <data name="NcxOrNavNotInOpf" xml:space="preserve">
     <value>在 {0} 的 .opf 中找不到 .ncx 或 .nav 檔案</value>
@@ -452,5 +443,8 @@
   </data>
   <data name="Timer" xml:space="preserve">
     <value>耗時：{0}分 {1}秒 {2}毫秒</value>
+  </data>
+  <data name="ComicInfoCheckboxText" xml:space="preserve">
+    <value>建立 ComicInfo.xml</value>
   </data>
 </root>

@@ -138,9 +138,6 @@
   <data name="CbzAlreadyExists" xml:space="preserve">
     <value>Eine Datei mit diesem Namen existiert bereits. Bitte lösche '{0}'</value>
   </data>
-  <data name="ComicInfoCheckboxText" xml:space="preserve">
-    <value>Erstelle ComicInfo.xml</value>
-  </data>
   <data name="ConfirmationMessageBox" xml:space="preserve">
     <value>Bestätigung</value>
   </data>
@@ -191,12 +188,6 @@
   </data>
   <data name="IsDRMProtected" xml:space="preserve">
     <value>'{0}' scheint DRM geschützt zu sein.</value>
-  </data>
-  <data name="MangalistCheckboxText" xml:space="preserve">
-    <value>Nutze mangalist.txt</value>
-  </data>
-  <data name="MangalistCheckboxTooltip" xml:space="preserve">
-    <value>Nur nach Epubs, die in einer mangalist.txt Datei im gewählten Ordner gelistet sind, suchen.</value>
   </data>
   <data name="NcxOrNavNotInOpf" xml:space="preserve">
     <value>Konnte keine .ncx oder .nav Datei in der .opf finden: {0}</value>
@@ -452,5 +443,8 @@
   </data>
   <data name="Timer" xml:space="preserve">
     <value>Timer: {0}m {1}s {2}ms</value>
+  </data>
+  <data name="ComicInfoCheckboxText" xml:space="preserve">
+    <value>Erstelle ComicInfo.xml</value>
   </data>
 </root>

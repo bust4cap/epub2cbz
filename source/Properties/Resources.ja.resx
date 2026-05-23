@@ -138,9 +138,6 @@
   <data name="CbzAlreadyExists" xml:space="preserve">
     <value>同じ名前のファイルがすでに存在します。「{0}」を削除してください</value>
   </data>
-  <data name="ComicInfoCheckboxText" xml:space="preserve">
-    <value>ComicInfo.xml を作成</value>
-  </data>
   <data name="ConfirmationMessageBox" xml:space="preserve">
     <value>確認</value>
   </data>
@@ -191,12 +188,6 @@
   </data>
   <data name="IsDRMProtected" xml:space="preserve">
     <value>「{0}」はDRMで保護されているようだ。</value>
-  </data>
-  <data name="MangalistCheckboxText" xml:space="preserve">
-    <value>mangalist.txt を使用</value>
-  </data>
-  <data name="MangalistCheckboxTooltip" xml:space="preserve">
-    <value>選択したフォルダー内の mangalist.txt に記載された EPUB ファイルのみが処理されます。</value>
   </data>
   <data name="NcxOrNavNotInOpf" xml:space="preserve">
     <value>{0} の .opf に .ncx または .nav ファイルが見つかりませんでした。</value>
@@ -452,5 +443,8 @@
   </data>
   <data name="Timer" xml:space="preserve">
     <value>タイマー： {0}min {1}s {2}ms</value>
+  </data>
+  <data name="ComicInfoCheckboxText" xml:space="preserve">
+    <value>ComicInfo.xml を作成</value>
   </data>
 </root>

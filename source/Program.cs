@@ -647,12 +647,7 @@ namespace epub2cbz
             string readingDirection)
         {
             bool isRtl = readingDirection == "YesAndRightToLeft";
-
-            string wrongPrevSingleSpread = isRtl ? "right" : "left";
-            string blankBeforeDoubleSpread = isRtl ? "page-spread-left" : "page-spread-right";
-
-            string wrongPrevDoubleSpread = isRtl ? "left" : "right";
-            string blankAfterDoubleSpread = isRtl ? "page-spread-right" : "page-spread-left";
+            bool expectedSideIsLeft = !isRtl;
 
             List<BookInfo.EpubPage> alignedPages = new(bookFull.Count)
             {
@@ -662,69 +657,40 @@ namespace epub2cbz
             for (int i = 1; i < bookFull.Count; i++)
             {
                 var current = bookFull[i];
-                var prev = alignedPages[^1];
-
                 bool insertBlank = false;
-                string blankSpread = string.Empty;
+                bool reqLeft = false;
+                bool reqRight = false;
 
-                if (current.Doublepage)
+                if (!string.IsNullOrEmpty(current.Spread))
                 {
-                    if (alignedPages.Count > 1 && !prev.Doublepage)
-                    {
-                        bool isPrevPrevDoubleOrFirst = alignedPages.Count == 2 || alignedPages[^2].Doublepage;
-
-                        if (prev.Spread.Contains(wrongPrevSingleSpread, StringComparison.OrdinalIgnoreCase))
-                        {
-                            insertBlank = true;
-                            blankSpread = blankBeforeDoubleSpread;
-                        }
-                        else if (string.IsNullOrEmpty(prev.Spread) && isPrevPrevDoubleOrFirst)
-                        {
-                            insertBlank = true;
-                            blankSpread = blankBeforeDoubleSpread;
-                        }
-                    }
+                    if (current.Spread.Contains("left", StringComparison.OrdinalIgnoreCase)) reqLeft = true;
+                    else if (current.Spread.Contains("right", StringComparison.OrdinalIgnoreCase)) reqRight = true;
                 }
-                else if (alignedPages.Count > 1)
-                {
-                    if (prev.Doublepage)
-                    {
-                        if (current.Spread.Contains(wrongPrevDoubleSpread, StringComparison.OrdinalIgnoreCase))
-                        {
-                            insertBlank = true;
-                            blankSpread = blankAfterDoubleSpread;
-                        }
-                    }
-                    else
-                    {
-                        bool prevIsLeft = prev.Spread.Contains("left", StringComparison.OrdinalIgnoreCase);
-                        bool currentIsLeft = current.Spread.Contains("left", StringComparison.OrdinalIgnoreCase);
-                        bool prevIsRight = prev.Spread.Contains("right", StringComparison.OrdinalIgnoreCase);
-                        bool currentIsRight = current.Spread.Contains("right", StringComparison.OrdinalIgnoreCase);
 
-                        if (prevIsLeft && currentIsLeft)
-                        {
-                            insertBlank = true;
-                            blankSpread = "page-spread-right";
-                        }
-                        else if (prevIsRight && currentIsRight)
-                        {
-                            insertBlank = true;
-                            blankSpread = "page-spread-left";
-                        }
-                    }
+                bool requiresLeft = reqLeft || (current.Doublepage && !isRtl);  // ltr doublepage needs to start on the left
+                bool requiresRight = reqRight || (current.Doublepage && isRtl); // rtl doublepage needs to start on the right
+
+                if ((requiresLeft && !expectedSideIsLeft)       // page should be on the left but is currently on the right
+                    || (requiresRight && expectedSideIsLeft))   // page should be on the right but is currently on the left
+                {
+                    insertBlank = true;
                 }
 
                 if (insertBlank)
                 {
-                    alignedPages.Add(new()
+                    alignedPages.Add(new BookInfo.EpubPage
                     {
                         Page = "blank",
-                        Spread = blankSpread
+                        Spread = expectedSideIsLeft ? "page-spread-left" : "page-spread-right"
                     });
+
+                    expectedSideIsLeft = !expectedSideIsLeft;
                 }
 
                 alignedPages.Add(current);
+
+                if (current.Doublepage) expectedSideIsLeft = !isRtl;
+                else expectedSideIsLeft = !expectedSideIsLeft;
             }
 
             if (alignedPages.Count > bookFull.Count)
@@ -1272,8 +1238,6 @@ namespace epub2cbz
                     {
                         Page = "Cover",
                         Image = filename,
-                        Spread = string.Empty,
-                        Doublepage = false,
                         Height = height,
                         Width = width,
                         Size = bookEntry.Length
@@ -1474,9 +1438,6 @@ namespace epub2cbz
                                 bookFull.Insert(i + 1, new()
                                 {
                                     Page = "second spread page",
-                                    Image = string.Empty,
-                                    Spread = string.Empty,
-                                    Doublepage = false,
                                     Height = secondImage.Height,
                                     Width = secondImage.Width,
                                     Size = countingStreamSecond.BytesWritten
@@ -2247,12 +2208,6 @@ namespace epub2cbz
                         bookFull.Insert(1, new()
                         {
                             Page = "blank",
-                            Image = string.Empty,
-                            Spread = string.Empty,
-                            Doublepage = false,
-                            Height = 0,
-                            Width = 0,
-                            Size = 0
                         });
 
 #if DEBUG
@@ -2302,12 +2257,6 @@ namespace epub2cbz
                 bookFull.Insert(1, new()
                 {
                     Page = "blank",
-                    Image = string.Empty,
-                    Spread = string.Empty,
-                    Doublepage = false,
-                    Height = 0,
-                    Width = 0,
-                    Size = 0
                 });
             }
             // remove blank image to keep correct page spread
@@ -2535,12 +2484,6 @@ namespace epub2cbz
                 bookFull.Insert(1, new()
                 {
                     Page = "blank",
-                    Image= string.Empty,
-                    Spread = string.Empty,
-                    Doublepage = false,
-                    Height = 0,
-                    Width = 0,
-                    Size = 0
                 });
             }
 
@@ -2630,7 +2573,7 @@ namespace epub2cbz
                     FillBlankImageResolutions(width, height, bookFull);
                 }
 
-                WriteComicInfoXml(targetCbz, epubFilename, readingDirection, bookFull, metadata);
+                //WriteComicInfoXml(targetCbz, epubFilename, readingDirection, bookFull, metadata);
             }
 
             Interlocked.Increment(ref numberCurrentEpub);
@@ -2641,26 +2584,6 @@ namespace epub2cbz
             bookFull.Clear();
             entryMap.Clear();
             return;
-        }
-
-        private static List<string> ReadMangaList(string filename)
-        {
-            List<string> mangaList = [];
-            using (StreamReader reader = new(filename, Encoding.UTF8))
-            {
-                string? line = string.Empty;
-
-                while ((line = reader.ReadLine()) is not null)
-                {
-                    if (line.EndsWith(".cbz"))
-                    {
-                        line = string.Concat(line.AsSpan(0, line.Length - 4), ".epub");
-                    }
-                    mangaList.Add(line);
-                }
-            }
-            
-            return mangaList;
         }
 
         private static void DisableControls()
@@ -2777,24 +2700,6 @@ namespace epub2cbz
             }
 
             List<string> epubPaths = [];
-            HashSet<string>? mangaList = null;
-
-#if DEBUG
-            if (MainForm.FormElements.CheckboxMangaListState && !PopupSettings.CheckboxStates.CheckboxFileModeState)
-            {
-                string mangalistPath = Path.Combine(rootDir, "mangalist.txt");
-                if (!File.Exists(mangalistPath))
-                {
-                    using PopupInfoError popupInfoError = new();
-                    popupInfoError.ShowInfoError(Resources.NoMangalistMessageBox, Resources.ErrorMessageBox);
-
-                    EnableControls();
-                    stopwatch.Stop();
-                    return;
-                }
-                mangaList = new(ReadMangaList(mangalistPath), StringComparer.InvariantCultureIgnoreCase);
-            }
-#endif
 
             if (PopupSettings.CheckboxStates.RadioButtonZipState
                 && !PopupSettings.CheckboxStates.CheckboxSimpleExtractionState)
@@ -2821,9 +2726,7 @@ namespace epub2cbz
                                 throw new OperationCanceledException(cts.Token);
                             }
 
-                            if (File.Exists(epubPath)
-                                && (!MainForm.FormElements.CheckboxMangaListState
-                                    || (mangaList is not null && mangaList.Contains(Path.GetFileName(epubPath)))))
+                            if (File.Exists(epubPath))
                             {
                                 if (!PopupSettings.CheckboxStates.CheckboxMetadataTitleState)
                                 {

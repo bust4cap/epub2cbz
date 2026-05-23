@@ -13,7 +13,6 @@ public partial class MainForm : Form
 
     public static class FormElements
     {
-        public static bool CheckboxMangaListState { get; set; } = false;
         public static bool CheckboxComicInfoState { get; set; } = true;
         public static bool CheckboxExtractImagesState { get; set; } = true;
 
@@ -105,7 +104,13 @@ public partial class MainForm : Form
     private void LoadCustomWindowSettings()
     {
         checkBoxComicInfo.Checked = CustomSettings.SettingStates.CheckboxComicInfoState;
-        checkBoxImages.Checked = CustomSettings.SettingStates.CheckboxExtractImagesState;
+
+        checkBoxComicInfo.Left = buttonOpenSettings.Left - checkBoxComicInfo.Width - 5;
+        checkBoxImages.Left = checkBoxComicInfo.Left - checkBoxImages.Width - 5;
+
+#if DEBUG
+        checkBoxImages.Visible = true;
+#endif
 
         string valueInputFolderName = CustomSettings.SettingStates.InputFolderName;
 
@@ -268,9 +273,6 @@ public partial class MainForm : Form
 
         if (PopupSettings.CheckboxStates.CheckboxFileModeState)
         {
-#if DEBUG
-            checkBoxMangalist.Visible = false;
-#endif
             toolStripStatusLabelCurrentMode.Text = strFileMode;
 
             buttonPath.BackgroundImage = Resources.output_folder;
@@ -282,9 +284,6 @@ public partial class MainForm : Form
         }
         else
         {
-#if DEBUG
-            checkBoxMangalist.Visible = true;
-#endif
             toolStripStatusLabelCurrentMode.Text = strFolderMode;
 
             buttonPath.BackgroundImage = Resources.input_folder;
@@ -323,9 +322,6 @@ public partial class MainForm : Form
             // If the reset button has been pressed, reset MainForm Settings only when pressing OK
             if (PopupSettings.CheckboxStates.ButtonResetSettingsState)
             {
-#if DEBUG
-                checkBoxMangalist.Checked = false;
-#endif
                 checkBoxComicInfo.Checked = true;
                 checkBoxImages.Checked = true;
 
@@ -350,10 +346,6 @@ public partial class MainForm : Form
 
     private void UpdateLanguages()
     {
-#if DEBUG
-        toolTip.SetToolTip(checkBoxMangalist, Resources.MangalistCheckboxTooltip);
-#endif
-        checkBoxComicInfo.Text = Resources.ComicInfoCheckboxText;
         checkBoxImages.Text = Resources.ImagesCheckboxText;
 
         toolTip.SetToolTip(comboBoxLanguage, comboBoxLanguage.SelectedItem!.ToString());
@@ -376,7 +368,7 @@ public partial class MainForm : Form
 
         buttonFileModeFileList.Text = Resources.FileList;
         toolTip.SetToolTip(buttonSwitchModes, Resources.ButtonSwitchFileFolderMode);
-
+        toolTip.SetToolTip(checkBoxComicInfo, Resources.ComicInfoCheckboxText);
         toolTip.SetToolTip(buttonOpenSettings, Resources.SettingsWindowTitle);
     }
 
@@ -462,9 +454,6 @@ public partial class MainForm : Form
             toolTip.SetToolTip(buttonPath, Resources.PathButtonTextOutput);
             textBoxPath.Text = FolderNameClass.OutputFolderName;
             textBoxPath.PlaceholderText = Resources.PathButtonTextOutput;
-#if DEBUG
-            checkBoxMangalist.Visible = false;
-#endif
             toolStripStatusLabelCurrentMode.Text = strFileMode;
 
             buttonFileModeFileList.Visible = true;
@@ -481,9 +470,6 @@ public partial class MainForm : Form
             toolTip.SetToolTip(buttonPath, Resources.PathButtonTextInput);
             textBoxPath.Text = FolderNameClass.InputFolderName;
             textBoxPath.PlaceholderText = Resources.PathButtonTextInput;
-#if DEBUG
-            checkBoxMangalist.Visible = true;
-#endif
             toolStripStatusLabelCurrentMode.Text = strFolderMode;
 
             buttonPath.BackgroundImage?.Dispose();
@@ -493,11 +479,6 @@ public partial class MainForm : Form
             outputBoxConsole.Clear();
             outputBoxConsole.Focus();
         }
-    }
-
-    private void CheckBoxMangalist_CheckedChanged(object sender, EventArgs e)
-    {
-        FormElements.CheckboxMangaListState = checkBoxMangalist.Checked;
     }
 
     private void UpdateFileModeConsoleText()

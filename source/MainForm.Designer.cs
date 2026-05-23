@@ -46,7 +46,6 @@ partial class MainForm
         textBoxPath = new TextBox();
         buttonPathClear = new Button();
         buttonSwitchModes = new Button();
-        checkBoxMangalist = new CheckBox();
         statusStripMain = new StatusStrip();
         toolStripStatusLabelCurrentMode = new ToolStripStatusLabel();
         toolStripProgressBar = new ToolStripProgressBar();
@@ -99,20 +98,22 @@ partial class MainForm
         // 
         // checkBoxComicInfo
         // 
+        checkBoxComicInfo.Anchor = AnchorStyles.Top | AnchorStyles.Right;
         checkBoxComicInfo.AutoSize = true;
         checkBoxComicInfo.Checked = true;
         checkBoxComicInfo.CheckState = CheckState.Checked;
         checkBoxComicInfo.Location = new Point(142, 14);
         checkBoxComicInfo.Margin = new Padding(2, 1, 2, 1);
         checkBoxComicInfo.Name = "checkBoxComicInfo";
-        checkBoxComicInfo.Size = new Size(141, 19);
-        checkBoxComicInfo.TabIndex = 3;
-        checkBoxComicInfo.Text = Resources.ComicInfoCheckboxText;
+        checkBoxComicInfo.Size = new Size(104, 19);
+        checkBoxComicInfo.TabIndex = 4;
+        checkBoxComicInfo.Text = "ComicInfo.xml";
         checkBoxComicInfo.UseVisualStyleBackColor = true;
         checkBoxComicInfo.CheckedChanged += CheckBoxComicInfo_CheckedChanged;
         // 
         // checkBoxImages
         // 
+        checkBoxImages.Anchor = AnchorStyles.Top | AnchorStyles.Right;
         checkBoxImages.AutoSize = true;
         checkBoxImages.Checked = true;
         checkBoxImages.CheckState = CheckState.Checked;
@@ -120,9 +121,10 @@ partial class MainForm
         checkBoxImages.Margin = new Padding(2, 1, 2, 1);
         checkBoxImages.Name = "checkBoxImages";
         checkBoxImages.Size = new Size(102, 19);
-        checkBoxImages.TabIndex = 4;
+        checkBoxImages.TabIndex = 3;
         checkBoxImages.Text = Resources.ImagesCheckboxText;
         checkBoxImages.UseVisualStyleBackColor = true;
+        checkBoxImages.Visible = false;
         checkBoxImages.CheckedChanged += CheckBoxImages_CheckedChanged;
         // 
         // outputBoxConsole
@@ -209,19 +211,6 @@ partial class MainForm
         buttonSwitchModes.UseVisualStyleBackColor = true;
         buttonSwitchModes.Click += ButtonSwitchModes_Click;
         // 
-        // checkBoxMangalist
-        // 
-        checkBoxMangalist.AutoSize = true;
-        checkBoxMangalist.Location = new Point(395, 14);
-        checkBoxMangalist.Margin = new Padding(2, 1, 2, 1);
-        checkBoxMangalist.Name = "checkBoxMangalist";
-        checkBoxMangalist.Size = new Size(40, 19);
-        checkBoxMangalist.TabIndex = 100;
-        checkBoxMangalist.Text = "ml";
-        checkBoxMangalist.UseVisualStyleBackColor = true;
-        checkBoxMangalist.Visible = false;
-        checkBoxMangalist.CheckedChanged += CheckBoxMangalist_CheckedChanged;
-        // 
         // statusStripMain
         // 
         statusStripMain.AllowMerge = false;
@@ -255,7 +244,6 @@ partial class MainForm
         AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(656, 360);
         Controls.Add(statusStripMain);
-        Controls.Add(checkBoxMangalist);
         Controls.Add(buttonPathClear);
         Controls.Add(comboBoxLanguage);
         Controls.Add(buttonOpenSettings);
@@ -296,7 +284,6 @@ partial class MainForm
     public Button buttonPathClear;
     public Button buttonPath;
     public Button buttonSwitchModes;
-    public CheckBox checkBoxMangalist;
     private StatusStrip statusStripMain;
     private ToolStripStatusLabel toolStripStatusLabelCurrentMode;
     public ToolStripProgressBar toolStripProgressBar;
