@@ -678,7 +678,7 @@ namespace epub2cbz
 
                 if (insertBlank)
                 {
-                    alignedPages.Add(new BookInfo.EpubPage
+                    alignedPages.Add(new()
                     {
                         Page = "blank",
                         Spread = expectedSideIsLeft ? "page-spread-left" : "page-spread-right"
