@@ -54,8 +54,7 @@ partial class MainForm
         // 
         // buttonPath
         // 
-        buttonPath.BackgroundImage = Resources.input_folder;
-        buttonPath.BackgroundImageLayout = ImageLayout.Zoom;
+        buttonPath.BackgroundImageLayout = ImageLayout.Center;
         buttonPath.FlatAppearance.BorderColor = Color.DimGray;
         buttonPath.FlatStyle = FlatStyle.Flat;
         buttonPath.Location = new Point(12, 38);
@@ -69,8 +68,7 @@ partial class MainForm
         // buttonOpenSettings
         // 
         buttonOpenSettings.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-        buttonOpenSettings.BackgroundImage = Resources.cogwheel;
-        buttonOpenSettings.BackgroundImageLayout = ImageLayout.Zoom;
+        buttonOpenSettings.BackgroundImageLayout = ImageLayout.Center;
         buttonOpenSettings.FlatAppearance.BorderColor = Color.DimGray;
         buttonOpenSettings.FlatStyle = FlatStyle.Flat;
         buttonOpenSettings.Location = new Point(439, 10);
@@ -185,8 +183,7 @@ partial class MainForm
         // 
         // buttonPathClear
         // 
-        buttonPathClear.BackgroundImage = Resources.empty;
-        buttonPathClear.BackgroundImageLayout = ImageLayout.Zoom;
+        buttonPathClear.BackgroundImageLayout = ImageLayout.Center;
         buttonPathClear.FlatAppearance.BorderColor = Color.DimGray;
         buttonPathClear.FlatStyle = FlatStyle.Flat;
         buttonPathClear.Location = new Point(41, 38);
@@ -199,8 +196,7 @@ partial class MainForm
         // 
         // buttonSwitchModes
         // 
-        buttonSwitchModes.BackgroundImage = Resources.arrows;
-        buttonSwitchModes.BackgroundImageLayout = ImageLayout.Zoom;
+        buttonSwitchModes.BackgroundImageLayout = ImageLayout.Center;
         buttonSwitchModes.FlatAppearance.BorderColor = Color.DimGray;
         buttonSwitchModes.FlatStyle = FlatStyle.Flat;
         buttonSwitchModes.Location = new Point(12, 10);

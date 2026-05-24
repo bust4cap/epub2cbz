@@ -11,6 +11,12 @@ public partial class MainForm : Form
     private readonly string strFileMode = "File Mode";
     private readonly string strFolderMode = "Folder Mode";
 
+    private Bitmap? _modeIcon;
+    private Bitmap? _settingsIcon;
+    private Bitmap? _inputIcon;
+    private Bitmap? _outputIcon;
+    private Bitmap? _clearIcon;
+
     public static class FormElements
     {
         public static bool CheckboxComicInfoState { get; set; } = true;
@@ -38,6 +44,14 @@ public partial class MainForm : Form
         { 3, "zh-Hant" },
         { 4, "zh-Hans" }
     };
+
+    private static Bitmap DownsizeIcon(Bitmap icon, Button button)
+    {
+        using (icon)
+        {
+            return new Bitmap(icon, new Size((int)(button.Size.Width * 0.9), (int)(button.Size.Height * 0.9)));
+        }
+    }
 
     private void HandleAddingEpubs(string[]? files)
     {
@@ -186,13 +200,36 @@ public partial class MainForm : Form
         }
     }
 
+    private void SetIcons()
+    {
+#pragma warning disable WFO5001 // needs to be here until dotnet 10
+        if (Application.ColorMode != SystemColorMode.Dark)
+        {
+            _modeIcon = DownsizeIcon(Resources.arrows, buttonSwitchModes);
+            _settingsIcon = DownsizeIcon(Resources.cogwheel, buttonOpenSettings);
+
+            buttonSwitchModes.BackgroundImage = _modeIcon;
+            buttonOpenSettings.BackgroundImage = _settingsIcon;
+        }
+#pragma warning restore WFO5001
+
+        _inputIcon = DownsizeIcon(Resources.input_folder, buttonPath);
+        _outputIcon = DownsizeIcon(Resources.output_folder, buttonPath);
+        _clearIcon = DownsizeIcon(Resources.empty, buttonPathClear);
+
+        buttonPathClear.BackgroundImage = _clearIcon;
+    }
+
     private void SetDarkModeIcons()
     {
         FormElements.DarkModeState = true;
         Color dark = Color.FromArgb(255, 32, 32, 32);
 
-        buttonOpenSettings.BackgroundImage = Resources.cogwheel_light;
-        buttonSwitchModes.BackgroundImage = Resources.arrows_light;
+        _modeIcon = DownsizeIcon(Resources.arrows_light, buttonSwitchModes);
+        _settingsIcon = DownsizeIcon(Resources.cogwheel_light, buttonOpenSettings);
+
+        buttonSwitchModes.BackgroundImage = _modeIcon;
+        buttonOpenSettings.BackgroundImage = _settingsIcon;
 
         textBoxPath.BackColor = dark;
         statusStripMain.BackColor = dark;
@@ -201,6 +238,8 @@ public partial class MainForm : Form
     public MainForm()
     {
         InitializeComponent();
+
+        SetIcons();
 
 #pragma warning disable WFO5001 // needs to be here until dotnet 10
         if (Application.ColorMode == SystemColorMode.Dark)
@@ -275,7 +314,7 @@ public partial class MainForm : Form
         {
             toolStripStatusLabelCurrentMode.Text = strFileMode;
 
-            buttonPath.BackgroundImage = Resources.output_folder;
+            buttonPath.BackgroundImage = _outputIcon;
             buttonFileModeFileList.Visible = true;
 
             outputBoxConsole.Clear();
@@ -286,7 +325,7 @@ public partial class MainForm : Form
         {
             toolStripStatusLabelCurrentMode.Text = strFolderMode;
 
-            buttonPath.BackgroundImage = Resources.input_folder;
+            buttonPath.BackgroundImage = _inputIcon;
         }
 
         ComboBoxDropDownWidth();
@@ -458,8 +497,7 @@ public partial class MainForm : Form
 
             buttonFileModeFileList.Visible = true;
 
-            buttonPath.BackgroundImage?.Dispose();
-            buttonPath.BackgroundImage = Resources.output_folder;
+            buttonPath.BackgroundImage = _outputIcon;
 
             outputBoxConsole.Clear();
             outputBoxConsole.Focus();
@@ -472,9 +510,9 @@ public partial class MainForm : Form
             textBoxPath.PlaceholderText = Resources.PathButtonTextInput;
             toolStripStatusLabelCurrentMode.Text = strFolderMode;
 
-            buttonPath.BackgroundImage?.Dispose();
-            buttonPath.BackgroundImage = Resources.input_folder;
             buttonFileModeFileList.Visible = false;
+
+            buttonPath.BackgroundImage = _inputIcon;
 
             outputBoxConsole.Clear();
             outputBoxConsole.Focus();
