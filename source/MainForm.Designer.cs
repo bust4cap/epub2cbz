@@ -61,7 +61,7 @@ partial class MainForm
         buttonPath.Margin = new Padding(2, 1, 2, 1);
         buttonPath.Name = "buttonPath";
         buttonPath.Size = new Size(25, 25);
-        buttonPath.TabIndex = 8;
+        buttonPath.TabIndex = 11;
         buttonPath.UseVisualStyleBackColor = true;
         buttonPath.Click += ButtonPath_Click;
         // 
@@ -75,7 +75,7 @@ partial class MainForm
         buttonOpenSettings.Margin = new Padding(2, 1, 2, 1);
         buttonOpenSettings.Name = "buttonOpenSettings";
         buttonOpenSettings.Size = new Size(25, 25);
-        buttonOpenSettings.TabIndex = 5;
+        buttonOpenSettings.TabIndex = 6;
         toolTip.SetToolTip(buttonOpenSettings, "Settings");
         buttonOpenSettings.UseVisualStyleBackColor = true;
         buttonOpenSettings.Click += BtnOpenSettings_Click;
@@ -89,7 +89,7 @@ partial class MainForm
         buttonStart.Margin = new Padding(2, 1, 2, 1);
         buttonStart.Name = "buttonStart";
         buttonStart.Size = new Size(74, 25);
-        buttonStart.TabIndex = 7;
+        buttonStart.TabIndex = 8;
         buttonStart.Text = Resources.StartButtonText;
         buttonStart.UseVisualStyleBackColor = true;
         buttonStart.Click += ButtonStart_Click;
@@ -100,11 +100,11 @@ partial class MainForm
         checkBoxComicInfo.AutoSize = true;
         checkBoxComicInfo.Checked = true;
         checkBoxComicInfo.CheckState = CheckState.Checked;
-        checkBoxComicInfo.Location = new Point(142, 14);
+        checkBoxComicInfo.Location = new Point(273, 12);
         checkBoxComicInfo.Margin = new Padding(2, 1, 2, 1);
         checkBoxComicInfo.Name = "checkBoxComicInfo";
         checkBoxComicInfo.Size = new Size(104, 19);
-        checkBoxComicInfo.TabIndex = 4;
+        checkBoxComicInfo.TabIndex = 5;
         checkBoxComicInfo.Text = "ComicInfo.xml";
         checkBoxComicInfo.UseVisualStyleBackColor = true;
         checkBoxComicInfo.CheckedChanged += CheckBoxComicInfo_CheckedChanged;
@@ -115,11 +115,11 @@ partial class MainForm
         checkBoxImages.AutoSize = true;
         checkBoxImages.Checked = true;
         checkBoxImages.CheckState = CheckState.Checked;
-        checkBoxImages.Location = new Point(288, 14);
+        checkBoxImages.Location = new Point(149, 12);
         checkBoxImages.Margin = new Padding(2, 1, 2, 1);
         checkBoxImages.Name = "checkBoxImages";
         checkBoxImages.Size = new Size(102, 19);
-        checkBoxImages.TabIndex = 3;
+        checkBoxImages.TabIndex = 4;
         checkBoxImages.Text = Resources.ImagesCheckboxText;
         checkBoxImages.UseVisualStyleBackColor = true;
         checkBoxImages.Visible = false;
@@ -153,7 +153,7 @@ partial class MainForm
         comboBoxLanguage.Name = "comboBoxLanguage";
         comboBoxLanguage.RightToLeft = RightToLeft.No;
         comboBoxLanguage.Size = new Size(78, 23);
-        comboBoxLanguage.TabIndex = 6;
+        comboBoxLanguage.TabIndex = 7;
         comboBoxLanguage.SelectedIndexChanged += ComboBoxLanguage_SelectedIndexChanged;
         // 
         // buttonFileModeFileList
@@ -178,7 +178,7 @@ partial class MainForm
         textBoxPath.Name = "textBoxPath";
         textBoxPath.ReadOnly = true;
         textBoxPath.Size = new Size(575, 23);
-        textBoxPath.TabIndex = 10;
+        textBoxPath.TabIndex = 13;
         textBoxPath.TextChanged += TextBoxPath_TextChanged;
         // 
         // buttonPathClear
@@ -190,7 +190,7 @@ partial class MainForm
         buttonPathClear.Margin = new Padding(2, 1, 2, 1);
         buttonPathClear.Name = "buttonPathClear";
         buttonPathClear.Size = new Size(25, 25);
-        buttonPathClear.TabIndex = 9;
+        buttonPathClear.TabIndex = 12;
         buttonPathClear.UseVisualStyleBackColor = true;
         buttonPathClear.Click += ButtonPathClear_Click;
         // 

@@ -2,6 +2,7 @@
 using CoenM.ImageHash.HashAlgorithms;
 using epub2cbz.Properties;
 using ExCSS;
+using Microsoft.Win32;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Gif;
@@ -2843,6 +2844,28 @@ namespace epub2cbz
             }
         }
 
+        private static bool IsSystemUsingDarkMode()
+        {
+            const string registryKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
+            const string registryValueName = "AppsUseLightTheme";
+
+            try
+            {
+                using RegistryKey? key = Registry.CurrentUser.OpenSubKey(registryKeyPath);
+                object? registryValue = key?.GetValue(registryValueName);
+                if (registryValue is int value)
+                {
+                    return value == 0;
+                }
+            }
+            catch
+            {
+
+            }
+
+            return false;
+        }
+
         private static void HandleArguments(string[] args)
         {
             foreach (string arg in args)
@@ -2853,12 +2876,10 @@ namespace epub2cbz
                     case "-s":
                         PopupSettings.CheckboxStates.CheckboxSimpleExtractionState = true;
                         break;
-                    case "--dark":
-                    case "-d":
-#pragma warning disable WFO5001 // needs to be here until dotnet 10
-                        if (!SystemInformation.HighContrast) Application.SetColorMode(SystemColorMode.Dark);
-#pragma warning restore WFO5001
-                        break;
+                    //case "--dark":
+                    //case "-d":
+                    //    if (!SystemInformation.HighContrast) Application.SetColorMode(SystemColorMode.Dark);
+                    //    break;
                 }
             }
         }
@@ -2867,6 +2888,7 @@ namespace epub2cbz
         static void Main(string[] args)
         {
             HandleArguments(args);
+            if (IsSystemUsingDarkMode() && !SystemInformation.HighContrast) Application.SetColorMode(SystemColorMode.Dark);
 
             ApplicationConfiguration.Initialize();
 

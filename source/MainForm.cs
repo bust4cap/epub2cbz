@@ -21,8 +21,6 @@ public partial class MainForm : Form
     {
         public static bool CheckboxComicInfoState { get; set; } = true;
         public static bool CheckboxExtractImagesState { get; set; } = true;
-
-        public static bool DarkModeState { get; set; } = false;
     }
 
     public static class FolderNameClass
@@ -119,13 +117,6 @@ public partial class MainForm : Form
     {
         checkBoxComicInfo.Checked = CustomSettings.SettingStates.CheckboxComicInfoState;
 
-        checkBoxComicInfo.Left = buttonOpenSettings.Left - checkBoxComicInfo.Width - 5;
-        checkBoxImages.Left = checkBoxComicInfo.Left - checkBoxImages.Width - 5;
-
-#if DEBUG
-        checkBoxImages.Visible = true;
-#endif
-
         string valueInputFolderName = CustomSettings.SettingStates.InputFolderName;
 
         if (!string.IsNullOrEmpty(valueInputFolderName)
@@ -202,27 +193,30 @@ public partial class MainForm : Form
 
     private void SetIcons()
     {
-#pragma warning disable WFO5001 // needs to be here until dotnet 10
-        if (Application.ColorMode != SystemColorMode.Dark)
-        {
-            _modeIcon = DownsizeIcon(Resources.arrows, buttonSwitchModes);
-            _settingsIcon = DownsizeIcon(Resources.cogwheel, buttonOpenSettings);
-
-            buttonSwitchModes.BackgroundImage = _modeIcon;
-            buttonOpenSettings.BackgroundImage = _settingsIcon;
-        }
-#pragma warning restore WFO5001
-
         _inputIcon = DownsizeIcon(Resources.input_folder, buttonPath);
         _outputIcon = DownsizeIcon(Resources.output_folder, buttonPath);
         _clearIcon = DownsizeIcon(Resources.empty, buttonPathClear);
 
         buttonPathClear.BackgroundImage = _clearIcon;
+
+        if (PopupSettings.CheckboxStates.CheckboxFileModeState) buttonPath.BackgroundImage = _outputIcon;
+        else buttonPath.BackgroundImage = _inputIcon;
+
+        if (Application.ColorMode == SystemColorMode.Classic) SetLightModeIcons();
+        else SetDarkModeIcons();
+    }
+
+    private void SetLightModeIcons()
+    {
+        _modeIcon = DownsizeIcon(Resources.arrows, buttonSwitchModes);
+        _settingsIcon = DownsizeIcon(Resources.cogwheel, buttonOpenSettings);
+
+        buttonSwitchModes.BackgroundImage = _modeIcon;
+        buttonOpenSettings.BackgroundImage = _settingsIcon;
     }
 
     private void SetDarkModeIcons()
     {
-        FormElements.DarkModeState = true;
         Color dark = Color.FromArgb(255, 32, 32, 32);
 
         _modeIcon = DownsizeIcon(Resources.arrows_light, buttonSwitchModes);
@@ -238,15 +232,6 @@ public partial class MainForm : Form
     public MainForm()
     {
         InitializeComponent();
-
-        SetIcons();
-
-#pragma warning disable WFO5001 // needs to be here until dotnet 10
-        if (Application.ColorMode == SystemColorMode.Dark)
-        {
-            SetDarkModeIcons();
-        }
-#pragma warning restore WFO5001
 
         fileListForm = new();
     }
@@ -294,6 +279,8 @@ public partial class MainForm : Form
         LoadCustomWindowSettings();
         ///
 
+        SetIcons();
+
         Text = $"epub2cbz - Build: v{VersionDate.GetVersionDateYear}." +
             $"{VersionDate.GetVersionDateMonth}." +
             $"{VersionDate.GetVersionDateDay}-" +
@@ -314,7 +301,6 @@ public partial class MainForm : Form
         {
             toolStripStatusLabelCurrentMode.Text = strFileMode;
 
-            buttonPath.BackgroundImage = _outputIcon;
             buttonFileModeFileList.Visible = true;
 
             outputBoxConsole.Clear();
@@ -324,13 +310,19 @@ public partial class MainForm : Form
         else
         {
             toolStripStatusLabelCurrentMode.Text = strFolderMode;
-
-            buttonPath.BackgroundImage = _inputIcon;
         }
 
         ComboBoxDropDownWidth();
         ToolStripProgressbarWidth();
         textBoxPath.Top = buttonPathClear.Top + (buttonPathClear.Height - textBoxPath.Height) / 2;
+        checkBoxComicInfo.Left = buttonOpenSettings.Left - checkBoxComicInfo.Width - 5;
+        checkBoxComicInfo.Top = buttonOpenSettings.Top + (buttonOpenSettings.Height - checkBoxComicInfo.Height) / 2;
+        checkBoxImages.Left = checkBoxComicInfo.Left - checkBoxImages.Width - 5;
+        checkBoxImages.Top = checkBoxComicInfo.Top;
+
+#if DEBUG
+        checkBoxImages.Visible = true;
+#endif
 
         CultureInfo currentUICulture = Thread.CurrentThread.CurrentUICulture;
 
@@ -353,7 +345,7 @@ public partial class MainForm : Form
 
     private void BtnOpenSettings_Click(object sender, EventArgs e)
     {
-        PopupSettings popup = new();
+        using PopupSettings popup = new();
         DialogResult result = popup.ShowDialog();
 
         if (result == DialogResult.OK)

@@ -507,6 +507,7 @@
             // textBoxReplaceSeries
             // 
             textBoxReplaceSeries.Anchor = AnchorStyles.Left;
+            textBoxReplaceSeries.BorderStyle = BorderStyle.FixedSingle;
             textBoxReplaceSeries.Location = new Point(272, 154);
             textBoxReplaceSeries.Margin = new Padding(2, 1, 2, 1);
             textBoxReplaceSeries.Name = "textBoxReplaceSeries";
@@ -785,6 +786,7 @@
             // textBoxSettingsResizeWidth
             // 
             textBoxSettingsResizeWidth.Anchor = AnchorStyles.None;
+            textBoxSettingsResizeWidth.BorderStyle = BorderStyle.FixedSingle;
             textBoxSettingsResizeWidth.Location = new Point(87, 3);
             textBoxSettingsResizeWidth.MaxLength = 4;
             textBoxSettingsResizeWidth.Name = "textBoxSettingsResizeWidth";
@@ -892,6 +894,7 @@
             // textBoxSettingsResizeHeight
             // 
             textBoxSettingsResizeHeight.Anchor = AnchorStyles.None;
+            textBoxSettingsResizeHeight.BorderStyle = BorderStyle.FixedSingle;
             textBoxSettingsResizeHeight.Location = new Point(87, 3);
             textBoxSettingsResizeHeight.MaxLength = 4;
             textBoxSettingsResizeHeight.Name = "textBoxSettingsResizeHeight";
@@ -992,6 +995,7 @@
             // textBoxSettingsCropPadding
             // 
             textBoxSettingsCropPadding.Anchor = AnchorStyles.None;
+            textBoxSettingsCropPadding.BorderStyle = BorderStyle.FixedSingle;
             textBoxSettingsCropPadding.Location = new Point(63, 3);
             textBoxSettingsCropPadding.MaxLength = 3;
             textBoxSettingsCropPadding.Name = "textBoxSettingsCropPadding";
@@ -1025,6 +1029,7 @@
             // textBoxSettingsCropColorTolerance
             // 
             textBoxSettingsCropColorTolerance.Anchor = AnchorStyles.None;
+            textBoxSettingsCropColorTolerance.BorderStyle = BorderStyle.FixedSingle;
             textBoxSettingsCropColorTolerance.Location = new Point(102, 3);
             textBoxSettingsCropColorTolerance.MaxLength = 3;
             textBoxSettingsCropColorTolerance.Name = "textBoxSettingsCropColorTolerance";
@@ -1058,6 +1063,7 @@
             // textBoxSettingsCropDeviationTolerance
             // 
             textBoxSettingsCropDeviationTolerance.Anchor = AnchorStyles.None;
+            textBoxSettingsCropDeviationTolerance.BorderStyle = BorderStyle.FixedSingle;
             textBoxSettingsCropDeviationTolerance.Location = new Point(99, 3);
             textBoxSettingsCropDeviationTolerance.MaxLength = 3;
             textBoxSettingsCropDeviationTolerance.Name = "textBoxSettingsCropDeviationTolerance";

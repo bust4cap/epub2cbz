@@ -23,18 +23,21 @@ namespace epub2cbz
             {
                 if (newest > current)
                 {
-                    labelUpdateIsUpToDate.ForeColor = !MainForm.FormElements.DarkModeState ? Color.DarkGoldenrod : Color.Goldenrod;
+                    if (Application.ColorMode == SystemColorMode.Classic) labelUpdateIsUpToDate.ForeColor = Color.DarkGoldenrod;
+                    else labelUpdateIsUpToDate.ForeColor = Color.Goldenrod;
                     labelUpdateIsUpToDate.Text = Resources.SettingsUpdateNewerVersionAvailable;
                 }
                 else
                 {
-                    labelUpdateIsUpToDate.ForeColor = !MainForm.FormElements.DarkModeState ? Color.DarkGreen : Color.Green;
+                    if (Application.ColorMode == SystemColorMode.Classic) labelUpdateIsUpToDate.ForeColor = Color.DarkGreen;
+                    else labelUpdateIsUpToDate.ForeColor = Color.Green;
                     labelUpdateIsUpToDate.Text = Resources.SettingsUpdateAlreadyOnNewest;
                 }
             }
             else
             {
-                labelUpdateIsUpToDate.ForeColor = !MainForm.FormElements.DarkModeState ? Color.DarkRed : Color.Red;
+                if (Application.ColorMode == SystemColorMode.Classic) labelUpdateIsUpToDate.ForeColor = Color.DarkRed;
+                else labelUpdateIsUpToDate.ForeColor = Color.Red;
                 labelUpdateIsUpToDate.Text = Resources.SettingsUpdateErrorTop + Environment.NewLine +
                         Resources.SettingsUpdateErrorBottom;
             }
@@ -62,7 +65,7 @@ namespace epub2cbz
             linkLabelUpdate.Left = this.ClientRectangle.Width / 2 - linkLabelUpdate.Width / 2;
             buttonUpdateOK.Left = this.ClientRectangle.Width / 2 - buttonUpdateOK.Width / 2;
 
-            if (MainForm.FormElements.DarkModeState) linkLabelUpdate.LinkColor = Color.SkyBlue;
+            if (Application.ColorMode == SystemColorMode.Dark) linkLabelUpdate.LinkColor = Color.SkyBlue;
         }
     }
 }

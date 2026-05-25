@@ -186,7 +186,7 @@ namespace epub2cbz
                                                             $"{VersionDate.GetVersionDateMonth}." +
                                                             $"{VersionDate.GetVersionDateDay}-" +
                                                             $"{VersionDate.GetVersionNumber}";
-                            CheckForUpdateForm update = new();
+                            using CheckForUpdateForm update = new();
                             update.ShowDialog();
                         }));
                     }
@@ -198,7 +198,7 @@ namespace epub2cbz
                 {
                     Invoke(new Action(() =>
                     {
-                        CheckForUpdateForm update = new();
+                        using CheckForUpdateForm update = new();
                         update.ShowDialog();
                     }));
                 }

@@ -11,6 +11,7 @@
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	<ApplicationIcon>epub2cbz_logo.ico</ApplicationIcon>
 	<AssemblyName>epub2cbz</AssemblyName>
+	<NoWarn>$(NoWarn);WFO5001</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
