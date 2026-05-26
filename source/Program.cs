@@ -2844,28 +2844,6 @@ namespace epub2cbz
             }
         }
 
-        private static bool IsSystemUsingDarkMode()
-        {
-            const string registryKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
-            const string registryValueName = "AppsUseLightTheme";
-
-            try
-            {
-                using RegistryKey? key = Registry.CurrentUser.OpenSubKey(registryKeyPath);
-                object? registryValue = key?.GetValue(registryValueName);
-                if (registryValue is int value)
-                {
-                    return value == 0;
-                }
-            }
-            catch
-            {
-
-            }
-
-            return false;
-        }
-
         private static void HandleArguments(string[] args)
         {
             foreach (string arg in args)
@@ -2876,10 +2854,14 @@ namespace epub2cbz
                     case "-s":
                         PopupSettings.CheckboxStates.CheckboxSimpleExtractionState = true;
                         break;
-                    //case "--dark":
-                    //case "-d":
-                    //    if (!SystemInformation.HighContrast) Application.SetColorMode(SystemColorMode.Dark);
-                    //    break;
+                    case "--light":
+                    case "-l":
+                        Application.SetColorMode(SystemColorMode.Classic);
+                        break;
+                    case "--dark":
+                    case "-d":
+                        if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000)) Application.SetColorMode(SystemColorMode.Dark);
+                        break;
                 }
             }
         }
@@ -2887,8 +2869,8 @@ namespace epub2cbz
         [STAThread]
         static void Main(string[] args)
         {
+            Application.SetColorMode(SystemColorMode.System);
             HandleArguments(args);
-            if (IsSystemUsingDarkMode() && !SystemInformation.HighContrast) Application.SetColorMode(SystemColorMode.Dark);
 
             ApplicationConfiguration.Initialize();
 
