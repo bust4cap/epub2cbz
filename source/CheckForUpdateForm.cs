@@ -23,20 +23,20 @@ namespace epub2cbz
             {
                 if (newest > current)
                 {
-                    if (Application.ColorMode == SystemColorMode.Classic) labelUpdateIsUpToDate.ForeColor = Color.DarkGoldenrod;
+                    if (Program.GetEffectiveColorMode() == SystemColorMode.Classic) labelUpdateIsUpToDate.ForeColor = Color.DarkGoldenrod;
                     else labelUpdateIsUpToDate.ForeColor = Color.Goldenrod;
                     labelUpdateIsUpToDate.Text = Resources.SettingsUpdateNewerVersionAvailable;
                 }
                 else
                 {
-                    if (Application.ColorMode == SystemColorMode.Classic) labelUpdateIsUpToDate.ForeColor = Color.DarkGreen;
+                    if (Program.GetEffectiveColorMode() == SystemColorMode.Classic) labelUpdateIsUpToDate.ForeColor = Color.DarkGreen;
                     else labelUpdateIsUpToDate.ForeColor = Color.Green;
                     labelUpdateIsUpToDate.Text = Resources.SettingsUpdateAlreadyOnNewest;
                 }
             }
             else
             {
-                if (Application.ColorMode == SystemColorMode.Classic) labelUpdateIsUpToDate.ForeColor = Color.DarkRed;
+                if (Program.GetEffectiveColorMode() == SystemColorMode.Classic) labelUpdateIsUpToDate.ForeColor = Color.DarkRed;
                 else labelUpdateIsUpToDate.ForeColor = Color.Red;
                 labelUpdateIsUpToDate.Text = Resources.SettingsUpdateErrorTop + Environment.NewLine +
                         Resources.SettingsUpdateErrorBottom;
@@ -65,7 +65,7 @@ namespace epub2cbz
             linkLabelUpdate.Left = this.ClientRectangle.Width / 2 - linkLabelUpdate.Width / 2;
             buttonUpdateOK.Left = this.ClientRectangle.Width / 2 - buttonUpdateOK.Width / 2;
 
-            if (Application.ColorMode == SystemColorMode.Dark) linkLabelUpdate.LinkColor = Color.SkyBlue;
+            if (Program.GetEffectiveColorMode() == SystemColorMode.Dark) linkLabelUpdate.LinkColor = Color.SkyBlue;
         }
     }
 }

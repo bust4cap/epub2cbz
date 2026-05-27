@@ -2844,23 +2844,30 @@ namespace epub2cbz
             }
         }
 
+        public static SystemColorMode GetEffectiveColorMode()
+        {
+            if (Application.ColorMode == SystemColorMode.System)
+            {
+                return Application.SystemColorMode;
+            }
+
+            return Application.ColorMode;
+        }
+
         private static void HandleArguments(string[] args)
         {
             foreach (string arg in args)
             {
-                switch (arg.ToLower())
+                switch (arg.ToLowerInvariant())
                 {
-                    case "--simple":
-                    case "-s":
+                    case "--simple" or "-s":
                         PopupSettings.CheckboxStates.CheckboxSimpleExtractionState = true;
                         break;
-                    case "--light":
-                    case "-l":
+                    case "--light" or "-l":
                         Application.SetColorMode(SystemColorMode.Classic);
                         break;
-                    case "--dark":
-                    case "-d":
-                        if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000)) Application.SetColorMode(SystemColorMode.Dark);
+                    case "--dark" or "-d":
+                        Application.SetColorMode(SystemColorMode.Dark);
                         break;
                 }
             }
@@ -2869,10 +2876,10 @@ namespace epub2cbz
         [STAThread]
         static void Main(string[] args)
         {
+            ApplicationConfiguration.Initialize();
+
             Application.SetColorMode(SystemColorMode.System);
             HandleArguments(args);
-
-            ApplicationConfiguration.Initialize();
 
             _mainForm = new MainForm();
             Application.Run(_mainForm);

@@ -202,7 +202,7 @@ public partial class MainForm : Form
         if (PopupSettings.CheckboxStates.CheckboxFileModeState) buttonPath.BackgroundImage = _outputIcon;
         else buttonPath.BackgroundImage = _inputIcon;
 
-        if (Application.ColorMode == SystemColorMode.Classic) SetLightModeIcons();
+        if (Program.GetEffectiveColorMode() == SystemColorMode.Classic) SetLightModeIcons();
         else SetDarkModeIcons();
     }
 
