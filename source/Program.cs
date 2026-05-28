@@ -2,7 +2,6 @@
 using CoenM.ImageHash.HashAlgorithms;
 using epub2cbz.Properties;
 using ExCSS;
-using Microsoft.Win32;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Gif;
@@ -447,12 +446,11 @@ namespace epub2cbz
             return true;
         }
 
-        private static bool? CheckDuplicateCover(List<BookInfo.EpubChapter> chapters,
+        private static bool CheckDuplicateCover(List<BookInfo.EpubChapter> chapters,
             List<BookInfo.EpubPage> bookFull,
             Dictionary<string, ZipArchiveEntry> entryMap,
             XDocument opfDoc,
             string epubFilename,
-            bool? correctSpread,
             string epubFile)
         {
             if (chapters.Count > 0
@@ -461,7 +459,21 @@ namespace epub2cbz
                 || chapters[0].Title == "カバー"
                 || chapters[0].Title == "表紙"))
             {
-                correctSpread = RemoveDuplicateCover(entryMap, bookFull, epubFilename, correctSpread);
+                RemoveDuplicateCover(bookFull, epubFilename);
+                return true;
+            }
+            else if (Path.GetFileName(bookFull[0].Image) == Path.GetFileName(bookFull[1].Image))
+            {
+#if DEBUG
+                AppendColoredText($"DEBUG: '{epubFilename}' - Image 0 == Image 1" + Environment.NewLine, System.Drawing.Color.HotPink);
+#endif
+                RemoveDuplicateCover(bookFull, epubFilename);
+                return true;
+            }
+            else if (CompareImages(entryMap, bookFull[0].Image, bookFull[1].Image, epubFile))
+            {
+                RemoveDuplicateCover(bookFull, epubFilename);
+                return true;
             }
             else
             {
@@ -470,32 +482,18 @@ namespace epub2cbz
                 var item = opfDoc.Descendants(opf + "guide").Descendants(opf + "reference").FirstOrDefault(i => (string?)i.Attribute("type") == "cover");
                 if (item is not null)
                 {
-                    string coverPath = (string)item.Attribute("href")!;
+                    string? coverPath = (string?)item.Attribute("href");
 
-                    if (Path.GetFileName(coverPath.Split('#')[0]) == Path.GetFileName(bookFull[1].Page))
+                    if (!string.IsNullOrEmpty(coverPath)
+                        && Path.GetFileName(coverPath.Split('#')[0]) == Path.GetFileName(bookFull[1].Page))
                     {
-                        correctSpread = RemoveDuplicateCover(entryMap, bookFull, epubFilename, correctSpread);
+                        RemoveDuplicateCover(bookFull, epubFilename);
+                        return true;
                     }
-                    else if (CompareImages(entryMap, bookFull[0].Image, bookFull[1].Image, epubFile))
-                    {
-                        correctSpread = RemoveDuplicateCover(entryMap, bookFull, epubFilename, correctSpread);
-                    }
-                }
-#if DEBUG
-                else if (Path.GetFileName(bookFull[0].Image) == Path.GetFileName(bookFull[1].Image))
-                {
-                    AppendColoredText($"DEBUG: '{epubFilename}' - Image 0 == Image 1" + Environment.NewLine, System.Drawing.Color.HotPink);
-
-                    correctSpread = RemoveDuplicateCover(entryMap, bookFull, epubFilename, correctSpread);
-                }
-#endif
-                else if (CompareImages(entryMap, bookFull[0].Image, bookFull[1].Image, epubFile))
-                {
-                    correctSpread = RemoveDuplicateCover(entryMap, bookFull, epubFilename, correctSpread);
                 }
             }
 
-            return correctSpread;
+            return false;
         }
 
         private static bool CheckEPUB(string epubFile)
@@ -591,57 +589,31 @@ namespace epub2cbz
             }
         }
 
-        private static bool? CheckPageSpread(string readingDirection,
+        private static void CheckPageSpread(string epubFilename,
             List<BookInfo.EpubPage> bookFull)
         {
-            if (bookFull[1].Doublepage == true) return true;
-            if (bookFull.Count < 3) return null;
+            string centerFound = string.Empty;
 
-            int pageSpreadCounter = 0;
-            bool foundSpreadInfo = false;
-            string firstPage;
-            string secondPage;
-
-            if (readingDirection == "YesAndRightToLeft") // right to left
+            for (int i = 0; i < bookFull.Count; i++)
             {
-                firstPage = "page-spread-right";
-                secondPage = "page-spread-left";
-            }
-            else // left to right
-            {
-                firstPage = "page-spread-left";
-                secondPage = "page-spread-right";
-            }
-
-            for (int i = 1; i < bookFull.Count; i++)
-            {
-                if (bookFull[i].Doublepage == true)
-                {
-                    if ((i + pageSpreadCounter) % 2 != 0) return true;
-                    pageSpreadCounter++;
-                    continue;
-                }
-
                 if (string.IsNullOrEmpty(bookFull[i].Spread))
                 {
                     continue;
                 }
 
-                foundSpreadInfo = true;
-
-                if (bookFull[i].Spread.Contains(firstPage, StringComparison.OrdinalIgnoreCase) && (i + pageSpreadCounter) % 2 != 0
-                    || bookFull[i].Spread.Contains(secondPage, StringComparison.OrdinalIgnoreCase) && (i + pageSpreadCounter) % 2 == 0)
+                if (bookFull[i].Spread.Contains("left", StringComparison.OrdinalIgnoreCase)
+                    || bookFull[i].Spread.Contains("right", StringComparison.OrdinalIgnoreCase))
                 {
-                    return true; // Spread seems to be correct
+                    return;
                 }
-                else if (bookFull[i].Spread.Contains(firstPage, StringComparison.OrdinalIgnoreCase) && (i + pageSpreadCounter) % 2 == 0
-                    || bookFull[i].Spread.Contains(secondPage, StringComparison.OrdinalIgnoreCase) && (i + pageSpreadCounter) % 2 != 0)
+
+                if (bookFull[i].Spread.Contains("center", StringComparison.OrdinalIgnoreCase)
+                    && string.IsNullOrEmpty(centerFound))
                 {
-                    return false; // blank page needed
+                    centerFound = " & only Center found";
                 }
             }
-
-            return foundSpreadInfo ? false : null;
+            AppendColoredText($"DEBUG: '{epubFilename}' - No Page Spread Information" + centerFound + Environment.NewLine, System.Drawing.Color.DarkOrange);
         }
 
         private static void FixPageAlignmentPost(List<BookInfo.EpubPage> bookFull,
@@ -1098,9 +1070,19 @@ namespace epub2cbz
                 {
                     string altTocPath = bookFull[number + i].Page;
 
-                    if (!entryMap.TryGetValue(altTocPath, out var altTocEntry)) { }
+                    if (!entryMap.TryGetValue(altTocPath, out var altTocEntry))
+                    {
+                        i++;
 
-                    using StreamReader reader = new(altTocEntry!.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+                        if (bookFull.Count - 1 < number + i)
+                        {
+                            break;
+                        }
+
+                        continue;
+                    }
+
+                    using StreamReader reader = new(altTocEntry.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
                     string altTocContent = reader.ReadToEnd();
 
                     XDocument altTocDoc = XDocument.Parse(altTocContent);
@@ -2156,119 +2138,81 @@ namespace epub2cbz
             return navPaths;
         }
 
-        private static bool? RemoveDuplicateCover(Dictionary<string, ZipArchiveEntry> entryMap,
-            List<BookInfo.EpubPage> bookFull,
-            string epubFilename,
-            bool? correctSpread)
-        {
-            bool wasWide = false;
-
-            if (PopupSettings.CheckboxStates.CheckboxHigherResolutionCover
-                && bookFull[0].Height > 0
-                && bookFull[1].Height > 0)
-            {
-                if (bookFull[0].Height >= bookFull[1].Height)
-                {
-                    if (bookFull[1].Doublepage == true) wasWide = true;
-                    bookFull.RemoveAt(1);
-                }
-                else bookFull.RemoveAt(0);
-            }
-            else
-            {
-                if (bookFull[1].Doublepage == true) wasWide = true;
-                bookFull.RemoveAt(1);
-            }
-
-#if DEBUG
-            string debugMessage = string.Empty;
-#endif
-
-            if (PopupSettings.CheckboxStates.CheckboxPageSpreadState)
-            {
-                if (correctSpread == true
-                    && wasWide == false
-                    && bookFull[1].Doublepage == false)
-                {
-                    bool isBlank = false;
-
-                    if (!string.IsNullOrEmpty(bookFull[1].Image)
-                        && PopupSettings.CheckboxStates.CheckboxBlankImageState)
-                    {
-                        isBlank = IsImageBlankWhite(entryMap, bookFull[1].Image);
-                    }
-                    else if (bookFull[1].Image == string.Empty
-                        && PopupSettings.CheckboxStates.CheckboxBlankImageState)
-                    {
-                        isBlank = true;
-                    }
-
-                    // add blank image to keep correct page spread
-                    if (!isBlank)
-                    {
-                        bookFull.Insert(1, new()
-                        {
-                            Page = "blank",
-                        });
-
-#if DEBUG
-                        debugMessage += " & Blank Inserted";
-#endif
-                    }
-                    // remove blank image to keep correct page spread
-                    else
-                    {
-                        bookFull.RemoveAt(1);
-
-#if DEBUG
-                        debugMessage += " & Removed Double Blank";
-#endif
-                    }
-                }
-                else if (correctSpread == false) correctSpread = true;
-            }
-
-#if DEBUG
-            AppendColoredText($"DEBUG: '{epubFilename}' - Removed Duplicate Cover" + debugMessage + Environment.NewLine, System.Drawing.Color.DarkOrange);
-#endif
-
-            return correctSpread;
-        }
-
-        private static void InsertBlankPage (Dictionary<string, ZipArchiveEntry> entryMap,
-            string epubFilename,
-            List<BookInfo.EpubPage> bookFull)
+        private static void BlankPageBehavior(List<BookInfo.EpubPage> bookFull,
+            Dictionary<string, ZipArchiveEntry> entryMap,
+            string epubFilename)
         {
             bool isBlank = false;
 
-            if (!string.IsNullOrEmpty(bookFull[1].Image)
-                && PopupSettings.CheckboxStates.CheckboxBlankImageState)
+            if (!string.IsNullOrEmpty(bookFull[2].Image))
             {
-                isBlank = IsImageBlankWhite(entryMap, bookFull[1].Image);
+                isBlank = IsImageBlankWhite(entryMap, bookFull[2].Image);
             }
-            else if (bookFull[1].Image == string.Empty
-                && PopupSettings.CheckboxStates.CheckboxBlankImageState)
+            else if (bookFull[2].Image == string.Empty)
             {
                 isBlank = true;
             }
 
-            // add blank image to keep correct page spread
-            if (!isBlank)
+
+            // remove both blank images
+            if (isBlank)
             {
-                bookFull.Insert(1, new()
-                {
-                    Page = "blank",
-                });
-            }
-            // remove blank image to keep correct page spread
-            else
-            {
+                bookFull.RemoveAt(2);
                 bookFull.RemoveAt(1);
 
 #if DEBUG
                 AppendColoredText($"DEBUG: '{epubFilename}' - Removed Double Blank" + Environment.NewLine, System.Drawing.Color.DarkOrange);
 #endif
             }
+        }
+
+        private static void RemoveDuplicateCover(List<BookInfo.EpubPage> bookFull,
+            string epubFilename)
+        {
+            if (PopupSettings.CheckboxStates.CheckboxHigherResolutionCover
+                && bookFull[0].Height > 0
+                && bookFull[1].Height > 0)
+            {
+                if (bookFull[0].Height >= bookFull[1].Height)
+                {
+                    if (PopupSettings.CheckboxStates.CheckboxPageSpreadState)
+                    {
+                        bookFull[1] = bookFull[1] with
+                        {
+                            Page = "blank",
+                            Image = ""
+                        };
+                    }
+                    else bookFull.RemoveAt(1);
+                }
+                else
+                {
+                    bookFull.RemoveAt(0);
+                    if (PopupSettings.CheckboxStates.CheckboxPageSpreadState)
+                    {
+                        bookFull.Insert(1, new()
+                        {
+                            Page = "blank",
+                        });
+                    }
+                }
+            }
+            else
+            {
+                if (PopupSettings.CheckboxStates.CheckboxPageSpreadState)
+                {
+                    bookFull[1] = bookFull[1] with
+                    {
+                        Page = "blank",
+                        Image = ""
+                    };
+                }
+                else bookFull.RemoveAt(1);
+            }
+
+#if DEBUG
+            AppendColoredText($"DEBUG: '{epubFilename}' - Removed Duplicate Cover" + Environment.NewLine, System.Drawing.Color.DarkOrange);
+#endif
         }
 
         private static void ProcessEpub(string epubFile,
@@ -2432,11 +2376,6 @@ namespace epub2cbz
                 ParseAlternativeCover(entryMap, epubFile, opfDoc, bookFull, opfPath);
             }
 
-            if (PopupSettings.CheckboxStates.CheckboxPageSpreadState)
-            {
-                FixPageAlignmentPost(bookFull, readingDirection);
-            }
-
             List<BookInfo.EpubChapter> chapters = [];
             if (barnesAndNobleBook)
             {
@@ -2448,36 +2387,32 @@ namespace epub2cbz
                 chapters = ParseAlternativeToc(entryMap, opfDoc, chapters, bookFull, opfPath);
             }
 
-            bool? correctSpread = null;
-            if (barnesAndNobleBook)
+            bool removedDuplicateCover = false;
+            if (PopupSettings.CheckboxStates.CheckboxDuplicateCoverState)
             {
-                correctSpread = true;
-            }
-            else
-            {
-                correctSpread = CheckPageSpread(readingDirection, bookFull);
+                removedDuplicateCover = CheckDuplicateCover(chapters, bookFull, entryMap, opfDoc, epubFilename, epubFile);
             }
 
 #if DEBUG
-            if (correctSpread == null)
+            if (!barnesAndNobleBook)
             {
-                AppendColoredText($"DEBUG: '{epubFilename}' - No Page Spread Information" + Environment.NewLine, System.Drawing.Color.DarkOrange);
+                CheckPageSpread(epubFilename, bookFull);
             }
 #endif
+
+            if (PopupSettings.CheckboxStates.CheckboxPageSpreadState)
+            {
+                FixPageAlignmentPost(bookFull, readingDirection);
+
+                if (removedDuplicateCover && PopupSettings.CheckboxStates.CheckboxBlankImageState)
+                {
+                    BlankPageBehavior(bookFull, entryMap, epubFilename);
+                }
+            }
 
             if (chapters.Count >= (bookFull.Count - 1) && PopupSettings.CheckboxStates.CheckboxEveryPageIsChapterState) // if all pages are chapters (minus the Cover)
             {
                 chapters = [];
-            }
-
-            if (PopupSettings.CheckboxStates.CheckboxDuplicateCoverState)
-            {
-                correctSpread = CheckDuplicateCover(chapters, bookFull, entryMap, opfDoc, epubFilename, correctSpread, epubFile);
-            }
-
-            if (correctSpread == false && PopupSettings.CheckboxStates.CheckboxPageSpreadState)
-            {
-                InsertBlankPage(entryMap, epubFilename, bookFull);
             }
 
             if (PopupSettings.CheckboxStates.CheckboxInsertAdditionalBlankImageState)
