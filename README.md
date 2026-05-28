@@ -21,6 +21,7 @@ The latest release is available here: [Releases](https://github.com/bust4cap/epu
 
 ## Command Line Arguments
 - "--simple" / "-s": Enable "Simple Mode". Only extracts images. No further processing is done. All images keep their original name. Very Fast!
+- "--light" / "-l": Enable light mode
 - "--dark" / "-d": Enable dark mode
 <br/><br/>
 

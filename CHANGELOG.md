@@ -1,3 +1,18 @@
+## v2026.05.28-1
+- Fixed page alignment in more cases
+- Optimized blank page bahvior
+- Optimized detecting and removing duplicate covers
+- Reduced memory footprint
+- Dark mode is now automatically enabled based on system settings
+- Added "--light" / "-l" command line argument. Enforces light mode
+- Fixed dark mode detection and selection
+- Removed "extract images" checkbox since it's always enabled now
+- Sped up conversion for EPUBs that reference images in a css slightly
+- Updated buttons and dropdown lists to flat style
+- Centered input/output path textbox
+- Adjusted button sizes and placements slightly
+- Code optimization and cleanup
+
 ## v2026.05.19-1
 - Sped up image splitting, resizing and cropping by around 30-40%
 - If multiple images are referenced in one page, use the largest one by file size
