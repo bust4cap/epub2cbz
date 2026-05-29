@@ -427,9 +427,6 @@ namespace epub2cbz
             checkBoxSettingsExperimentalChapterFolders.Checked = CheckboxStates.CheckboxChapterFoldersState;
 
             checkBoxSettingsExperimentalAddAlternativeCover.Checked = CheckboxStates.CheckboxAddAlternativeCoverState;
-#if DEBUG
-            checkBoxSettingsExperimentalOffsetChapters.Visible = true;
-#endif
             checkBoxSettingsExperimentalOffsetChapters.Checked = CheckboxStates.CheckboxOffsetChaptersState;
 
             checkBoxSettingsReplaceSeries.Checked = CheckboxStates.CheckboxReplaceSeriesState;
@@ -558,6 +555,13 @@ namespace epub2cbz
 
             CenterElements();
             PopulateDropdownListKindleKobo();
+
+#if !DEBUG
+            checkBoxSettingsExperimentalOffsetChapters.Visible = false;
+            int rowIndex = tableLayoutPanelExperimental.GetRow(checkBoxSettingsExperimentalOffsetChapters);
+            tableLayoutPanelExperimental.RowStyles[rowIndex].SizeType = SizeType.Absolute;
+            tableLayoutPanelExperimental.RowStyles[rowIndex].Height = 0;
+#endif
         }
     }
 }

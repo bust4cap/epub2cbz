@@ -67,6 +67,7 @@
             checkBoxSettingsExperimentalCheckDRMProtection = new CheckBox();
             checkBoxSettingsExperimentalRemoveFirstPage = new CheckBox();
             checkBoxSettingsExperimentalOffsetChapters = new CheckBox();
+            checkBoxSettingsExperimentalAddAlternativeCover = new CheckBox();
             toolTipSettings = new ToolTip(components);
             dropDownCompressionLevel = new ComboBox();
             groupBoxCompressionLevel = new GroupBox();
@@ -106,7 +107,6 @@
             panelSettingsCbzZip = new Panel();
             tableLayoutPanelSettingsBottom = new TableLayoutPanel();
             tableLayoutPanelSettingsTop = new TableLayoutPanel();
-            checkBoxSettingsExperimentalAddAlternativeCover = new CheckBox();
             groupBoxComicInfo.SuspendLayout();
             tableLayoutPanelComicInfo.SuspendLayout();
             groupBoxExperimental.SuspendLayout();
@@ -657,7 +657,18 @@
             checkBoxSettingsExperimentalOffsetChapters.Text = "Shift Chapters";
             toolTipSettings.SetToolTip(checkBoxSettingsExperimentalOffsetChapters, "Affected titles may include:\r\n- Dr. Mashirito's Ultimate Manga Techniques\r\n- Fist of the North Star v17 - v18\r\n- Kingdom v01 - v05\r\n- Moan: Junji Ito Story Collection\r\n- Real v16");
             checkBoxSettingsExperimentalOffsetChapters.UseVisualStyleBackColor = false;
-            checkBoxSettingsExperimentalOffsetChapters.Visible = false;
+            // 
+            // checkBoxSettingsExperimentalAddAlternativeCover
+            // 
+            checkBoxSettingsExperimentalAddAlternativeCover.Anchor = AnchorStyles.Left;
+            checkBoxSettingsExperimentalAddAlternativeCover.AutoSize = true;
+            checkBoxSettingsExperimentalAddAlternativeCover.Location = new Point(272, 179);
+            checkBoxSettingsExperimentalAddAlternativeCover.Margin = new Padding(2, 1, 2, 1);
+            checkBoxSettingsExperimentalAddAlternativeCover.Name = "checkBoxSettingsExperimentalAddAlternativeCover";
+            checkBoxSettingsExperimentalAddAlternativeCover.Size = new Size(138, 18);
+            checkBoxSettingsExperimentalAddAlternativeCover.TabIndex = 36;
+            checkBoxSettingsExperimentalAddAlternativeCover.Text = "Add alternative cover";
+            checkBoxSettingsExperimentalAddAlternativeCover.UseVisualStyleBackColor = false;
             // 
             // dropDownCompressionLevel
             // 
@@ -1170,18 +1181,6 @@
             tableLayoutPanelSettingsTop.RowStyles.Add(new RowStyle());
             tableLayoutPanelSettingsTop.Size = new Size(553, 540);
             tableLayoutPanelSettingsTop.TabIndex = 1;
-            // 
-            // checkBoxSettingsExperimentalAddAlternativeCover
-            // 
-            checkBoxSettingsExperimentalAddAlternativeCover.Anchor = AnchorStyles.Left;
-            checkBoxSettingsExperimentalAddAlternativeCover.AutoSize = true;
-            checkBoxSettingsExperimentalAddAlternativeCover.Location = new Point(272, 179);
-            checkBoxSettingsExperimentalAddAlternativeCover.Margin = new Padding(2, 1, 2, 1);
-            checkBoxSettingsExperimentalAddAlternativeCover.Name = "checkBoxSettingsExperimentalAddAlternativeCover";
-            checkBoxSettingsExperimentalAddAlternativeCover.Size = new Size(138, 18);
-            checkBoxSettingsExperimentalAddAlternativeCover.TabIndex = 36;
-            checkBoxSettingsExperimentalAddAlternativeCover.Text = "Add alternative cover";
-            checkBoxSettingsExperimentalAddAlternativeCover.UseVisualStyleBackColor = false;
             // 
             // PopupSettings
             // 
