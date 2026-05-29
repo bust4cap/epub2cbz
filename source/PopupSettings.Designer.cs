@@ -106,6 +106,7 @@
             panelSettingsCbzZip = new Panel();
             tableLayoutPanelSettingsBottom = new TableLayoutPanel();
             tableLayoutPanelSettingsTop = new TableLayoutPanel();
+            checkBoxSettingsExperimentalAddAlternativeCover = new CheckBox();
             groupBoxComicInfo.SuspendLayout();
             tableLayoutPanelComicInfo.SuspendLayout();
             groupBoxExperimental.SuspendLayout();
@@ -409,7 +410,7 @@
             groupBoxExperimental.Dock = DockStyle.Fill;
             groupBoxExperimental.Location = new Point(3, 121);
             groupBoxExperimental.Name = "groupBoxExperimental";
-            groupBoxExperimental.Size = new Size(547, 223);
+            groupBoxExperimental.Size = new Size(547, 243);
             groupBoxExperimental.TabIndex = 20;
             groupBoxExperimental.TabStop = false;
             groupBoxExperimental.Text = "Experimental Features:";
@@ -436,13 +437,14 @@
             tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsResizingEnable, 0, 5);
             tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalCheckDRMProtection, 0, 7);
             tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalRemoveFirstPage, 1, 3);
-            tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalOffsetChapters, 1, 7);
+            tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalOffsetChapters, 0, 8);
+            tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalAddAlternativeCover, 1, 7);
             tableLayoutPanelExperimental.Dock = DockStyle.Fill;
             tableLayoutPanelExperimental.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
             tableLayoutPanelExperimental.Location = new Point(3, 19);
             tableLayoutPanelExperimental.Name = "tableLayoutPanelExperimental";
             tableLayoutPanelExperimental.Padding = new Padding(3);
-            tableLayoutPanelExperimental.RowCount = 8;
+            tableLayoutPanelExperimental.RowCount = 9;
             tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857132F));
             tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857132F));
             tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857132F));
@@ -451,7 +453,8 @@
             tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857132F));
             tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857132F));
             tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanelExperimental.Size = new Size(541, 201);
+            tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanelExperimental.Size = new Size(541, 221);
             tableLayoutPanelExperimental.TabIndex = 207;
             // 
             // checkBoxSettingsExperimentalSpreadInsertBlank
@@ -646,11 +649,11 @@
             // 
             checkBoxSettingsExperimentalOffsetChapters.Anchor = AnchorStyles.Left;
             checkBoxSettingsExperimentalOffsetChapters.AutoSize = true;
-            checkBoxSettingsExperimentalOffsetChapters.Location = new Point(272, 179);
+            checkBoxSettingsExperimentalOffsetChapters.Location = new Point(5, 199);
             checkBoxSettingsExperimentalOffsetChapters.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsExperimentalOffsetChapters.Name = "checkBoxSettingsExperimentalOffsetChapters";
             checkBoxSettingsExperimentalOffsetChapters.Size = new Size(100, 18);
-            checkBoxSettingsExperimentalOffsetChapters.TabIndex = 36;
+            checkBoxSettingsExperimentalOffsetChapters.TabIndex = 37;
             checkBoxSettingsExperimentalOffsetChapters.Text = "Shift Chapters";
             toolTipSettings.SetToolTip(checkBoxSettingsExperimentalOffsetChapters, "Affected titles may include:\r\n- Dr. Mashirito's Ultimate Manga Techniques\r\n- Fist of the North Star v17 - v18\r\n- Kingdom v01 - v05\r\n- Moan: Junji Ito Story Collection\r\n- Real v16");
             checkBoxSettingsExperimentalOffsetChapters.UseVisualStyleBackColor = false;
@@ -740,7 +743,7 @@
             groupBoxResizing.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             groupBoxResizing.Controls.Add(tableLayoutPanelResizing);
             groupBoxResizing.Dock = DockStyle.Fill;
-            groupBoxResizing.Location = new Point(3, 350);
+            groupBoxResizing.Location = new Point(3, 370);
             groupBoxResizing.Name = "groupBoxResizing";
             groupBoxResizing.Size = new Size(547, 98);
             groupBoxResizing.TabIndex = 203;
@@ -941,7 +944,7 @@
             groupBoxCropping.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             groupBoxCropping.Controls.Add(tableLayoutPanelCropping);
             groupBoxCropping.Dock = DockStyle.Fill;
-            groupBoxCropping.Location = new Point(3, 454);
+            groupBoxCropping.Location = new Point(3, 474);
             groupBoxCropping.Name = "groupBoxCropping";
             groupBoxCropping.Size = new Size(547, 63);
             groupBoxCropping.TabIndex = 206;
@@ -1105,7 +1108,7 @@
             tableLayoutPanelSettingsCenter.Controls.Add(groupBoxThreads, 2, 0);
             tableLayoutPanelSettingsCenter.Dock = DockStyle.Fill;
             tableLayoutPanelSettingsCenter.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
-            tableLayoutPanelSettingsCenter.Location = new Point(6, 532);
+            tableLayoutPanelSettingsCenter.Location = new Point(6, 552);
             tableLayoutPanelSettingsCenter.Name = "tableLayoutPanelSettingsCenter";
             tableLayoutPanelSettingsCenter.RowCount = 1;
             tableLayoutPanelSettingsCenter.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
@@ -1139,11 +1142,11 @@
             tableLayoutPanelSettingsBottom.Controls.Add(buttonSettingsResetToDefault, 1, 0);
             tableLayoutPanelSettingsBottom.Dock = DockStyle.Fill;
             tableLayoutPanelSettingsBottom.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
-            tableLayoutPanelSettingsBottom.Location = new Point(6, 594);
+            tableLayoutPanelSettingsBottom.Location = new Point(6, 614);
             tableLayoutPanelSettingsBottom.Name = "tableLayoutPanelSettingsBottom";
             tableLayoutPanelSettingsBottom.RowCount = 1;
             tableLayoutPanelSettingsBottom.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanelSettingsBottom.Size = new Size(553, 32);
+            tableLayoutPanelSettingsBottom.Size = new Size(553, 31);
             tableLayoutPanelSettingsBottom.TabIndex = 120;
             // 
             // tableLayoutPanelSettingsTop
@@ -1165,8 +1168,20 @@
             tableLayoutPanelSettingsTop.RowStyles.Add(new RowStyle());
             tableLayoutPanelSettingsTop.RowStyles.Add(new RowStyle());
             tableLayoutPanelSettingsTop.RowStyles.Add(new RowStyle());
-            tableLayoutPanelSettingsTop.Size = new Size(553, 520);
+            tableLayoutPanelSettingsTop.Size = new Size(553, 540);
             tableLayoutPanelSettingsTop.TabIndex = 1;
+            // 
+            // checkBoxSettingsExperimentalAddAlternativeCover
+            // 
+            checkBoxSettingsExperimentalAddAlternativeCover.Anchor = AnchorStyles.Left;
+            checkBoxSettingsExperimentalAddAlternativeCover.AutoSize = true;
+            checkBoxSettingsExperimentalAddAlternativeCover.Location = new Point(272, 179);
+            checkBoxSettingsExperimentalAddAlternativeCover.Margin = new Padding(2, 1, 2, 1);
+            checkBoxSettingsExperimentalAddAlternativeCover.Name = "checkBoxSettingsExperimentalAddAlternativeCover";
+            checkBoxSettingsExperimentalAddAlternativeCover.Size = new Size(138, 18);
+            checkBoxSettingsExperimentalAddAlternativeCover.TabIndex = 36;
+            checkBoxSettingsExperimentalAddAlternativeCover.Text = "Add alternative cover";
+            checkBoxSettingsExperimentalAddAlternativeCover.UseVisualStyleBackColor = false;
             // 
             // PopupSettings
             // 
@@ -1311,5 +1326,6 @@
         private CheckBox checkBoxSettingsExperimentalRemoveFirstPage;
         private CheckBox checkBoxSettingsExperimentalOffsetChapters;
         private CheckBox checkBoxSettingsComicInfoFileSize;
+        private CheckBox checkBoxSettingsExperimentalAddAlternativeCover;
     }
 }

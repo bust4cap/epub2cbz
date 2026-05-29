@@ -155,6 +155,9 @@ namespace epub2cbz
                         new XAttribute("name", "CheckboxDRMProtectionState"),
                         new XElement("value", PopupSettings.CheckboxStates.CheckboxDRMProtectionState.ToString())),
                     new XElement("setting",
+                        new XAttribute("name", "CheckboxAddAlternativeCoverState"),
+                        new XElement("value", PopupSettings.CheckboxStates.CheckboxAddAlternativeCoverState.ToString())),
+                    new XElement("setting",
                         new XAttribute("name", "CheckboxFileModeState"),
                         new XElement("value", PopupSettings.CheckboxStates.CheckboxFileModeState.ToString()))
                 )
@@ -529,6 +532,12 @@ namespace epub2cbz
                         && bool.TryParse(valueCheckboxDRMProtectionState, out bool parsedValueCheckboxDRMProtectionState))
                     {
                         PopupSettings.CheckboxStates.CheckboxDRMProtectionState = parsedValueCheckboxDRMProtectionState;
+                    }
+
+                    if (loadedSettings.TryGetValue("CheckboxAddAlternativeCoverState", out string? valueCheckboxAddAlternativeCoverState)
+                        && bool.TryParse(valueCheckboxAddAlternativeCoverState, out bool parsedValueCheckboxAddAlternativeCoverState))
+                    {
+                        PopupSettings.CheckboxStates.CheckboxAddAlternativeCoverState = parsedValueCheckboxAddAlternativeCoverState;
                     }
 
                     if (loadedSettings.TryGetValue("CheckboxFileModeState", out string? valueCheckboxFileModeState)

@@ -269,6 +269,7 @@ public partial class MainForm : Form
             buttonStart.Enabled = false;
             Program.cts.Cancel();
             Program.AppendColoredText(Environment.NewLine + Resources.AbortingMessage + Environment.NewLine + Environment.NewLine, Color.Red);
+            outputBoxConsole.Focus();
         }
     }
 

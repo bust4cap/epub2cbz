@@ -447,4 +447,7 @@
   <data name="ComicInfoCheckboxText" xml:space="preserve">
     <value>Erstelle ComicInfo.xml</value>
   </data>
+  <data name="SettingsExperimentalAddAlternativeCover" xml:space="preserve">
+    <value>Alternatives Cover hinzufügen</value>
+  </data>
 </root>

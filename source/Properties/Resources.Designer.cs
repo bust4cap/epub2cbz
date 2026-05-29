@@ -682,6 +682,15 @@ namespace epub2cbz.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Add alternative cover ähnelt.
+        /// </summary>
+        internal static string SettingsExperimentalAddAlternativeCover {
+            get {
+                return ResourceManager.GetString("SettingsExperimentalAddAlternativeCover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Add blank page ähnelt.
         /// </summary>
         internal static string SettingsExperimentalAddBlankPage {

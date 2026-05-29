@@ -64,11 +64,15 @@ namespace epub2cbz
         {
             _mainForm?.BeginInvoke(() =>
             {
-                _mainForm.outputBoxConsole.SelectionStart = _mainForm.outputBoxConsole.TextLength;
-                _mainForm.outputBoxConsole.SelectionLength = 0;
-                _mainForm.outputBoxConsole.SelectionColor = color;
-                _mainForm.outputBoxConsole.AppendText(text);
-                _mainForm.outputBoxConsole.SelectionColor = _mainForm.outputBoxConsole.ForeColor;
+                var box = _mainForm.outputBoxConsole;
+
+                box.SelectionStart = box.TextLength;
+                box.SelectionLength = 0;
+                box.SelectionColor = color;
+                box.AppendText(text);
+                box.SelectionColor = box.ForeColor;
+
+                box.ScrollToCaret();
             });
         }
 
@@ -2373,7 +2377,11 @@ namespace epub2cbz
             else
             {
                 bookFull = ParseOpfPagesXml(entryMap, epubFile, opfPath, opfDoc, pages);
-                ParseAlternativeCover(entryMap, epubFile, opfDoc, bookFull, opfPath);
+
+                if (PopupSettings.CheckboxStates.CheckboxAddAlternativeCoverState)
+                {
+                    ParseAlternativeCover(entryMap, epubFile, opfDoc, bookFull, opfPath);
+                }
             }
 
             List<BookInfo.EpubChapter> chapters = [];
@@ -2558,11 +2566,11 @@ namespace epub2cbz
         private static void HandleCompletion(TimeSpan ts,
             bool wasAborted)
         {
-            AppendColoredText(Environment.NewLine + string.Format(Resources.Timer, Math.Floor(ts.TotalMinutes), ts.Seconds, ts.Milliseconds), System.Drawing.Color.White);
+            AppendColoredText(Environment.NewLine + string.Format(Resources.Timer, Math.Floor(ts.TotalMinutes), ts.Seconds, ts.Milliseconds) + Environment.NewLine, System.Drawing.Color.White);
 
             if (wasAborted)
             {
-                AppendColoredText(Environment.NewLine + Environment.NewLine + Resources.AbortedMessage, System.Drawing.Color.Red);
+                AppendColoredText(Environment.NewLine + Resources.AbortedMessage + Environment.NewLine, System.Drawing.Color.Red);
             }
 
             EnableControls();

@@ -40,6 +40,7 @@ namespace epub2cbz
             public static bool CheckboxChapterFoldersState { get; set; } = false;
             public static bool CheckboxRemoveFirstPageState { get; set; } = false;
 
+            public static bool CheckboxAddAlternativeCoverState { get; set; } = false;
             public static bool CheckboxOffsetChaptersState { get; set; } = false;
 
             public static bool CheckboxReplaceSeriesState { get; set; } = false;
@@ -108,6 +109,7 @@ namespace epub2cbz
             CheckboxStates.CheckboxMetadataTitleState = checkBoxSettingsExperimentalMetadataTitle.Checked;
             CheckboxStates.CheckboxChapterFoldersState = checkBoxSettingsExperimentalChapterFolders.Checked;
 
+            CheckboxStates.CheckboxAddAlternativeCoverState = checkBoxSettingsExperimentalAddAlternativeCover.Checked;
             CheckboxStates.CheckboxOffsetChaptersState = checkBoxSettingsExperimentalOffsetChapters.Checked;
 
             CheckboxStates.CheckboxReplaceSeriesState = checkBoxSettingsReplaceSeries.Checked;
@@ -239,6 +241,7 @@ namespace epub2cbz
             checkBoxSettingsReplaceSeries.Checked = false;
             textBoxReplaceSeries.Text = string.Empty;
 
+            checkBoxSettingsExperimentalAddAlternativeCover.Checked = false;
             checkBoxSettingsExperimentalOffsetChapters.Checked = false;
 
             radioButtonSettingsZip.Checked = false;
@@ -423,6 +426,7 @@ namespace epub2cbz
             checkBoxSettingsExperimentalMetadataTitle.Checked = CheckboxStates.CheckboxMetadataTitleState;
             checkBoxSettingsExperimentalChapterFolders.Checked = CheckboxStates.CheckboxChapterFoldersState;
 
+            checkBoxSettingsExperimentalAddAlternativeCover.Checked = CheckboxStates.CheckboxAddAlternativeCoverState;
 #if DEBUG
             checkBoxSettingsExperimentalOffsetChapters.Visible = true;
 #endif
@@ -497,6 +501,7 @@ namespace epub2cbz
             textBoxReplaceSeries.PlaceholderText = Resources.ReplaceSeriesPlaceholder;
 
             checkBoxSettingsExperimentalCheckDRMProtection.Text = Resources.SettingsExperimentalDRMProtection;
+            checkBoxSettingsExperimentalAddAlternativeCover.Text = Resources.SettingsExperimentalAddAlternativeCover;
 
             groupBoxResizing.Text = Resources.SettingsGroupResizing;
             checkBoxSettingsResizingEnable.Text = Resources.SettingsResizingResizeImages;
