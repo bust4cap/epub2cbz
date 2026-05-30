@@ -1,3 +1,6 @@
+## v2026.05.30-1
+- Added option to add an alternative cover if the ebooks spine doesn't include it as the first page
+
 ## v2026.05.28-1
 - Fixed page alignment in more cases
 - Optimized blank page bahvior
