@@ -3,7 +3,7 @@
 
 ## v2026.05.28-1
 - Fixed page alignment in more cases
-- Optimized blank page bahvior
+- Optimized blank page behavior
 - Optimized detecting and removing duplicate covers
 - Reduced memory footprint
 - Dark mode is now automatically enabled based on system settings
