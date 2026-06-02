@@ -45,4 +45,4 @@ epub2cbz uses the following third party software libraries:
 | --- | --- | --- |
 | [CoenM.ImageSharp.ImageHash](https://github.com/coenm/ImageHash) | Comparing duplicate cover candidates | [MIT](https://licenses.nuget.org/MIT) |
 | [ExCSS](https://github.com/TylerBrinks/ExCSS) | Parsing info from CSS files | [MIT](https://licenses.nuget.org/MIT) |
-| [SixLabors.ImageSharp](https://github.com/SixLabors/ImageSharp) | Decoding WebP images | [Apache-2.0](https://licenses.nuget.org/Apache-2.0) |
+| [SixLabors.ImageSharp](https://github.com/SixLabors/ImageSharp) | Decoding and modifying images | [Apache-2.0](https://licenses.nuget.org/Apache-2.0) |
