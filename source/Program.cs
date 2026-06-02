@@ -1240,26 +1240,8 @@ namespace epub2cbz
 
             return image;
         }
-        
-        private static void FillBlankImageResolutions(int width,
-            int height,
-            List<BookInfo.EpubPage> bookFull)
-        {
-            for (int i = 0; i < bookFull.Count; i++)
-            {
-                if (bookFull[i].Page == "blank" || (bookFull[i].Image == string.Empty && bookFull[i].Height == 0 && bookFull[i].Width == 0))
-                {
-                    bookFull[i] = bookFull[i] with
-                    {
-                        Height = height,
-                        Width = width
-                    };
-                }
-            }
-        }
 
-        private static (int, int) GetSinglePageResolution(Dictionary<string, ZipArchiveEntry> entryMap,
-            List<BookInfo.EpubPage> bookFull)
+        private static (int, int) GetSinglePageResolution(List<BookInfo.EpubPage> bookFull)
         {
             int dimensionX = 0;
             int dimensionY = 0;
@@ -1268,11 +1250,10 @@ namespace epub2cbz
             {
                 if (!string.IsNullOrEmpty(bookFull[i].Image) && i > 0)
                 {
-                    ZipArchiveEntry bookEntry = entryMap.GetValueOrDefault(bookFull[i].Image)!;
-                    using var stream = bookEntry.Open();
                     if (imageExtensions.Any(ext => bookFull[i].Image.EndsWith(ext, StringComparison.OrdinalIgnoreCase)))
                     {
-                        (dimensionX, dimensionY) = GetImageDimensions(stream);
+                        dimensionX = bookFull[i].Width;
+                        dimensionY = bookFull[i].Height;
 
                         if (dimensionY > dimensionX) break;
                     }
@@ -1339,7 +1320,7 @@ namespace epub2cbz
 
             using ZipArchive destinationArchive = ZipFile.Open(targetCbz, ZipArchiveMode.Create);
 
-            (int singleWidth, int singleHeight) = GetSinglePageResolution(entryMap, bookFull);
+            (int singleWidth, int singleHeight) = GetSinglePageResolution(bookFull);
 
             bool doSplit = PopupSettings.CheckboxStates.CheckboxSplitPageSpreadState;
             int numberWideImages = doSplit ? bookFull.Count(page => page.Doublepage == true) : 0;
@@ -1400,11 +1381,11 @@ namespace epub2cbz
                             using Image<Rgba32> leftImage = imageToProcess.Clone(ctx => ctx.Crop(new SixLabors.ImageSharp.Rectangle(0, 0, halfWidth, imageHeight)));
                             if (doResize) ApplyResizing(leftImage);
 
-                            using Image<Rgba32> rightImage = imageToProcess.Clone(ctx => ctx.Crop(new SixLabors.ImageSharp.Rectangle(halfWidth, 0, imageToProcess.Width - halfWidth, imageHeight)));
-                            if (doResize) ApplyResizing(rightImage);
+                            imageToProcess.Mutate(ctx => ctx.Crop(new SixLabors.ImageSharp.Rectangle(halfWidth, 0, imageToProcess.Width - halfWidth, imageHeight)));
+                            if (doResize) ApplyResizing(imageToProcess);
 
-                            Image<Rgba32> firstImage = readingDirection == "YesAndRightToLeft" ? rightImage : leftImage;
-                            Image<Rgba32> secondImage = readingDirection == "YesAndRightToLeft" ? leftImage : rightImage;
+                            Image<Rgba32> firstImage = readingDirection == "YesAndRightToLeft" ? imageToProcess : leftImage;
+                            Image<Rgba32> secondImage = readingDirection == "YesAndRightToLeft" ? leftImage : imageToProcess;
 
                             using (Stream destinationStream = destinationArchive.CreateEntry(fullEntryPathFirst, compressionLevel).Open())
                             using (CountingStream countingStreamFirst = new(destinationStream))
@@ -1442,6 +1423,19 @@ namespace epub2cbz
                         if (doCrop || doResize)
                         {
                             bool cropped, resized;
+
+                            int maxWidth = PopupSettings.CheckboxStates.TextBoxResizeWidthValue;
+                            int maxHeight = PopupSettings.CheckboxStates.TextBoxResizeHeightValue;
+
+                            if (!doCrop && bookFull[i].Width == maxWidth && bookFull[i].Height == maxHeight)
+                            {
+                                using Stream sourceStream = bookEntry.Open();
+                                using Stream destinationStream = destinationArchive.CreateEntry(fullEntryPathFirst, compressionLevel).Open();
+                                sourceStream.CopyTo(destinationStream);
+
+                                bookFull[i] = bookFull[i] with { Size = bookEntry.Length };
+                                continue;
+                            }
 
                             using (Stream sourceStream = bookEntry.Open())
                             using (Image<Rgba32> imageToProcess = SixLabors.ImageSharp.Image.Load<Rgba32>(sourceStream))
@@ -2508,13 +2502,6 @@ namespace epub2cbz
 
                     entryMap.Clear();
                     return;
-                }
-
-                if (PopupSettings.CheckboxStates.CheckboxImageSizeState)
-                {
-                    (int width, int height) = GetSinglePageResolution(entryMap, bookFull);
-
-                    FillBlankImageResolutions(width, height, bookFull);
                 }
 
                 WriteComicInfoXml(targetCbz, epubFilename, readingDirection, bookFull, metadata);
