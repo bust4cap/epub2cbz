@@ -45,9 +45,17 @@ namespace epub2cbz
 
         private static string _exportFileExtension = ".cbz";
 
-        private static void ProgressBarStep()
+        private static void ProgressBarStep(int currentProgress)
         {
-            _mainForm?.BeginInvoke(_mainForm.toolStripProgressBar.PerformStep);
+            _mainForm?.BeginInvoke(() =>
+            {
+                int targetValue = Math.Clamp(currentProgress, 0, numberEpubs);
+
+                if (targetValue > _mainForm.toolStripProgressBar.Value)
+                {
+                    _mainForm.toolStripProgressBar.Value = targetValue;
+                }
+            });
         }
 
         public static void ClearAndFocusConsole()
@@ -2216,6 +2224,8 @@ namespace epub2cbz
         private static void ProcessEpub(string epubFile,
             CancellationToken token)
         {
+            int currentProgress = 0;
+
             string rootDir = string.Empty;
             if (!PopupSettings.CheckboxStates.CheckboxFileModeState)
             {
@@ -2239,10 +2249,10 @@ namespace epub2cbz
 
             if (!CheckEPUB(epubFile))
             {
-                Interlocked.Increment(ref numberCurrentEpub);
-                AppendColoredText($"({numberCurrentEpub.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "
+                currentProgress = Interlocked.Increment(ref numberCurrentEpub);
+                AppendColoredText($"({currentProgress.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "
                     + string.Format(Resources.NotAnEPUB, Path.GetFileName(epubFile)) + Environment.NewLine, System.Drawing.Color.Red);
-                ProgressBarStep();
+                ProgressBarStep(currentProgress);
 
                 return;
             }
@@ -2261,10 +2271,10 @@ namespace epub2cbz
             }
             catch (Exception ex)
             {
-                Interlocked.Increment(ref numberCurrentEpub);
-                AppendColoredText($"({numberCurrentEpub.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "
+                currentProgress = Interlocked.Increment(ref numberCurrentEpub);
+                AppendColoredText($"({currentProgress.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "
                     + string.Format(ex.Message, Path.GetFileName(epubFile)) + Environment.NewLine, System.Drawing.Color.Red);
-                ProgressBarStep();
+                ProgressBarStep(currentProgress);
 
                 return;
             }
@@ -2274,10 +2284,10 @@ namespace epub2cbz
                 if (File.Exists(targetCbz)
                     || !_processedCbzFiles.TryAdd(targetCbz, true))
                 {
-                    Interlocked.Increment(ref numberCurrentEpub);
-                    AppendColoredText($"({numberCurrentEpub.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "
+                    currentProgress = Interlocked.Increment(ref numberCurrentEpub);
+                    AppendColoredText($"({currentProgress.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "
                         + string.Format(Resources.CbzAlreadyExists, Path.GetFileName(targetCbz)) + Environment.NewLine, System.Drawing.Color.Red);
-                    ProgressBarStep();
+                    ProgressBarStep(currentProgress);
                     return;
                 }
 
@@ -2293,10 +2303,10 @@ namespace epub2cbz
 
                 ExtractImageStreamsSimple(entryKeysNew, targetCbz);
 
-                Interlocked.Increment(ref numberCurrentEpub);
-                AppendColoredText($"({numberCurrentEpub.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "
+                currentProgress = Interlocked.Increment(ref numberCurrentEpub);
+                AppendColoredText($"({currentProgress.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "
                     + string.Format(Resources.Processed, epubFilename) + Environment.NewLine, System.Drawing.Color.Green);
-                ProgressBarStep();
+                ProgressBarStep(currentProgress);
 
                 entryMap.Clear();
                 return;
@@ -2323,10 +2333,10 @@ namespace epub2cbz
 
             if (PopupSettings.CheckboxStates.CheckboxDRMProtectionState && CheckDRMProtection(entryMap, pages[0].Pages.Split('#')[0]))
             {
-                Interlocked.Increment(ref numberCurrentEpub);
-                AppendColoredText($"({numberCurrentEpub.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "
+                currentProgress = Interlocked.Increment(ref numberCurrentEpub);
+                AppendColoredText($"({currentProgress.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "
                     + string.Format(Resources.IsDRMProtected, Path.GetFileName(epubFile)) + Environment.NewLine, System.Drawing.Color.Red);
-                ProgressBarStep();
+                ProgressBarStep(currentProgress);
 
                 entryMap.Clear();
                 return;
@@ -2355,10 +2365,10 @@ namespace epub2cbz
 
             if (File.Exists(targetCbz))
             {
-                Interlocked.Increment(ref numberCurrentEpub);
-                AppendColoredText($"({numberCurrentEpub.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "
+                currentProgress = Interlocked.Increment(ref numberCurrentEpub);
+                AppendColoredText($"({currentProgress.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "
                     + string.Format(Resources.CbzAlreadyExists, Path.GetFileName(targetCbz)) + Environment.NewLine, System.Drawing.Color.Red);
-                ProgressBarStep();
+                ProgressBarStep(currentProgress);
                 return;
             }
 
@@ -2450,29 +2460,29 @@ namespace epub2cbz
                 {
                     if (Enum.GetNames<Fail>().Any(name => name == ex.Message))
                     {
-                        Interlocked.Increment(ref numberCurrentEpub);
+                        currentProgress = Interlocked.Increment(ref numberCurrentEpub);
 
                         if (ex.Message == Fail.Cbz.ToString())
                         {
-                            AppendColoredText($"({numberCurrentEpub.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "
+                            AppendColoredText($"({currentProgress.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "
                                 + string.Format(Resources.CbzAlreadyExists, Path.GetFileName(targetCbz)) + Environment.NewLine, System.Drawing.Color.Red);
                         }
                         else if (ex.Message == Fail.Blank.ToString())
                         {
-                            AppendColoredText($"({numberCurrentEpub.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "
+                            AppendColoredText($"({currentProgress.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "
                                 + Resources.BlankImageError + string.Format(Resources.NotAManga, epubFilename) + Environment.NewLine, System.Drawing.Color.Red);
 
                             if (File.Exists(targetCbz)) File.Delete(targetCbz);
                         }
                         else if (ex.Message == Fail.Split.ToString())
                         {
-                            AppendColoredText($"({numberCurrentEpub.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "
+                            AppendColoredText($"({currentProgress.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "
                                 + Resources.SplitImageError + $" '{epubFilename}'" + Environment.NewLine, System.Drawing.Color.Red);
 
                             if (File.Exists(targetCbz)) File.Delete(targetCbz);
                         }
 
-                        ProgressBarStep();
+                        ProgressBarStep(currentProgress);
 
                         entryMap.Clear();
                         return;
@@ -2495,10 +2505,10 @@ namespace epub2cbz
                     && (File.Exists(targetCbz)
                     || !_processedCbzFiles.TryAdd(targetCbz, true)))
                 {
-                    Interlocked.Increment(ref numberCurrentEpub);
-                    AppendColoredText($"({numberCurrentEpub.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "
+                    currentProgress = Interlocked.Increment(ref numberCurrentEpub);
+                    AppendColoredText($"({currentProgress.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "
                         + string.Format(Resources.CbzAlreadyExists, Path.GetFileName(targetCbz)) + Environment.NewLine, System.Drawing.Color.Red);
-                    ProgressBarStep();
+                    ProgressBarStep(currentProgress);
 
                     entryMap.Clear();
                     return;
@@ -2507,10 +2517,10 @@ namespace epub2cbz
                 WriteComicInfoXml(targetCbz, epubFilename, readingDirection, bookFull, metadata);
             }
 
-            Interlocked.Increment(ref numberCurrentEpub);
-            AppendColoredText($"({numberCurrentEpub.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "
+            currentProgress = Interlocked.Increment(ref numberCurrentEpub);
+            AppendColoredText($"({currentProgress.ToString().PadLeft(numberEpubs.ToString().Length, '0')}/{numberEpubs}) - "
                 + string.Format(Resources.Processed, epubFilename) + Environment.NewLine, System.Drawing.Color.Green);
-            ProgressBarStep();
+            ProgressBarStep(currentProgress);
 
             bookFull.Clear();
             entryMap.Clear();
