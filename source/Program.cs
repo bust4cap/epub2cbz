@@ -855,7 +855,7 @@ namespace epub2cbz
             else if (checksum == 10) chrChecksum = char.Parse("X");
             else chrChecksum = char.Parse(checksum.ToString());
 
-            if (chrChecksum == identifier[9]) return true;
+            if (chrChecksum == char.ToUpper(identifier[9])) return true;
             else return false;
         }
 
