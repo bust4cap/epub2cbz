@@ -539,20 +539,27 @@ namespace epub2cbz
             }
             else if (imageExtensions.Any(ext => filename.EndsWith(ext, StringComparison.OrdinalIgnoreCase)))
             {
-                if (fileEntry.Length < 4) return false;
+                if (fileEntry.Length < 12) return true;
 
                 using Stream fs = fileEntry.Open();
 
-                Span<byte> buffer = stackalloc byte[4];
+                Span<byte> buffer = stackalloc byte[12];
                 fs.ReadExactly(buffer);
 
-                uint hexValue = BinaryPrimitives.ReadUInt32BigEndian(buffer);
+                uint hexValue = BinaryPrimitives.ReadUInt32BigEndian(buffer[..4]);
 
-                if (hexValue == 0xFFD8FFE0 ||  // JPEG
-                    hexValue == 0xFFD8FFE1 ||  // JPEG
-                    hexValue == 0x89504E47 ||  // PNG
-                    hexValue == 0x52494646 ||  // WEBP
-                    hexValue == 0x47494638)    // GIF
+                bool isJpeg = (hexValue & 0xFFFFFF00) == 0xFFD8FF00;
+                bool isPng = hexValue == 0x89504E47;
+                bool isGif = hexValue == 0x47494638;
+
+                bool isWebp = false;
+                if (hexValue == 0x52494646)
+                {
+                    uint webpHeader = BinaryPrimitives.ReadUInt32BigEndian(buffer[8..]);
+                    isWebp = webpHeader == 0x57454250;
+                }
+
+                if (isJpeg || isPng || isGif || isWebp)
                 {
                     return false;
                 }
