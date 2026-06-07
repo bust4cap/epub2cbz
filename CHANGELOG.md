@@ -1,3 +1,10 @@
+## v2026.06.07-1
+- Fixed regression related to fixing every page being a chapter
+- Fixed ISBN-10 detection in certain cases
+- Updated progression code
+- Made DRM detection of images more robust
+- Code optimization and cleanup
+
 ## v2026.05.30-1
 - Added option to add an alternative cover if the ebooks spine doesn't include it as the first page
 
