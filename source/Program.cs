@@ -761,7 +761,7 @@ namespace epub2cbz
                             if (width >= (height * wideImageRatio)) isDoublePage = true;
                             ///
 
-                            bookFull.Add(new BookInfo.EpubPage()
+                            bookFull.Add(new()
                             {
                                 Page = dicPagesIdsSpread[i].Pages.Split('#')[0],
                                 Image = cssImage,
@@ -778,10 +778,11 @@ namespace epub2cbz
                 //  Add blank page if image source is not linked
                 if (!bookFull.Any(b => b.Page == dicPagesIdsSpread[i].Pages))
                 {
-                    bookFull.Add(new BookInfo.EpubPage()
+                    bookFull.Add(new()
                     {
                         Page = dicPagesIdsSpread[i].Pages.Split('#')[0],
-                        Spread = dicPagesIdsSpread[i].Spread ?? string.Empty
+                        Spread = dicPagesIdsSpread[i].Spread ?? string.Empty,
+                        Blank = true
                     });
                 }
             }
@@ -1370,8 +1371,9 @@ namespace epub2cbz
                 string baseFileNameFirst = $"{prefix}{i.ToString().PadLeft(padLength, '0')}{Path.GetExtension(bookFull[i].Image)}";
                 string fullEntryPathFirst = $"{currentChapterFolder}{baseFileNameFirst}";
 
-                if (!string.IsNullOrEmpty(bookFull[i].Image) &&
-                    imageExtensions.Any(ext => bookFull[i].Image.EndsWith(ext, StringComparison.OrdinalIgnoreCase)))
+                if (!bookFull[i].Blank
+                    && !string.IsNullOrEmpty(bookFull[i].Image)
+                    && imageExtensions.Any(ext => bookFull[i].Image.EndsWith(ext, StringComparison.OrdinalIgnoreCase)))
                 {
                     ZipArchiveEntry bookEntry = entryMap.GetValueOrDefault(bookFull[i].Image)!;
                     bool isDoublePage = doSplit && i > 0 && bookFull[i].Doublepage == true;
@@ -2157,11 +2159,13 @@ namespace epub2cbz
         {
             bool isBlank = false;
 
-            if (!string.IsNullOrEmpty(bookFull[2].Image))
+            if (!string.IsNullOrEmpty(bookFull[2].Image)
+                && !bookFull[2].Blank)
             {
                 isBlank = IsImageBlankWhite(entryMap, bookFull[2].Image);
             }
-            else if (bookFull[2].Image == string.Empty)
+            else if (bookFull[2].Image == string.Empty
+                || bookFull[2].Blank)
             {
                 isBlank = true;
             }
@@ -2192,8 +2196,7 @@ namespace epub2cbz
                     {
                         bookFull[1] = bookFull[1] with
                         {
-                            Page = "blank",
-                            Image = ""
+                            Blank = true
                         };
                     }
                     else bookFull.RemoveAt(1);
@@ -2206,6 +2209,7 @@ namespace epub2cbz
                         bookFull.Insert(1, new()
                         {
                             Page = "blank",
+                            Blank = true
                         });
                     }
                 }
@@ -2216,8 +2220,7 @@ namespace epub2cbz
                 {
                     bookFull[1] = bookFull[1] with
                     {
-                        Page = "blank",
-                        Image = ""
+                        Blank = true
                     };
                 }
                 else bookFull.RemoveAt(1);
@@ -2406,6 +2409,11 @@ namespace epub2cbz
                 chapters = ParseAlternativeToc(entryMap, opfDoc, chapters, bookFull, opfPath);
             }
 
+            if (chapters.Count >= (bookFull.Count - 1) && PopupSettings.CheckboxStates.CheckboxEveryPageIsChapterState) // if all pages are chapters (minus the Cover)
+            {
+                chapters = [];
+            }
+
             bool removedDuplicateCover = false;
             if (PopupSettings.CheckboxStates.CheckboxDuplicateCoverState)
             {
@@ -2429,22 +2437,19 @@ namespace epub2cbz
                 }
             }
 
-            if (chapters.Count >= (bookFull.Count - 1) && PopupSettings.CheckboxStates.CheckboxEveryPageIsChapterState) // if all pages are chapters (minus the Cover)
-            {
-                chapters = [];
-            }
-
             if (PopupSettings.CheckboxStates.CheckboxInsertAdditionalBlankImageState)
             {
                 bookFull.Insert(1, new()
                 {
                     Page = "blank",
+                    Blank = true
                 });
             }
 
             if (PopupSettings.CheckboxStates.CheckboxRemoveFirstPageState)
             {
                 if (string.IsNullOrEmpty(bookFull[1].Image)
+                    || bookFull[1].Blank
                     || IsImageBlankWhite(entryMap, bookFull[1].Image))
                 {
                     bookFull.RemoveAt(1);
