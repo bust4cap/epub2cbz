@@ -556,11 +556,8 @@ namespace epub2cbz
             CenterElements();
             PopulateDropdownListKindleKobo();
 
-#if !DEBUG
-            checkBoxSettingsExperimentalOffsetChapters.Visible = false;
-            int rowIndex = tableLayoutPanelExperimental.GetRow(checkBoxSettingsExperimentalOffsetChapters);
-            tableLayoutPanelExperimental.RowStyles[rowIndex].SizeType = SizeType.Absolute;
-            tableLayoutPanelExperimental.RowStyles[rowIndex].Height = 0;
+#if DEBUG
+            checkBoxSettingsExperimentalOffsetChapters.Visible = true;
 #endif
         }
     }

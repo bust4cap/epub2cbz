@@ -2386,7 +2386,11 @@ namespace epub2cbz
             if (barnesAndNobleBook)
             {
                 bookFull = BarnesAndNoble.ParseReplicaMapPagesXml(entryMap, pages);
-                BarnesAndNoble.ParseCover(entryMap, epubFile, opfDoc, bookFull, opfPath);
+
+                if (PopupSettings.CheckboxStates.CheckboxAddAlternativeCoverState)
+                {
+                    BarnesAndNoble.ParseCover(entryMap, epubFile, opfDoc, bookFull, opfPath);
+                }
             }
             else
             {
@@ -2605,8 +2609,15 @@ namespace epub2cbz
                 && !MainForm.FormElements.CheckboxComicInfoState
                 && !PopupSettings.CheckboxStates.CheckboxSimpleExtractionState)
             {
-                using PopupInfoError popupInfoError = new();
-                popupInfoError.ShowInfoError(Resources.NoCheckBoxChecked, Resources.ErrorMessageBox);
+                var page = new TaskDialogPage()
+                {
+                    Caption = Resources.ErrorMessageBox,
+                    Heading = Resources.ErrorMessageBox,
+                    Text = Resources.NoCheckBoxChecked,
+                    Icon = TaskDialogIcon.Error,
+                    Buttons = { TaskDialogButton.OK }
+                };
+                TaskDialog.ShowDialog(_mainForm!, page, TaskDialogStartupLocation.CenterOwner);
 
                 return;
             }
@@ -2621,8 +2632,15 @@ namespace epub2cbz
             }
             else if (MainForm.FileNameClass.FileNames.Count < 1)
             {
-                using PopupInfoError popupInfoError = new();
-                popupInfoError.ShowInfoError(Resources.NoEpubsFoundMessageBox, Resources.ErrorMessageBox);
+                var page = new TaskDialogPage()
+                {
+                    Caption = Resources.ErrorMessageBox,
+                    Heading = Resources.ErrorMessageBox,
+                    Text = Resources.NoEpubsFoundMessageBox,
+                    Icon = TaskDialogIcon.Error,
+                    Buttons = { TaskDialogButton.OK }
+                };
+                TaskDialog.ShowDialog(_mainForm!, page, TaskDialogStartupLocation.CenterOwner);
 
                 EnableControls();
                 stopwatch.Stop();
@@ -2644,8 +2662,15 @@ namespace epub2cbz
 
             if (string.IsNullOrEmpty(rootDir) && !PopupSettings.CheckboxStates.CheckboxFileModeState)
             {
-                using PopupInfoError popupInfoError = new();
-                popupInfoError.ShowInfoError(Resources.NoPathMessageBox, Resources.ErrorMessageBox);
+                var page = new TaskDialogPage()
+                {
+                    Caption = Resources.ErrorMessageBox,
+                    Heading = Resources.ErrorMessageBox,
+                    Text = Resources.NoPathMessageBox,
+                    Icon = TaskDialogIcon.Error,
+                    Buttons = { TaskDialogButton.OK }
+                };
+                TaskDialog.ShowDialog(_mainForm!, page, TaskDialogStartupLocation.CenterOwner);
 
                 EnableControls();
                 stopwatch.Stop();
@@ -2745,8 +2770,15 @@ namespace epub2cbz
             }
             catch (Exception ex)
             {
-                using PopupInfoError popupInfoError = new();
-                popupInfoError.ShowInfoError($"{ex.Message}", Resources.ErrorMessageBox);
+                var page = new TaskDialogPage()
+                {
+                    Caption = Resources.ErrorMessageBox,
+                    Heading = Resources.ErrorMessageBox,
+                    Text = $"{ex.Message}",
+                    Icon = TaskDialogIcon.Error,
+                    Buttons = { TaskDialogButton.OK }
+                };
+                TaskDialog.ShowDialog(_mainForm!, page, TaskDialogStartupLocation.CenterOwner);
 
                 EnableControls();
                 stopwatch.Stop();
@@ -2755,8 +2787,15 @@ namespace epub2cbz
 
             if (epubPaths.Count <= 0)
             {
-                using PopupInfoError popupInfoError = new();
-                popupInfoError.ShowInfoError(Resources.NoEpubsFoundMessageBox, Resources.ErrorMessageBox);
+                var page = new TaskDialogPage()
+                {
+                    Caption = Resources.ErrorMessageBox,
+                    Heading = Resources.ErrorMessageBox,
+                    Text = Resources.NoEpubsFoundMessageBox,
+                    Icon = TaskDialogIcon.Error,
+                    Buttons = { TaskDialogButton.OK }
+                };
+                TaskDialog.ShowDialog(_mainForm!, page, TaskDialogStartupLocation.CenterOwner);
 
                 EnableControls();
                 stopwatch.Stop();

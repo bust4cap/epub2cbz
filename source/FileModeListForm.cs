@@ -45,11 +45,22 @@ namespace epub2cbz
 
         private void ButtonFileModeClear_Click(object sender, EventArgs e)
         {
-            using PopupInfoError popupInfoError = new();
-            popupInfoError.ShowInfoError(Resources.FileModeClearListMessage, Resources.ConfirmationMessageBox, "info");
-            DialogResult result = popupInfoError.DialogResult;
+            var page = new TaskDialogPage()
+            {
+                Caption = Resources.ConfirmationMessageBox,
+                Heading = Resources.ConfirmationMessageBox,
+                Text = Resources.FileModeClearListMessage,
+                Icon = TaskDialogIcon.Information,
+                Buttons = { TaskDialogButton.Yes, TaskDialogButton.No }
+            };
 
-            if (result == DialogResult.OK)
+            TaskDialogButton result = TaskDialog.ShowDialog(
+                this,
+                page,
+                TaskDialogStartupLocation.CenterOwner
+            );
+
+            if (result == TaskDialogButton.Yes)
             {
                 if (dataGridViewFileModeList.DataSource is DataTable myDataTable)
                 {

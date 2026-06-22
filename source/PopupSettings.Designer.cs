@@ -435,10 +435,10 @@
             tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalMetadataTitle, 0, 4);
             tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalAddBlankPage, 0, 3);
             tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsResizingEnable, 0, 5);
-            tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalCheckDRMProtection, 0, 7);
             tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalRemoveFirstPage, 1, 3);
-            tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalOffsetChapters, 0, 8);
-            tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalAddAlternativeCover, 1, 7);
+            tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalAddAlternativeCover, 0, 7);
+            tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalOffsetChapters, 1, 7);
+            tableLayoutPanelExperimental.Controls.Add(checkBoxSettingsExperimentalCheckDRMProtection, 0, 8);
             tableLayoutPanelExperimental.Dock = DockStyle.Fill;
             tableLayoutPanelExperimental.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
             tableLayoutPanelExperimental.Location = new Point(3, 19);
@@ -625,11 +625,11 @@
             // 
             checkBoxSettingsExperimentalCheckDRMProtection.Anchor = AnchorStyles.Left;
             checkBoxSettingsExperimentalCheckDRMProtection.AutoSize = true;
-            checkBoxSettingsExperimentalCheckDRMProtection.Location = new Point(5, 179);
+            checkBoxSettingsExperimentalCheckDRMProtection.Location = new Point(5, 199);
             checkBoxSettingsExperimentalCheckDRMProtection.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsExperimentalCheckDRMProtection.Name = "checkBoxSettingsExperimentalCheckDRMProtection";
             checkBoxSettingsExperimentalCheckDRMProtection.Size = new Size(195, 18);
-            checkBoxSettingsExperimentalCheckDRMProtection.TabIndex = 35;
+            checkBoxSettingsExperimentalCheckDRMProtection.TabIndex = 37;
             checkBoxSettingsExperimentalCheckDRMProtection.Text = "Check if files are DRM protected";
             checkBoxSettingsExperimentalCheckDRMProtection.UseVisualStyleBackColor = false;
             // 
@@ -649,24 +649,25 @@
             // 
             checkBoxSettingsExperimentalOffsetChapters.Anchor = AnchorStyles.Left;
             checkBoxSettingsExperimentalOffsetChapters.AutoSize = true;
-            checkBoxSettingsExperimentalOffsetChapters.Location = new Point(5, 199);
+            checkBoxSettingsExperimentalOffsetChapters.Location = new Point(272, 179);
             checkBoxSettingsExperimentalOffsetChapters.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsExperimentalOffsetChapters.Name = "checkBoxSettingsExperimentalOffsetChapters";
             checkBoxSettingsExperimentalOffsetChapters.Size = new Size(100, 18);
-            checkBoxSettingsExperimentalOffsetChapters.TabIndex = 37;
+            checkBoxSettingsExperimentalOffsetChapters.TabIndex = 36;
             checkBoxSettingsExperimentalOffsetChapters.Text = "Shift Chapters";
             toolTipSettings.SetToolTip(checkBoxSettingsExperimentalOffsetChapters, "Affected titles may include:\r\n- Dr. Mashirito's Ultimate Manga Techniques\r\n- Fist of the North Star v17 - v18\r\n- Kingdom v01 - v05\r\n- Moan: Junji Ito Story Collection\r\n- Real v16");
             checkBoxSettingsExperimentalOffsetChapters.UseVisualStyleBackColor = false;
+            checkBoxSettingsExperimentalOffsetChapters.Visible = false;
             // 
             // checkBoxSettingsExperimentalAddAlternativeCover
             // 
             checkBoxSettingsExperimentalAddAlternativeCover.Anchor = AnchorStyles.Left;
             checkBoxSettingsExperimentalAddAlternativeCover.AutoSize = true;
-            checkBoxSettingsExperimentalAddAlternativeCover.Location = new Point(272, 179);
+            checkBoxSettingsExperimentalAddAlternativeCover.Location = new Point(5, 179);
             checkBoxSettingsExperimentalAddAlternativeCover.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsExperimentalAddAlternativeCover.Name = "checkBoxSettingsExperimentalAddAlternativeCover";
             checkBoxSettingsExperimentalAddAlternativeCover.Size = new Size(138, 18);
-            checkBoxSettingsExperimentalAddAlternativeCover.TabIndex = 36;
+            checkBoxSettingsExperimentalAddAlternativeCover.TabIndex = 35;
             checkBoxSettingsExperimentalAddAlternativeCover.Text = "Add alternative cover";
             checkBoxSettingsExperimentalAddAlternativeCover.UseVisualStyleBackColor = false;
             // 
