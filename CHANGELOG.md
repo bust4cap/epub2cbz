@@ -1,3 +1,7 @@
+## v2026.06.24-1
+- Adding alternative cover option now also applies to Barnes & Noble ebooks
+- Replaced error/info popup messages with native solution
+
 ## v2026.06.07-1
 - Fixed regression related to fixing every page being a chapter
 - Fixed ISBN-10 detection in certain cases
