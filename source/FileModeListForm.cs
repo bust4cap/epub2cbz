@@ -45,13 +45,16 @@ namespace epub2cbz
 
         private void ButtonFileModeClear_Click(object sender, EventArgs e)
         {
+            var customYesButton = new TaskDialogButton(Resources.YesButtonText);
+            var customNoButton = new TaskDialogButton(Resources.NoButtonText);
+
             var page = new TaskDialogPage()
             {
                 Caption = Resources.ConfirmationMessageBox,
                 Heading = Resources.ConfirmationMessageBox,
                 Text = Resources.FileModeClearListMessage,
                 Icon = TaskDialogIcon.Information,
-                Buttons = { TaskDialogButton.Yes, TaskDialogButton.No },
+                Buttons = { customYesButton, customNoButton },
                 AllowCancel = true
             };
 
@@ -61,7 +64,7 @@ namespace epub2cbz
                 TaskDialogStartupLocation.CenterOwner
             );
 
-            if (result == TaskDialogButton.Yes)
+            if (result == customYesButton)
             {
                 if (dataGridViewFileModeList.DataSource is DataTable myDataTable)
                 {

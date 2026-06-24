@@ -375,6 +375,15 @@ namespace epub2cbz.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die No ähnelt.
+        /// </summary>
+        internal static string NoButtonText {
+            get {
+                return ResourceManager.GetString("NoButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Enable either &apos;Create ComicInfo.xml&apos; or &apos;Extract Images&apos;. ähnelt.
         /// </summary>
         internal static string NoCheckBoxChecked {
@@ -425,6 +434,15 @@ namespace epub2cbz.Properties {
         internal static string NotAnEPUB {
             get {
                 return ResourceManager.GetString("NotAnEPUB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die OK ähnelt.
+        /// </summary>
+        internal static string OkButtonText {
+            get {
+                return ResourceManager.GetString("OkButtonText", resourceCulture);
             }
         }
         
@@ -1146,6 +1164,15 @@ namespace epub2cbz.Properties {
         internal static string Timer {
             get {
                 return ResourceManager.GetString("Timer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Yes ähnelt.
+        /// </summary>
+        internal static string YesButtonText {
+            get {
+                return ResourceManager.GetString("YesButtonText", resourceCulture);
             }
         }
     }

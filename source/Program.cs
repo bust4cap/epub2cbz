@@ -2609,13 +2609,15 @@ namespace epub2cbz
                 && !MainForm.FormElements.CheckboxComicInfoState
                 && !PopupSettings.CheckboxStates.CheckboxSimpleExtractionState)
             {
+                var customOkButton = new TaskDialogButton(Resources.OkButtonText);
+
                 var page = new TaskDialogPage()
                 {
                     Caption = Resources.ErrorMessageBox,
                     Heading = Resources.ErrorMessageBox,
                     Text = Resources.NoCheckBoxChecked,
                     Icon = TaskDialogIcon.Error,
-                    Buttons = { TaskDialogButton.OK },
+                    Buttons = { customOkButton },
                     AllowCancel = true
                 };
                 TaskDialog.ShowDialog(_mainForm!, page, TaskDialogStartupLocation.CenterOwner);
@@ -2633,13 +2635,15 @@ namespace epub2cbz
             }
             else if (MainForm.FileNameClass.FileNames.Count < 1)
             {
+                var customOkButton = new TaskDialogButton(Resources.OkButtonText);
+
                 var page = new TaskDialogPage()
                 {
                     Caption = Resources.ErrorMessageBox,
                     Heading = Resources.ErrorMessageBox,
                     Text = Resources.NoEpubsFoundMessageBox,
                     Icon = TaskDialogIcon.Error,
-                    Buttons = { TaskDialogButton.OK },
+                    Buttons = { customOkButton },
                     AllowCancel = true
                 };
                 TaskDialog.ShowDialog(_mainForm!, page, TaskDialogStartupLocation.CenterOwner);
@@ -2664,13 +2668,15 @@ namespace epub2cbz
 
             if (string.IsNullOrEmpty(rootDir) && !PopupSettings.CheckboxStates.CheckboxFileModeState)
             {
+                var customOkButton = new TaskDialogButton(Resources.OkButtonText);
+
                 var page = new TaskDialogPage()
                 {
                     Caption = Resources.ErrorMessageBox,
                     Heading = Resources.ErrorMessageBox,
                     Text = Resources.NoPathMessageBox,
                     Icon = TaskDialogIcon.Error,
-                    Buttons = { TaskDialogButton.OK },
+                    Buttons = { customOkButton },
                     AllowCancel = true
                 };
                 TaskDialog.ShowDialog(_mainForm!, page, TaskDialogStartupLocation.CenterOwner);
@@ -2773,13 +2779,15 @@ namespace epub2cbz
             }
             catch (Exception ex)
             {
+                var customOkButton = new TaskDialogButton(Resources.OkButtonText);
+
                 var page = new TaskDialogPage()
                 {
                     Caption = Resources.ErrorMessageBox,
                     Heading = Resources.ErrorMessageBox,
                     Text = $"{ex.Message}",
                     Icon = TaskDialogIcon.Error,
-                    Buttons = { TaskDialogButton.OK },
+                    Buttons = { customOkButton },
                     AllowCancel = true
                 };
                 TaskDialog.ShowDialog(_mainForm!, page, TaskDialogStartupLocation.CenterOwner);
@@ -2791,13 +2799,15 @@ namespace epub2cbz
 
             if (epubPaths.Count <= 0)
             {
+                var customOkButton = new TaskDialogButton(Resources.OkButtonText);
+
                 var page = new TaskDialogPage()
                 {
                     Caption = Resources.ErrorMessageBox,
                     Heading = Resources.ErrorMessageBox,
                     Text = Resources.NoEpubsFoundMessageBox,
                     Icon = TaskDialogIcon.Error,
-                    Buttons = { TaskDialogButton.OK },
+                    Buttons = { customOkButton },
                     AllowCancel = true
                 };
                 TaskDialog.ShowDialog(_mainForm!, page, TaskDialogStartupLocation.CenterOwner);

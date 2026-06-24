@@ -450,4 +450,13 @@
   <data name="SettingsExperimentalAddAlternativeCover" xml:space="preserve">
     <value>代替表紙を追加</value>
   </data>
+  <data name="YesButtonText" xml:space="preserve">
+    <value>はい</value>
+  </data>
+  <data name="NoButtonText" xml:space="preserve">
+    <value>いいえ</value>
+  </data>
+  <data name="OkButtonText" xml:space="preserve">
+    <value>OK</value>
+  </data>
 </root>
