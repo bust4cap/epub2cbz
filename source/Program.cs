@@ -2405,7 +2405,7 @@ namespace epub2cbz
             List<BookInfo.EpubChapter> chapters = [];
             if (barnesAndNobleBook)
             {
-                chapters = BarnesAndNoble.ParseToc(bookFull, replicaMapDoc);
+                chapters = BarnesAndNoble.ParseToc(replicaMapDoc);
             }
             else
             {

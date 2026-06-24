@@ -158,8 +158,7 @@ namespace epub2cbz
             }
         }
 
-        public static List<BookInfo.EpubChapter> ParseToc(List<BookInfo.EpubPage> bookFull,
-            XDocument replicaMapDoc)
+        public static List<BookInfo.EpubChapter> ParseToc(XDocument replicaMapDoc)
         {
             List<BookInfo.EpubChapter> chapters = [];
 

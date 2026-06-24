@@ -53,16 +53,12 @@ namespace epub2cbz
                 Caption = Resources.ConfirmationMessageBox,
                 Heading = Resources.ConfirmationMessageBox,
                 Text = Resources.FileModeClearListMessage,
-                Icon = TaskDialogIcon.Information,
+                Icon = TaskDialogIcon.Warning,
                 Buttons = { customYesButton, customNoButton },
                 AllowCancel = true
             };
 
-            TaskDialogButton result = TaskDialog.ShowDialog(
-                this,
-                page,
-                TaskDialogStartupLocation.CenterOwner
-            );
+            TaskDialogButton result = TaskDialog.ShowDialog(this, page, TaskDialogStartupLocation.CenterOwner);
 
             if (result == customYesButton)
             {
