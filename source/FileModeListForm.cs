@@ -51,7 +51,8 @@ namespace epub2cbz
                 Heading = Resources.ConfirmationMessageBox,
                 Text = Resources.FileModeClearListMessage,
                 Icon = TaskDialogIcon.Information,
-                Buttons = { TaskDialogButton.Yes, TaskDialogButton.No }
+                Buttons = { TaskDialogButton.Yes, TaskDialogButton.No },
+                AllowCancel = true
             };
 
             TaskDialogButton result = TaskDialog.ShowDialog(

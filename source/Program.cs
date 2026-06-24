@@ -2615,7 +2615,8 @@ namespace epub2cbz
                     Heading = Resources.ErrorMessageBox,
                     Text = Resources.NoCheckBoxChecked,
                     Icon = TaskDialogIcon.Error,
-                    Buttons = { TaskDialogButton.OK }
+                    Buttons = { TaskDialogButton.OK },
+                    AllowCancel = true
                 };
                 TaskDialog.ShowDialog(_mainForm!, page, TaskDialogStartupLocation.CenterOwner);
 
@@ -2638,7 +2639,8 @@ namespace epub2cbz
                     Heading = Resources.ErrorMessageBox,
                     Text = Resources.NoEpubsFoundMessageBox,
                     Icon = TaskDialogIcon.Error,
-                    Buttons = { TaskDialogButton.OK }
+                    Buttons = { TaskDialogButton.OK },
+                    AllowCancel = true
                 };
                 TaskDialog.ShowDialog(_mainForm!, page, TaskDialogStartupLocation.CenterOwner);
 
@@ -2668,7 +2670,8 @@ namespace epub2cbz
                     Heading = Resources.ErrorMessageBox,
                     Text = Resources.NoPathMessageBox,
                     Icon = TaskDialogIcon.Error,
-                    Buttons = { TaskDialogButton.OK }
+                    Buttons = { TaskDialogButton.OK },
+                    AllowCancel = true
                 };
                 TaskDialog.ShowDialog(_mainForm!, page, TaskDialogStartupLocation.CenterOwner);
 
@@ -2776,7 +2779,8 @@ namespace epub2cbz
                     Heading = Resources.ErrorMessageBox,
                     Text = $"{ex.Message}",
                     Icon = TaskDialogIcon.Error,
-                    Buttons = { TaskDialogButton.OK }
+                    Buttons = { TaskDialogButton.OK },
+                    AllowCancel = true
                 };
                 TaskDialog.ShowDialog(_mainForm!, page, TaskDialogStartupLocation.CenterOwner);
 
@@ -2793,7 +2797,8 @@ namespace epub2cbz
                     Heading = Resources.ErrorMessageBox,
                     Text = Resources.NoEpubsFoundMessageBox,
                     Icon = TaskDialogIcon.Error,
-                    Buttons = { TaskDialogButton.OK }
+                    Buttons = { TaskDialogButton.OK },
+                    AllowCancel = true
                 };
                 TaskDialog.ShowDialog(_mainForm!, page, TaskDialogStartupLocation.CenterOwner);
 
