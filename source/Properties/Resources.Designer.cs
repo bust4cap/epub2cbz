@@ -201,16 +201,6 @@ namespace epub2cbz.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap error_icon {
-            get {
-                object obj = ResourceManager.GetObject("error_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Error ähnelt.
         /// </summary>
         internal static string ErrorMessageBox {
@@ -333,16 +323,6 @@ namespace epub2cbz.Properties {
         internal static string ImagesCheckboxText {
             get {
                 return ResourceManager.GetString("ImagesCheckboxText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap info_icon {
-            get {
-                object obj = ResourceManager.GetObject("info_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
