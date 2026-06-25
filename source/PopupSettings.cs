@@ -556,9 +556,102 @@ namespace epub2cbz
             CenterElements();
             PopulateDropdownListKindleKobo();
 
+            SetupDynamicPanels();
+        }
+
+        private static void BuildDynamicTableLayoutPanel(TableLayoutPanel panel, List<Control> controls, int columnCount)
+        {
+            panel.SuspendLayout();
+            panel.Controls.Clear();
+            panel.RowStyles.Clear();
+            panel.ColumnStyles.Clear();
+
+            panel.ColumnCount = columnCount;
+            for (int i = 0; i < columnCount; i++)
+            {
+                panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100f / columnCount));
+            }
+
+            int rowCount = (int)Math.Ceiling((double)controls.Count / columnCount);
+            panel.RowCount = rowCount;
+
+            float rowPercentage = 100f / rowCount;
+
+            for (int i = 0; i < rowCount; i++)
+            {
+                panel.RowStyles.Add(new RowStyle(SizeType.Percent, rowPercentage));
+            }
+
+            for (int i = 0; i < controls.Count; i++)
+            {
+                int col = i % columnCount;
+                int row = i / columnCount;
+
+                panel.Controls.Add(controls[i], col, row);
+            }
+
+            panel.ResumeLayout();
+        }
+
+        private void SetupDynamicPanels()
+        {
+            var comicInfoControls = new List<Control>
+            {
+                checkBoxSettingsComicInfoTitle,
+                checkBoxSettingsComicInfoSeries,
+                checkBoxSettingsComicInfoVolume,
+                checkBoxSettingsComicInfoDescription,
+
+                checkBoxSettingsComicInfoDate,
+                checkBoxSettingsComicInfoAuthors,
+                checkBoxSettingsComicInfoProducers,
+                checkBoxSettingsComicInfoTranslators,
+
+                checkBoxSettingsComicInfoPublisher,
+                checkBoxSettingsComicInfoPageCount,
+                checkBoxSettingsComicInfoLanguage,
+                checkBoxSettingsComicInfoReadingDirection,
+
+                checkBoxSettingsComicInfoIsbnAsin,
+                checkBoxSettingsComicInfoFileSize,
+                checkBoxSettingsComicInfoChapters,
+                checkBoxSettingsComicInfoImageSize
+            };
+
+            BuildDynamicTableLayoutPanel(tableLayoutPanelComicInfo, comicInfoControls, 4);
+
+            var experimentalControls = new List<Control>
+            {
+                checkBoxSettingsExperimentalPageSpread,
+                checkBoxSettingsExperimentalSpreadInsertBlank,
+
+                checkBoxSettingsExperimentalRemoveDuplicateCovers,
+                checkBoxSettingsExperimentalCoverResolution,
+
+                checkBoxSettingsExperimentalEveryPageIsChapter,
+                checkBoxSettingsExperimentalSplitPageSpread,
+
+                checkBoxSettingsExperimentalAddBlankPage,
+                checkBoxSettingsExperimentalRemoveFirstPage,
+
+                checkBoxSettingsExperimentalMetadataTitle,
+                checkBoxSettingsExperimentalChapterFolders,
+
+                checkBoxSettingsResizingEnable,
+                checkBoxSettingsCroppingEnable,
+
+                checkBoxSettingsReplaceSeries,
+                textBoxReplaceSeries,
+        
+                checkBoxSettingsExperimentalAddAlternativeCover,
 #if DEBUG
-            checkBoxSettingsExperimentalOffsetChapters.Visible = true;
+                checkBoxSettingsExperimentalOffsetChapters,
 #endif
+
+                checkBoxSettingsExperimentalCheckDRMProtection,
+            };
+
+            BuildDynamicTableLayoutPanel(tableLayoutPanelExperimental, experimentalControls, 2);
         }
     }
 }

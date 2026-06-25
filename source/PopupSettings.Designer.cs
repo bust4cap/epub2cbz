@@ -64,10 +64,10 @@
             checkBoxSettingsExperimentalMetadataTitle = new CheckBox();
             checkBoxSettingsExperimentalAddBlankPage = new CheckBox();
             checkBoxSettingsResizingEnable = new CheckBox();
-            checkBoxSettingsExperimentalCheckDRMProtection = new CheckBox();
             checkBoxSettingsExperimentalRemoveFirstPage = new CheckBox();
-            checkBoxSettingsExperimentalOffsetChapters = new CheckBox();
             checkBoxSettingsExperimentalAddAlternativeCover = new CheckBox();
+            checkBoxSettingsExperimentalOffsetChapters = new CheckBox();
+            checkBoxSettingsExperimentalCheckDRMProtection = new CheckBox();
             toolTipSettings = new ToolTip(components);
             dropDownCompressionLevel = new ComboBox();
             groupBoxCompressionLevel = new GroupBox();
@@ -410,7 +410,7 @@
             groupBoxExperimental.Dock = DockStyle.Fill;
             groupBoxExperimental.Location = new Point(3, 121);
             groupBoxExperimental.Name = "groupBoxExperimental";
-            groupBoxExperimental.Size = new Size(547, 243);
+            groupBoxExperimental.Size = new Size(547, 253);
             groupBoxExperimental.TabIndex = 20;
             groupBoxExperimental.TabStop = false;
             groupBoxExperimental.Text = "Experimental Features:";
@@ -445,16 +445,16 @@
             tableLayoutPanelExperimental.Name = "tableLayoutPanelExperimental";
             tableLayoutPanelExperimental.Padding = new Padding(3);
             tableLayoutPanelExperimental.RowCount = 9;
-            tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857132F));
-            tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857132F));
-            tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857132F));
-            tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857132F));
-            tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857132F));
-            tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857132F));
-            tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857132F));
-            tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanelExperimental.Size = new Size(541, 221);
+            tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 11.1111107F));
+            tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 11.1111107F));
+            tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 11.1111107F));
+            tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 11.1111107F));
+            tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 11.1111107F));
+            tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 11.1111107F));
+            tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 11.1111107F));
+            tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 11.1111107F));
+            tableLayoutPanelExperimental.RowStyles.Add(new RowStyle(SizeType.Percent, 11.1111107F));
+            tableLayoutPanelExperimental.Size = new Size(541, 231);
             tableLayoutPanelExperimental.TabIndex = 207;
             // 
             // checkBoxSettingsExperimentalSpreadInsertBlank
@@ -621,18 +621,6 @@
             checkBoxSettingsResizingEnable.UseVisualStyleBackColor = false;
             checkBoxSettingsResizingEnable.CheckedChanged += CheckBoxSettingsResizingEnable_CheckedChanged;
             // 
-            // checkBoxSettingsExperimentalCheckDRMProtection
-            // 
-            checkBoxSettingsExperimentalCheckDRMProtection.Anchor = AnchorStyles.Left;
-            checkBoxSettingsExperimentalCheckDRMProtection.AutoSize = true;
-            checkBoxSettingsExperimentalCheckDRMProtection.Location = new Point(5, 199);
-            checkBoxSettingsExperimentalCheckDRMProtection.Margin = new Padding(2, 1, 2, 1);
-            checkBoxSettingsExperimentalCheckDRMProtection.Name = "checkBoxSettingsExperimentalCheckDRMProtection";
-            checkBoxSettingsExperimentalCheckDRMProtection.Size = new Size(195, 18);
-            checkBoxSettingsExperimentalCheckDRMProtection.TabIndex = 37;
-            checkBoxSettingsExperimentalCheckDRMProtection.Text = "Check if files are DRM protected";
-            checkBoxSettingsExperimentalCheckDRMProtection.UseVisualStyleBackColor = false;
-            // 
             // checkBoxSettingsExperimentalRemoveFirstPage
             // 
             checkBoxSettingsExperimentalRemoveFirstPage.Anchor = AnchorStyles.Left;
@@ -645,31 +633,42 @@
             checkBoxSettingsExperimentalRemoveFirstPage.Text = "Remove first page";
             checkBoxSettingsExperimentalRemoveFirstPage.UseVisualStyleBackColor = false;
             // 
-            // checkBoxSettingsExperimentalOffsetChapters
-            // 
-            checkBoxSettingsExperimentalOffsetChapters.Anchor = AnchorStyles.Left;
-            checkBoxSettingsExperimentalOffsetChapters.AutoSize = true;
-            checkBoxSettingsExperimentalOffsetChapters.Location = new Point(272, 179);
-            checkBoxSettingsExperimentalOffsetChapters.Margin = new Padding(2, 1, 2, 1);
-            checkBoxSettingsExperimentalOffsetChapters.Name = "checkBoxSettingsExperimentalOffsetChapters";
-            checkBoxSettingsExperimentalOffsetChapters.Size = new Size(100, 18);
-            checkBoxSettingsExperimentalOffsetChapters.TabIndex = 36;
-            checkBoxSettingsExperimentalOffsetChapters.Text = "Shift Chapters";
-            toolTipSettings.SetToolTip(checkBoxSettingsExperimentalOffsetChapters, "Affected titles may include:\r\n- Dr. Mashirito's Ultimate Manga Techniques\r\n- Fist of the North Star v17 - v18\r\n- Kingdom v01 - v05\r\n- Moan: Junji Ito Story Collection\r\n- Real v16");
-            checkBoxSettingsExperimentalOffsetChapters.UseVisualStyleBackColor = false;
-            checkBoxSettingsExperimentalOffsetChapters.Visible = false;
-            // 
             // checkBoxSettingsExperimentalAddAlternativeCover
             // 
             checkBoxSettingsExperimentalAddAlternativeCover.Anchor = AnchorStyles.Left;
             checkBoxSettingsExperimentalAddAlternativeCover.AutoSize = true;
-            checkBoxSettingsExperimentalAddAlternativeCover.Location = new Point(5, 179);
+            checkBoxSettingsExperimentalAddAlternativeCover.Location = new Point(5, 181);
             checkBoxSettingsExperimentalAddAlternativeCover.Margin = new Padding(2, 1, 2, 1);
             checkBoxSettingsExperimentalAddAlternativeCover.Name = "checkBoxSettingsExperimentalAddAlternativeCover";
-            checkBoxSettingsExperimentalAddAlternativeCover.Size = new Size(138, 18);
+            checkBoxSettingsExperimentalAddAlternativeCover.Size = new Size(138, 19);
             checkBoxSettingsExperimentalAddAlternativeCover.TabIndex = 35;
             checkBoxSettingsExperimentalAddAlternativeCover.Text = "Add alternative cover";
             checkBoxSettingsExperimentalAddAlternativeCover.UseVisualStyleBackColor = false;
+            // 
+            // checkBoxSettingsExperimentalOffsetChapters
+            // 
+            checkBoxSettingsExperimentalOffsetChapters.Anchor = AnchorStyles.Left;
+            checkBoxSettingsExperimentalOffsetChapters.AutoSize = true;
+            checkBoxSettingsExperimentalOffsetChapters.Location = new Point(272, 181);
+            checkBoxSettingsExperimentalOffsetChapters.Margin = new Padding(2, 1, 2, 1);
+            checkBoxSettingsExperimentalOffsetChapters.Name = "checkBoxSettingsExperimentalOffsetChapters";
+            checkBoxSettingsExperimentalOffsetChapters.Size = new Size(100, 19);
+            checkBoxSettingsExperimentalOffsetChapters.TabIndex = 36;
+            checkBoxSettingsExperimentalOffsetChapters.Text = "Shift Chapters";
+            toolTipSettings.SetToolTip(checkBoxSettingsExperimentalOffsetChapters, "Affected titles may include:\r\n- Dr. Mashirito's Ultimate Manga Techniques\r\n- Fist of the North Star v17 - v18\r\n- Kingdom v01 - v05\r\n- Moan: Junji Ito Story Collection\r\n- Real v16");
+            checkBoxSettingsExperimentalOffsetChapters.UseVisualStyleBackColor = false;
+            // 
+            // checkBoxSettingsExperimentalCheckDRMProtection
+            // 
+            checkBoxSettingsExperimentalCheckDRMProtection.Anchor = AnchorStyles.Left;
+            checkBoxSettingsExperimentalCheckDRMProtection.AutoSize = true;
+            checkBoxSettingsExperimentalCheckDRMProtection.Location = new Point(5, 206);
+            checkBoxSettingsExperimentalCheckDRMProtection.Margin = new Padding(2, 1, 2, 1);
+            checkBoxSettingsExperimentalCheckDRMProtection.Name = "checkBoxSettingsExperimentalCheckDRMProtection";
+            checkBoxSettingsExperimentalCheckDRMProtection.Size = new Size(195, 19);
+            checkBoxSettingsExperimentalCheckDRMProtection.TabIndex = 37;
+            checkBoxSettingsExperimentalCheckDRMProtection.Text = "Check if files are DRM protected";
+            checkBoxSettingsExperimentalCheckDRMProtection.UseVisualStyleBackColor = false;
             // 
             // dropDownCompressionLevel
             // 
@@ -755,7 +754,7 @@
             groupBoxResizing.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             groupBoxResizing.Controls.Add(tableLayoutPanelResizing);
             groupBoxResizing.Dock = DockStyle.Fill;
-            groupBoxResizing.Location = new Point(3, 370);
+            groupBoxResizing.Location = new Point(3, 380);
             groupBoxResizing.Name = "groupBoxResizing";
             groupBoxResizing.Size = new Size(547, 98);
             groupBoxResizing.TabIndex = 203;
@@ -956,7 +955,7 @@
             groupBoxCropping.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             groupBoxCropping.Controls.Add(tableLayoutPanelCropping);
             groupBoxCropping.Dock = DockStyle.Fill;
-            groupBoxCropping.Location = new Point(3, 474);
+            groupBoxCropping.Location = new Point(3, 484);
             groupBoxCropping.Name = "groupBoxCropping";
             groupBoxCropping.Size = new Size(547, 63);
             groupBoxCropping.TabIndex = 206;
@@ -1120,7 +1119,7 @@
             tableLayoutPanelSettingsCenter.Controls.Add(groupBoxThreads, 2, 0);
             tableLayoutPanelSettingsCenter.Dock = DockStyle.Fill;
             tableLayoutPanelSettingsCenter.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
-            tableLayoutPanelSettingsCenter.Location = new Point(6, 552);
+            tableLayoutPanelSettingsCenter.Location = new Point(6, 562);
             tableLayoutPanelSettingsCenter.Name = "tableLayoutPanelSettingsCenter";
             tableLayoutPanelSettingsCenter.RowCount = 1;
             tableLayoutPanelSettingsCenter.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
@@ -1154,7 +1153,7 @@
             tableLayoutPanelSettingsBottom.Controls.Add(buttonSettingsResetToDefault, 1, 0);
             tableLayoutPanelSettingsBottom.Dock = DockStyle.Fill;
             tableLayoutPanelSettingsBottom.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
-            tableLayoutPanelSettingsBottom.Location = new Point(6, 614);
+            tableLayoutPanelSettingsBottom.Location = new Point(6, 624);
             tableLayoutPanelSettingsBottom.Name = "tableLayoutPanelSettingsBottom";
             tableLayoutPanelSettingsBottom.RowCount = 1;
             tableLayoutPanelSettingsBottom.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
@@ -1180,7 +1179,7 @@
             tableLayoutPanelSettingsTop.RowStyles.Add(new RowStyle());
             tableLayoutPanelSettingsTop.RowStyles.Add(new RowStyle());
             tableLayoutPanelSettingsTop.RowStyles.Add(new RowStyle());
-            tableLayoutPanelSettingsTop.Size = new Size(553, 540);
+            tableLayoutPanelSettingsTop.Size = new Size(553, 550);
             tableLayoutPanelSettingsTop.TabIndex = 1;
             // 
             // PopupSettings
