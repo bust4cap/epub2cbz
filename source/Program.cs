@@ -910,31 +910,55 @@ namespace epub2cbz
             XNamespace dc)
         {
             // replace comment brackets first
-            xmlMetadata = XElement.Parse(xmlMetadata.ToString().Replace("<!--", string.Empty).Replace("-->", string.Empty));
+            if (xmlMetadata.Nodes().Any(n => n.NodeType == XmlNodeType.Comment))
+            {
+                xmlMetadata = XElement.Parse(xmlMetadata.ToString().Replace("<!--", string.Empty).Replace("-->", string.Empty));
+            }
 
-            string? asin = xmlMetadata.Descendants(opf + "meta").FirstOrDefault(i => (string?)i.Attribute("name") == "ASIN")?.Attribute("content")?.Value;
-            string? identifier = xmlMetadata.Descendants(dc + "identifier").FirstOrDefault()?.Value;
-            string? asinIdentifier = xmlMetadata.Descendants(dc + "identifier")
-                .FirstOrDefault(i => (string?)i.Attribute(opf + "scheme") == "MOBI-ASIN")?.Value;
+            string? asin = null;
+            string? identifier = null;
+            string? asinIdentifier = null;
+            string? source = null;
+
+            foreach (XElement el in xmlMetadata.Elements())
+            {
+                if (el.Name == opf + "meta")
+                {
+                    if (asin == null && (string?)el.Attribute("name") == "ASIN")
+                    {
+                        asin = (string?)el.Attribute("content");
+                    }
+                }
+                else if (el.Name == dc + "identifier")
+                {
+                    identifier ??= el.Value;
+
+                    if (asinIdentifier == null && (string?)el.Attribute(opf + "scheme") == "MOBI-ASIN")
+                    {
+                        asinIdentifier = el.Value;
+                    }
+                }
+                else if (el.Name == dc + "source" && source == null)
+                {
+                    source = el.Value;
+                }
+            }
 
             if (!string.IsNullOrEmpty(asin)
                 && asin.Length == 10)
             {
-                asin = "ASIN: " + asin;
-                return asin.Trim();
+                return ("ASIN: " + asin).Trim();
             }
             else if (!string.IsNullOrEmpty(asinIdentifier)
                 && asinIdentifier.Length == 10)
             {
-                asinIdentifier = "ASIN: " + asinIdentifier;
-                return asinIdentifier.Trim();
+                return ("ASIN: " + asinIdentifier).Trim();
             }
             else if (!string.IsNullOrEmpty(identifier)
                 && identifier.StartsWith("urn:asin:", StringComparison.OrdinalIgnoreCase)
                 && identifier.Length == 19)
             {
-                identifier = "ASIN: " + identifier[9..];
-                return identifier.Trim();
+                return ("ASIN: " + identifier[9..]).Trim();
             }
 
             if (!string.IsNullOrEmpty(identifier)
@@ -944,7 +968,6 @@ namespace epub2cbz
                 return ReturnMetadataISBNCalculated(identifier);
             }
 
-            string? source = xmlMetadata.Descendants(dc + "source").FirstOrDefault()?.Value;
             if (!string.IsNullOrEmpty(source) && source.StartsWith("urn:isbn:", StringComparison.OrdinalIgnoreCase))
             {
                 return ReturnMetadataISBNCalculated(source);
@@ -958,18 +981,47 @@ namespace epub2cbz
             XNamespace opf,
             XNamespace dc)
         {
-            List<string?> dcRoles = [];
-            List<string?> dcRoleList = [.. xmlMetadata.Descendants(opf + "meta")
-                .Where(a => a.Attribute("property")?.Value == "role" && a.Attribute("scheme")?.Value == "marc:relators")
-                .Where(a => a?.Value.ToLower() == role)
-                .Select(a => a.Attribute("refines")?.Value.Replace("#", string.Empty))];
-            foreach (string? dcRole in dcRoleList)
+            List<string> targetIds = [];
+            Dictionary<string, string> contributorMap = [];
+
+            foreach (XElement el in xmlMetadata.Elements())
             {
-                dcRoles.AddRange([.. xmlMetadata.Descendants(dc + "contributor")
-                .Where(a => a.Attribute("id")?.Value == dcRole)
-                .Select(a => a?.Value)]);
+                if (el.Name == opf + "meta")
+                {
+                    if ((string?)el.Attribute("property") == "role" &&
+                        (string?)el.Attribute("scheme") == "marc:relators" &&
+                        string.Equals(el.Value, role, StringComparison.OrdinalIgnoreCase))
+                    {
+                        string? refines = (string?)el.Attribute("refines");
+                        if (!string.IsNullOrEmpty(refines))
+                        {
+                            string id = refines.StartsWith('#') ? refines[1..] : refines;
+                            targetIds.Add(id);
+                        }
+                    }
+                }
+                else if (el.Name == dc + "contributor")
+                {
+                    string? id = (string?)el.Attribute("id");
+                    if (!string.IsNullOrEmpty(id))
+                    {
+                        contributorMap[id] = el.Value.Trim();
+                    }
+                }
             }
-            return string.Join(" & ", dcRoles.Select(a => a?.Trim()));
+
+            if (targetIds.Count == 0) return string.Empty;
+
+            HashSet<string> matchedContributors = [];
+            foreach (string id in targetIds)
+            {
+                if (contributorMap.TryGetValue(id, out string? name))
+                {
+                    matchedContributors.Add(name);
+                }
+            }
+
+            return string.Join(" & ", matchedContributors);
         }
 
         private static (Dictionary<string, string?>, string readDir) ParseMetadataXml(XDocument xmlDoc)
@@ -979,84 +1031,84 @@ namespace epub2cbz
             XNamespace opf = "http://www.idpf.org/2007/opf";
             XNamespace dc = "http://purl.org/dc/elements/1.1/";
 
-            XElement? xmlMetadata = xmlDoc.Descendants(opf + "metadata").FirstOrDefault();
+            XElement? xmlMetadata = xmlDoc.Root?.Element(opf + "metadata") ?? xmlDoc.Descendants(opf + "metadata").FirstOrDefault();
             if (xmlMetadata is not null && MainForm.FormElements.CheckboxComicInfoState)
             {
                 if (PopupSettings.CheckboxStates.CheckboxTranslatorState) metadata["Translators"] = ReturnMetadataContributors("trl", xmlMetadata, opf, dc);
                 if (PopupSettings.CheckboxStates.CheckboxProducerState) metadata["Producers"] = ReturnMetadataContributors("pro", xmlMetadata, opf, dc);
 
                 if (PopupSettings.CheckboxStates.CheckboxIsbnAsinState) metadata["ISBN"] = ReturnMetadataISBN(xmlMetadata, opf, dc);
+
+                string? title = null, publisher = null, date = null, description = null, series = null, seriesIndex = null, bookType = null, rights = null;
+                HashSet<string> authors = [];
+                List<string> languages = [];
+
+                foreach (XElement el in xmlMetadata.Elements())
+                {
+                    string value = el.Value.Trim();
+
+                    if (el.Name == dc + "title" && title is null) title = value;
+                    else if (el.Name == dc + "publisher" && publisher is null) publisher = value;
+                    else if (el.Name == dc + "date" && date is null) date = value;
+                    else if (el.Name == dc + "description" && description is null) description = value;
+                    else if (el.Name == dc + "creator" && !string.IsNullOrWhiteSpace(value)) authors.Add(value);
+                    else if (el.Name == dc + "language" && value.Length > 0)
+                    {
+                        languages.Add(value.Length > 2 ? value[..2] : value);
+                    }
+                    else if (el.Name == dc + "rights" && rights is null) rights = value;
+                    else if (el.Name == opf + "meta")
+                    {
+                        string? nameAttr = (string?)el.Attribute("name");
+                        string? contentAttr = (string?)el.Attribute("content") ?? (string?)el;
+
+                        if (nameAttr == "calibre:series") series = contentAttr?.Trim();
+                        else if (nameAttr == "calibre:series_index") seriesIndex = contentAttr?.Trim();
+                        else if (nameAttr == "book-type") bookType = contentAttr?.Trim();
+                    }
+                }
 #if DEBUG
-                metadata["Booktype"] = xmlMetadata.Descendants(opf + "meta").FirstOrDefault(i => (string?)i.Attribute("name") == "book-type")?.Attribute("content")?.Value;
-                metadata["Rights"] = xmlMetadata.Descendants(dc + "rights").FirstOrDefault()?.Value;
+                metadata["Booktype"] = bookType;
+                metadata["Rights"] = rights;
 #endif
-                if (PopupSettings.CheckboxStates.CheckboxTitleState
-                    || PopupSettings.CheckboxStates.CheckboxMetadataTitleState)
-                {
-                    metadata["Title"] = xmlMetadata.Descendants(dc + "title").FirstOrDefault()?.Value.Trim();
-                }
+                if (PopupSettings.CheckboxStates.CheckboxTitleState || PopupSettings.CheckboxStates.CheckboxMetadataTitleState)
+                    metadata["Title"] = title;
 
-                if (PopupSettings.CheckboxStates.CheckboxSeriesState)
-                {
-                    metadata["Series"] = xmlMetadata.Descendants(opf + "meta").FirstOrDefault(i => (string?)i.Attribute("name") == "calibre:series")?.Attribute("content")?.Value.Trim();
-                }
+                if (PopupSettings.CheckboxStates.CheckboxSeriesState) metadata["Series"] = series;
 
-                if (PopupSettings.CheckboxStates.CheckboxVolumeState)
-                {
-                    metadata["SeriesIndex"] = xmlMetadata.Descendants(opf + "meta").FirstOrDefault(i => (string?)i.Attribute("name") == "calibre:series_index")?.Attribute("content")?.Value.Trim();
-                }
+                if (PopupSettings.CheckboxStates.CheckboxVolumeState) metadata["SeriesIndex"] = seriesIndex;
 
-                if (PopupSettings.CheckboxStates.CheckboxAuthorState)
-                {
-                    List<string> dcAuthors = [.. xmlMetadata.Descendants(dc + "creator")
-                        .Select(element => element.Value)
-                        .Distinct()];
-                    metadata["Authors"] = string.Join(" & ", dcAuthors.Select(a => a.Trim()));
-                }
+                if (PopupSettings.CheckboxStates.CheckboxAuthorState && authors.Count > 0)
+                    metadata["Authors"] = string.Join(" & ", authors);
 
                 if (PopupSettings.CheckboxStates.CheckboxLanguageState)
                 {
-                    List<string> dcLanguages = [.. xmlMetadata.Descendants(dc + "language").Select(element => element.Value.Trim())];
-                    dcLanguages = [.. dcLanguages.Select(language => language.Length > 2 ? language[..2] : language)];
-                    if (dcLanguages.Count > 0)
+                    if (languages.Count > 0)
                     {
-                        metadata["Language"] = dcLanguages.Contains("en") ? dcLanguages[dcLanguages.IndexOf("en")] :
-                                     dcLanguages.Contains("ja") ? dcLanguages[dcLanguages.IndexOf("ja")] :
-                                     dcLanguages[0];
+                        metadata["Language"] = languages.Contains("en") ? "en" :
+                                               languages.Contains("ja") ? "ja" :
+                                               languages[0];
                     }
                     else metadata["Language"] = null;
                 }
 
-                if (PopupSettings.CheckboxStates.CheckboxPublisherState) metadata["Publisher"] = xmlMetadata.Descendants(dc + "publisher").FirstOrDefault()?.Value.Trim();
+                if (PopupSettings.CheckboxStates.CheckboxPublisherState) metadata["Publisher"] = publisher;
 
-                if (PopupSettings.CheckboxStates.CheckboxDateState)
-                {
-                    string? dcDate = xmlMetadata.Descendants(dc + "date").FirstOrDefault()?.Value;
-                    if (dcDate?.Length > 10) dcDate = dcDate[..10];
-                    metadata["Date"] = dcDate;
-                }
+                if (PopupSettings.CheckboxStates.CheckboxDateState && date is not null)
+                    metadata["Date"] = date.Length > 10 ? date[..10] : date;
 
-                if (PopupSettings.CheckboxStates.CheckboxDescriptionState)
+                if (PopupSettings.CheckboxStates.CheckboxDescriptionState && description is not null)
                 {
-                    string? dcDescription = xmlMetadata.Descendants(dc + "description").FirstOrDefault()?.Value;
-                    if (!string.IsNullOrEmpty(dcDescription))
-                    {
-                        string match = @"\s{2,}";
-                        dcDescription = Regex.Replace(dcDescription, match, "\n").Trim();
-                    }
-                    metadata["Description"] = dcDescription;
+                    string match = @"\s{2,}";
+                    metadata["Description"] = Regex.Replace(description, match, "\n").Trim();
                 }
             }
 
-            string readingDirection;
-            XElement? xmlReadingDirection = xmlDoc.Descendants(opf + "spine").FirstOrDefault();
+            string readingDirection = "No";
+            XElement? xmlReadingDirection = xmlDoc.Root?.Element(opf + "spine") ?? xmlDoc.Descendants(opf + "spine").FirstOrDefault();
 
-            if (xmlReadingDirection is not null
-                && xmlReadingDirection.Attribute("page-progression-direction")?.Value == "rtl")
-            {
+            if (xmlReadingDirection?.Attribute("page-progression-direction")?.Value == "rtl")
                 readingDirection = "YesAndRightToLeft";
-            }
-            else readingDirection = "No";
 
             return (metadata, readingDirection);
         }
