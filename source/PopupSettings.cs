@@ -567,14 +567,15 @@ namespace epub2cbz
             panel.ColumnStyles.Clear();
 
             panel.ColumnCount = columnCount;
+            float colPercentage = 100f / columnCount;
+
             for (int i = 0; i < columnCount; i++)
             {
-                panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100f / columnCount));
+                panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, colPercentage));
             }
 
             int rowCount = (int)Math.Ceiling((double)controls.Count / columnCount);
             panel.RowCount = rowCount;
-
             float rowPercentage = 100f / rowCount;
 
             for (int i = 0; i < rowCount; i++)
