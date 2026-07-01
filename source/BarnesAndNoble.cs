@@ -23,7 +23,7 @@ namespace epub2cbz
                 .Attribute("href")!
                 .Value;
 
-            opfReplicaMap = Program.ResolveRootPath(opfPath, opfReplicaMap);
+            opfReplicaMap = EpubParsing.ResolveRootPath(opfPath, opfReplicaMap);
 
             ZipArchiveEntry fileEntry = entryMap.GetValueOrDefault(opfReplicaMap)!;
             using StreamReader reader = new(fileEntry.Open(), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
@@ -56,7 +56,7 @@ namespace epub2cbz
                 string pageFile = string.Empty;
                 if (!string.IsNullOrEmpty(page.Value))
                 {
-                    pageFile = Program.ResolveRootPath(replicaMapPath, page.Value);
+                    pageFile = EpubParsing.ResolveRootPath(replicaMapPath, page.Value);
                 }
 
                 dicPagesIdsSpread.Add(new()
@@ -91,7 +91,7 @@ namespace epub2cbz
                         int width = 0;
                         int height = 0;
 
-                        (width, height) = Program.GetImageDimensions(streamDimensions);
+                        (width, height) = ImageProcessing.GetImageDimensions(streamDimensions);
 
                         bool isDoublePage = false;
 
@@ -130,7 +130,7 @@ namespace epub2cbz
                 .Attribute("href")!
                 .Value;
 
-            string filename = Program.ResolveRootPath(opfPath, opfCover);
+            string filename = EpubParsing.ResolveRootPath(opfPath, opfCover);
 
             if (!entryMap.TryGetValue(filename, out var bookEntry)) { }
 
@@ -138,14 +138,14 @@ namespace epub2cbz
                 && bookEntry != null)
             {
 #if DEBUG
-                Program.AppendColoredText($"DEBUG: '{Path.GetFileNameWithoutExtension(epubFile)}' - Alternative Cover" + Environment.NewLine, System.Drawing.Color.DarkOrange);
+                UserInterface.AppendColoredText($"DEBUG: '{Path.GetFileNameWithoutExtension(epubFile)}' - Alternative Cover" + Environment.NewLine, Color.DarkOrange);
 #endif
                 using var streamDimensions = bookEntry.Open();
 
                 int width = 0;
                 int height = 0;
 
-                (width, height) = Program.GetImageDimensions(streamDimensions);
+                (width, height) = ImageProcessing.GetImageDimensions(streamDimensions);
 
                 bookFull.Insert(0, new()
                 {

@@ -93,20 +93,20 @@ public partial class MainForm : Form
 
             if (filesAdded > 0)
             {
-                Program.AppendColoredText(Resources.FileModeAddedFilename, Color.White);
-                Program.AppendColoredText(Environment.NewLine, Color.White);
-                Program.AppendColoredText(stringFilesAdded, Color.White);
+                UserInterface.AppendColoredText(Resources.FileModeAddedFilename, Color.White);
+                UserInterface.AppendColoredText(Environment.NewLine, Color.White);
+                UserInterface.AppendColoredText(stringFilesAdded, Color.White);
 
-                Program.AppendColoredText(Environment.NewLine + string.Format(Resources.FileModeFilesAdded, filesAdded) + Environment.NewLine, Color.Green);
-                Program.AppendColoredText(string.Format(Resources.FileModeTotalFiles, fileCount) + Environment.NewLine, Color.Green);
+                UserInterface.AppendColoredText(Environment.NewLine + string.Format(Resources.FileModeFilesAdded, filesAdded) + Environment.NewLine, Color.Green);
+                UserInterface.AppendColoredText(string.Format(Resources.FileModeTotalFiles, fileCount) + Environment.NewLine, Color.Green);
 
                 outputBoxConsole.Focus();
             }
             else
             {
-                Program.AppendColoredText(Resources.FileModeNoFilesAdded + Environment.NewLine, Color.Yellow);
-                Program.AppendColoredText(Environment.NewLine, Color.White);
-                Program.AppendColoredText(string.Format(Resources.FileModeTotalFiles, fileCount) + Environment.NewLine, Color.Green);
+                UserInterface.AppendColoredText(Resources.FileModeNoFilesAdded + Environment.NewLine, Color.Yellow);
+                UserInterface.AppendColoredText(Environment.NewLine, Color.White);
+                UserInterface.AppendColoredText(string.Format(Resources.FileModeTotalFiles, fileCount) + Environment.NewLine, Color.Green);
 
                 outputBoxConsole.Focus();
             }
@@ -268,7 +268,7 @@ public partial class MainForm : Form
         {
             buttonStart.Enabled = false;
             Program.cts.Cancel();
-            Program.AppendColoredText(Environment.NewLine + Resources.AbortingMessage + Environment.NewLine + Environment.NewLine, Color.Red);
+            UserInterface.AppendColoredText(Environment.NewLine + Resources.AbortingMessage + Environment.NewLine + Environment.NewLine, Color.Red);
             outputBoxConsole.Focus();
         }
     }
@@ -306,7 +306,7 @@ public partial class MainForm : Form
 
             outputBoxConsole.Clear();
             outputBoxConsole.Focus();
-            Program.AppendColoredText(Resources.FileModeNoEpubs + Environment.NewLine, Color.Yellow);
+            UserInterface.AppendColoredText(Resources.FileModeNoEpubs + Environment.NewLine, Color.Yellow);
         }
         else
         {
@@ -494,7 +494,7 @@ public partial class MainForm : Form
 
             outputBoxConsole.Clear();
             outputBoxConsole.Focus();
-            Program.AppendColoredText(Resources.FileModeNoEpubs + Environment.NewLine, Color.Yellow);
+            UserInterface.AppendColoredText(Resources.FileModeNoEpubs + Environment.NewLine, Color.Yellow);
         }
         else
         {
@@ -532,7 +532,7 @@ public partial class MainForm : Form
             if (outputBoxConsole.Text.Contains(localizedMessage))
             {
                 outputBoxConsole.Clear();
-                Program.AppendColoredText(Resources.FileModeNoEpubs + Environment.NewLine, Color.Yellow);
+                UserInterface.AppendColoredText(Resources.FileModeNoEpubs + Environment.NewLine, Color.Yellow);
             }
         }
     }

@@ -79,6 +79,33 @@ namespace epub2cbz
             EnableCheckboxes();
         }
 
+        private static readonly Dictionary<string, (int width, int height)> DeviceResolutionKindle = new()
+        {
+            { "Kindle 1/2", (600, 670) },
+            { "Kindle DX/DXG", (824, 1000) },
+            { "Kindle 5-10/Keyboard/Touch", (600, 800) },
+            { "Kindle Paperwhite 1/2", (758, 1024) },
+            { "Kindle 11/Voyage/Oasis", (1072, 1448) },
+            { "Kindle Paperwhite 3/4", (1072, 1448) },
+            { "Kindle Oasis 2/3", (1264, 1680) },
+            { "Kindle Paperwhite 12/Colorsoft 12", (1272, 1696) },
+            { "Kindle Paperwhite 5/Signature Edition", (1236, 1648) },
+            { "Kindle Scribe", (1860, 2480) },
+        };
+
+        private static readonly Dictionary<string, (int width, int height)> DeviceResolutionKobo = new()
+        {
+            { "Kobo Mini/Touch", (600, 800) },
+            { "Kobo Glo", (768, 1024) },
+            { "Kobo Glo HD/Clara HD/Clara 2E/Clara Colour", (1072, 1448) },
+            { "Kobo Aura/Nia", (758, 1024) },
+            { "Kobo Aura HD", (1080, 1440) },
+            { "Kobo Aura H2O", (1080, 1430) },
+            { "Kobo Elipsa/Aura ONE", (1404, 1872) },
+            { "Kobo Libra H2O/Libra 2/Libra Colour", (1264, 1680) },
+            { "Kobo Forma/Sage", (1440, 1920) },
+        };
+
         private void BtnSettingsOK_Click(object sender, EventArgs e)
         {
             CheckboxStates.CheckboxSeriesState = checkBoxSettingsComicInfoSeries.Checked;
@@ -278,7 +305,7 @@ namespace epub2cbz
         {
             if (dropDownKindle.SelectedItem is string selectedKindle)
             {
-                if (Program.DeviceResolutionKindle.TryGetValue(selectedKindle, out var resolution))
+                if (DeviceResolutionKindle.TryGetValue(selectedKindle, out var resolution))
                 {
                     textBoxSettingsResizeWidth.Text = resolution.width.ToString();
                     textBoxSettingsResizeHeight.Text = resolution.height.ToString();
@@ -292,7 +319,7 @@ namespace epub2cbz
         {
             if (dropDownKobo.SelectedItem is string selectedKobo)
             {
-                if (Program.DeviceResolutionKobo.TryGetValue(selectedKobo, out var resolution))
+                if (DeviceResolutionKobo.TryGetValue(selectedKobo, out var resolution))
                 {
                     textBoxSettingsResizeWidth.Text = resolution.width.ToString();
                     textBoxSettingsResizeHeight.Text = resolution.height.ToString();
@@ -542,8 +569,8 @@ namespace epub2cbz
 
         private void PopulateDropdownListKindleKobo()
         {
-            dropDownKindle.DataSource = Program.DeviceResolutionKindle.Keys.ToList();
-            dropDownKobo.DataSource = Program.DeviceResolutionKobo.Keys.ToList();
+            dropDownKindle.DataSource = DeviceResolutionKindle.Keys.ToList();
+            dropDownKobo.DataSource = DeviceResolutionKobo.Keys.ToList();
 
             dropDownKindle.SelectedIndex = -1;
             dropDownKobo.SelectedIndex = -1;

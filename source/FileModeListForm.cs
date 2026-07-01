@@ -69,8 +69,8 @@ namespace epub2cbz
 
                 MainForm.FileNameClass.FileNames.Clear();
 
-                Program.ClearAndFocusConsole();
-                Program.AppendColoredText(Resources.FileModeFileListCleared + Environment.NewLine, Color.Yellow);
+                UserInterface.ClearAndFocusConsole();
+                UserInterface.AppendColoredText(Resources.FileModeFileListCleared + Environment.NewLine, Color.Yellow);
             }
         }
 
