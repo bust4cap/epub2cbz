@@ -88,9 +88,10 @@ namespace epub2cbz
             { "Kindle 11/Voyage/Oasis", (1072, 1448) },
             { "Kindle Paperwhite 3/4", (1072, 1448) },
             { "Kindle Oasis 2/3", (1264, 1680) },
-            { "Kindle Paperwhite 12/Colorsoft 12", (1272, 1696) },
             { "Kindle Paperwhite 5/Signature Edition", (1236, 1648) },
-            { "Kindle Scribe", (1860, 2480) },
+            { "Kindle Paperwhite 6/Colorsoft", (1272, 1696) },
+            { "Kindle Scribe 1/2", (1860, 2480) },
+            { "Kindle Scribe 3/Scribe Colorsoft", (1986, 2648) },
         };
 
         private static readonly Dictionary<string, (int width, int height)> DeviceResolutionKobo = new()
