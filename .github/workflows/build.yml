@@ -1,0 +1,76 @@
+name: Build and Release epub2cbz
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest 
+
+    env:
+      RELEASE_DATE: ""
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 9
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore source\epub2cbz.csproj
+
+    - name: Publish Full Build
+      run: >
+        dotnet publish source\epub2cbz.csproj 
+        -r win-x64 
+        -c Release 
+        -f net9.0-windows7.0 
+        -o ${{ github.workspace }}\out_full 
+        /p:PublishReadyToRun=true 
+        /p:PublishSingleFile=true 
+        /p:IncludeNativeLibrariesForSelfExtract=true 
+        /p:SelfContained=true 
+        /p:DebugType=None 
+        /p:DebugSymbols=false
+
+    - name: Publish Small Build
+      run: >
+        dotnet publish source\epub2cbz.csproj 
+        -c Release 
+        -f net9.0-windows7.0 
+        -o ${{ github.workspace }}\out_small\epub2cbz 
+        /p:SelfContained=false 
+        /p:DebugType=None 
+        /p:DebugSymbols=false
+
+    - name: Zip Full Build
+      run: 7z a -tzip -mx=5 ${{ github.workspace }}\epub2cbz_full.zip ${{ github.workspace }}\out_full\epub2cbz.exe
+
+    - name: Zip Small Build
+      run: 7z a -tzip -mx=5 ${{ github.workspace }}\epub2cbz.zip ${{ github.workspace }}\out_small\epub2cbz
+
+    - name: Generate Release Title Date
+      run: echo "RELEASE_DATE=$(Get-Date -Format 'yyyy.MM.dd')" >> $env:GITHUB_ENV
+      
+    - name: Publish GitHub Draft Release
+      uses: softprops/action-gh-release@v2
+      with:
+        draft: true
+        name: v${{ env.RELEASE_DATE }}-1
+        body: |
+          ## Changes
+          - 
+
+
+          ## Notes
+          - The smaller package (*without* "_full" in the filename) requires [.NET Desktop Runtime 9.0](https://dotnet.microsoft.com/download/dotnet/9.0) as a one-time install. The program should guide you to the correct website, if it isn't installed yet.
+          - The larger package (*with* "_full" in the filename) does not require any additional installs
+        files: |
+          ${{ github.workspace }}\epub2cbz_full.zip
+          ${{ github.workspace }}\epub2cbz.zip
