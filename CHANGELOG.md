@@ -1,3 +1,8 @@
+## v2026.07.03-1
+- CBZ files get written to a temp file first until fully complete
+- Optimized metadata parsing
+- Updated Kindle preset resolutions
+
 ## v2026.06.24-1
 - Adding alternative cover option now also applies to Barnes & Noble ebooks
 - Replaced error/info popup messages with native solution

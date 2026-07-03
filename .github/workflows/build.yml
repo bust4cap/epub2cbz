@@ -12,6 +12,7 @@ jobs:
 
     env:
       RELEASE_NAME: ""
+      RELEASE_CHANGES: ""
 
     steps:
     - name: Checkout repository
@@ -59,7 +60,33 @@ jobs:
       run: |
         $releaseName = (Get-Content -Path ver\latest -TotalCount 1).Trim()
         echo "RELEASE_NAME=$releaseName" >> $env:GITHUB_ENV
-      
+
+    - name: Extract Latest Changelog
+      run: |
+        $changelog = Get-Content -Path CHANGELOG.md
+        $capture = $false
+        $notes = @()
+        
+        foreach ($line in $changelog) {
+            if ($line -match "^## ") {
+                if ($capture) { break } # Stop if we hit the second version header
+                $capture = $true
+                continue # Skip the version header line itself
+            }
+            if ($capture) {
+                if ([string]::IsNullOrWhiteSpace($line)) { break } # Stop at the first empty line
+                $notes += $line
+            }
+        }
+        
+        $releaseNotes = $notes -join "`n"
+        
+        # GitHub Actions requires a delimiter for multi-line environment variables
+        $delimiter = "EOF_$([guid]::NewGuid().ToString('N'))"
+        Add-Content -Path $env:GITHUB_ENV -Value "RELEASE_CHANGES<<$delimiter"
+        Add-Content -Path $env:GITHUB_ENV -Value $releaseNotes
+        Add-Content -Path $env:GITHUB_ENV -Value $delimiter
+
     - name: Publish GitHub Draft Release
       uses: softprops/action-gh-release@v2
       with:
@@ -68,7 +95,7 @@ jobs:
         name: ${{ env.RELEASE_NAME }}
         body: |
           ## Changes
-          - 
+          ${{ env.RELEASE_CHANGES }}
 
 
           ## Notes

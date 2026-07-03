@@ -9,8 +9,8 @@ namespace epub2cbz
     public static class VersionDate
     {
         public static string GetVersionDateYear { get; } = "2026";
-        public static string GetVersionDateMonth { get; } = "06";
-        public static string GetVersionDateDay { get; } = "24";
+        public static string GetVersionDateMonth { get; } = "07";
+        public static string GetVersionDateDay { get; } = "03";
         public static int GetVersionNumber { get; } = 1;
     }
 
