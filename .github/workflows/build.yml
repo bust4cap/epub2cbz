@@ -11,7 +11,7 @@ jobs:
     runs-on: windows-latest 
 
     env:
-      RELEASE_DATE: ""
+      RELEASE_NAME: ""
 
     steps:
     - name: Checkout repository
@@ -55,14 +55,17 @@ jobs:
     - name: Zip Small Build
       run: 7z a -tzip -mx=5 ${{ github.workspace }}\epub2cbz.zip ${{ github.workspace }}\out_small\epub2cbz
 
-    - name: Generate Release Title Date
-      run: echo "RELEASE_DATE=$(Get-Date -Format 'yyyy.MM.dd')" >> $env:GITHUB_ENV
+    - name: Read Release Name from File
+      run: |
+        $releaseName = (Get-Content -Path ver\latest -TotalCount 1).Trim()
+        echo "RELEASE_NAME=$releaseName" >> $env:GITHUB_ENV
       
     - name: Publish GitHub Draft Release
       uses: softprops/action-gh-release@v2
       with:
         draft: true
-        name: v${{ env.RELEASE_DATE }}-1
+        tag_name: ${{ env.RELEASE_NAME }}
+        name: ${{ env.RELEASE_NAME }}
         body: |
           ## Changes
           - 
