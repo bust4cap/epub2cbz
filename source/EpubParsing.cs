@@ -385,10 +385,13 @@ namespace epub2cbz
                         }
                     }
                 }
+#if DEBUG
                 catch (Exception ex)
                 {
-#if DEBUG
                     UserInterface.AppendColoredText(ex.Message + Environment.NewLine, System.Drawing.Color.Red);
+#else
+                catch
+                {
 #endif
                     break;
                 }
