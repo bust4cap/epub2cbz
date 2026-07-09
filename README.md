@@ -16,7 +16,7 @@ The latest release is available here: [Releases](https://github.com/bust4cap/epu
 - If in File Mode, drag and drop the epub files onto the main text window and optionally select an "Output Folder" (📁)
 - If in Folder Mode, click on the "Input Folder" button (📁) and select the folder containing the epub files
 - (Click on the mode switch button (🔄) to switch between these two modes)
-- Enable or disable certain options, like creating a ComicInfo.xml file or extracting images. The settings menu (⚙) contains more options (recommended settings are enabled by default)
+- Enable or disable certain options, like creating a ComicInfo.xml file. The settings menu (⚙) contains more options (recommended settings are enabled by default)
 - Click the "Start" button and wait<br/>
 
 ## Command Line Arguments
@@ -46,3 +46,13 @@ epub2cbz uses the following third party software libraries:
 | [CoenM.ImageSharp.ImageHash](https://github.com/coenm/ImageHash) | Comparing duplicate cover candidates | [MIT](https://licenses.nuget.org/MIT) |
 | [ExCSS](https://github.com/TylerBrinks/ExCSS) | Parsing info from CSS files | [MIT](https://licenses.nuget.org/MIT) |
 | [SixLabors.ImageSharp](https://github.com/SixLabors/ImageSharp) | Decoding and modifying images | [Apache-2.0](https://licenses.nuget.org/Apache-2.0) |
+
+## Legal & Privacy
+**Privacy Policy**
+<br/>This program processes all files locally on your machine and does not collect any user data, telemetry, or analytics. The only network activity performed by the application is a manual update check, which reads a public version string directly from this GitHub repository. This standard network request is subject to [GitHub's Privacy Statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement) and transmits no personal data from the application itself.
+
+**Code Signing Policy**
+- Free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/).
+- **Release Process:** New releases are built via automated GitHub Actions and are manually approved by the maintainer before the signature is applied.
+- **Team Roles:** 
+  - Authors / Approvers: [@bust4cap](https://github.com/bust4cap)
