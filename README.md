@@ -47,12 +47,5 @@ epub2cbz uses the following third party software libraries:
 | [ExCSS](https://github.com/TylerBrinks/ExCSS) | Parsing info from CSS files | [MIT](https://licenses.nuget.org/MIT) |
 | [SixLabors.ImageSharp](https://github.com/SixLabors/ImageSharp) | Decoding and modifying images | [Apache-2.0](https://licenses.nuget.org/Apache-2.0) |
 
-## Legal & Privacy
-**Privacy Policy**
-<br/>This program processes all files locally on your machine and does not collect any user data, telemetry, or analytics. The only network activity performed by the application is a manual update check, which reads a public version string directly from this GitHub repository. This standard network request is subject to [GitHub's Privacy Statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement) and transmits no personal data from the application itself.
-
-**Code Signing Policy**
-- Free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/).
-- **Release Process:** New releases are built via automated GitHub Actions and are manually approved by the maintainer before the signature is applied.
-- **Team Roles:** 
-  - Authors / Approvers: [@bust4cap](https://github.com/bust4cap)
+## Privacy Policy
+This program processes all files locally on your machine and does not collect any user data, telemetry, or analytics. The only network activity performed by the application is a manual update check, which reads a public version string directly from this GitHub repository. This standard network request is subject to [GitHub's Privacy Statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement) and transmits no personal data from the application itself.
