@@ -39,6 +39,7 @@ jobs:
         /p:SelfContained=true 
         /p:DebugType=None 
         /p:DebugSymbols=false
+        /p:SixLaborsLicenseKey="${{ secrets.SIXLABORS_LICENSE_KEY }}"
 
     - name: Publish Small Build
       run: >
@@ -49,6 +50,7 @@ jobs:
         /p:SelfContained=false 
         /p:DebugType=None 
         /p:DebugSymbols=false
+        /p:SixLaborsLicenseKey="${{ secrets.SIXLABORS_LICENSE_KEY }}"
 
     - name: Zip Full Build
       run: 7z a -tzip -mx=5 ${{ github.workspace }}\epub2cbz_full.zip ${{ github.workspace }}\out_full\epub2cbz.exe
