@@ -91,7 +91,7 @@ jobs:
         Add-Content -Path $env:GITHUB_ENV -Value $delimiter
 
     - name: Publish GitHub Draft Release
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       with:
         draft: true
         tag_name: ${{ env.RELEASE_NAME }}
