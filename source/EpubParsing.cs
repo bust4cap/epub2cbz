@@ -22,7 +22,7 @@ namespace epub2cbz
             return resolvedUri.AbsolutePath.TrimStart('/');
         }
 
-        public static string GetOpfFile(Dictionary<string, ZipArchiveEntry> entryMap)
+        public static List<string> GetOpfFiles(Dictionary<string, ZipArchiveEntry> entryMap)
         {
             const string containerPath = "META-INF/container.xml";
 
@@ -33,13 +33,15 @@ namespace epub2cbz
             XDocument xmlDoc = XDocument.Parse(xmlContent);
             XNamespace xmlns = "urn:oasis:names:tc:opendocument:xmlns:container";
 
-            var item = xmlDoc.Descendants(xmlns + "rootfiles").Descendants(xmlns + "rootfile").FirstOrDefault();
-            string opfFile = string.Empty;
+            List<string> opfFiles = xmlDoc.Descendants(xmlns + "rootfiles")
+                                        .Descendants(xmlns + "rootfile")
+                                        .Select(item => item.Attribute("full-path")?.Value)
+                                        .Where(path => !string.IsNullOrEmpty(path))
+                                        .Cast<string>()
+                                        .ToList();
 
-            if (item is not null) opfFile = item.Attribute("full-path")?.Value ?? string.Empty;
-
-            if (!string.IsNullOrEmpty(opfFile)) return opfFile;
-            else throw new Exception(Resources.OPFFileNotFound);
+            if (opfFiles.Count == 0) throw new Exception(Resources.OPFFileNotFound);
+            return opfFiles;
         }
 
         private static (string, Stylesheet?) GetCssFile(string opfPath,
@@ -198,6 +200,31 @@ namespace epub2cbz
             }
 
             return bookFull;
+        }
+
+        public static bool SpineIsScripted(XDocument opfDoc)
+        {
+            bool isScripted = false;
+
+            XNamespace opf = "http://www.idpf.org/2007/opf";
+            var spineItems = opfDoc.Descendants(opf + "spine").Descendants(opf + "itemref").ToList();
+
+            if (spineItems.Count == 1)
+            {
+                var e = spineItems[0];
+                string idref = e.Attribute("idref")?.Value ?? string.Empty;
+
+                var opfManifest = opfDoc.Descendants(opf + "manifest")
+                                        .Descendants(opf + "item")
+                                        .FirstOrDefault(i => (string?)i.Attribute("id") == idref);
+
+                if (opfManifest is not null && string.Equals((string?)opfManifest.Attribute("properties"), "scripted", StringComparison.OrdinalIgnoreCase))
+                {
+                    isScripted = true;
+                }
+            }
+
+            return isScripted;
         }
 
         public static List<BookInfo.EpubPagesIdsSpread> ParseSpineXml(XDocument opfDoc,

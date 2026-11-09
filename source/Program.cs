@@ -9,8 +9,8 @@ namespace epub2cbz
     public static class VersionDate
     {
         public static string GetVersionDateYear { get; } = "2026";
-        public static string GetVersionDateMonth { get; } = "07";
-        public static string GetVersionDateDay { get; } = "03";
+        public static string GetVersionDateMonth { get; } = "11";
+        public static string GetVersionDateDay { get; } = "09";
         public static int GetVersionNumber { get; } = 1;
     }
 
@@ -80,10 +80,10 @@ namespace epub2cbz
             Dictionary<string, ZipArchiveEntry> entryMap = epub.Entries
                 .ToDictionary(e => e.FullName, e => e, StringComparer.InvariantCultureIgnoreCase);
 
-            string opfPath = string.Empty;
+            List<string> opfPaths = [];
             try
             {
-                opfPath = EpubParsing.GetOpfFile(entryMap);
+                opfPaths = EpubParsing.GetOpfFiles(entryMap);
             }
             catch (Exception ex)
             {
@@ -142,7 +142,23 @@ namespace epub2cbz
                 return;
             }
 
+            string opfPath = opfPaths[0];
             XDocument opfDoc = EpubParsing.GetOpfDocument(entryMap, opfPath);
+            bool barnesAndNobleBook = BarnesAndNoble.IsBarnesAndNobleBook(opfDoc);
+
+            if (!barnesAndNobleBook && EpubParsing.SpineIsScripted(opfDoc))
+            {
+                foreach (string path in opfPaths.Skip(1))
+                {
+                    XDocument tempOpfDoc = EpubParsing.GetOpfDocument(entryMap, path);
+                    if (!EpubParsing.SpineIsScripted(tempOpfDoc))
+                    {
+                        opfPath = path;
+                        opfDoc = tempOpfDoc;
+                        break;
+                    }
+                }
+            }
 
 #if DEBUG
             if (!EpubDetection.IsFixedLayoutEpub(entryMap, opfDoc, epubFilename))
@@ -157,7 +173,6 @@ namespace epub2cbz
             }
 #endif
 
-            bool barnesAndNobleBook = BarnesAndNoble.IsBarnesAndNobleBook(opfDoc);
             XDocument replicaMapDoc = new();
 
             List<BookInfo.EpubPagesIdsSpread> pages = [];

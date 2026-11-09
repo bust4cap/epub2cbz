@@ -1,3 +1,7 @@
+## v2026.11.09-1
+- Fixed conversion for certain Shueisha ebooks
+- Updated third party software libraries
+
 ## v2026.07.03-1
 - CBZ files get written to a temp file first until fully complete
 - Optimized metadata parsing
