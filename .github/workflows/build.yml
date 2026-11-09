@@ -13,6 +13,7 @@ jobs:
     env:
       RELEASE_NAME: ""
       RELEASE_CHANGES: ""
+      SIXLABORS_LICENSE_KEY: ${{ secrets.SIXLABORS_LICENSE_KEY }}
 
     steps:
     - name: Checkout repository
