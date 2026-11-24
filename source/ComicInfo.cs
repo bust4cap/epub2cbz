@@ -241,14 +241,14 @@ namespace epub2cbz
                     {
                         if (PopupSettings.CheckboxStates.CheckboxOffsetChaptersState)
                         {
-                            if (i <= 1)
+                            if (i == 0)
                             {
                                 if (!string.IsNullOrEmpty(bookFull[i].Bookmark))
                                 {
                                     xmlWriter.WriteAttributeString("Bookmark", bookFull[i].Bookmark);
                                 }
                             }
-                            else if (!string.IsNullOrEmpty(bookFull[i - 1].Bookmark))
+                            else if (i > 1 && !string.IsNullOrEmpty(bookFull[i - 1].Bookmark))
                             {
                                 xmlWriter.WriteAttributeString("Bookmark", bookFull[i - 1].Bookmark);
                             }
